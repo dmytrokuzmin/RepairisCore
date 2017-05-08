@@ -13,6 +13,9 @@
     <DefineConstants>FEATURE_SIGNALR</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
+    <Content Remove="wwwroot/lib\syncfusion-javascript\README.md" />
+  </ItemGroup>
+  <ItemGroup>
     <Content Include="wwwroot\images\app-logo-small.png" />
   </ItemGroup>
   <ItemGroup>
