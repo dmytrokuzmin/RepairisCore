@@ -10,6 +10,10 @@
     "inputFiles": [
       "wwwroot/lib/jquery-ui/themes/base/all.css",
       "wwwroot/lib/bootstrap-theme-cosmo/cosmo.min.css",
+
+      "wwwroot/lib/syncfusion-javascript/Content/ej/web/bootstrap-theme/ej.web.all.min.css",
+      "wwwroot/lib/syncfusion-javascript/Content/ej/web/responsive-css/ej.responsive.css",
+
       "wwwroot/lib/toastr/toastr.css",
       "wwwroot/lib/sweetalert/dist/sweetalert.css",
       "wwwroot/lib/famfamfam-flags/dist/sprite/famfamfam-flags.css",
@@ -22,6 +26,10 @@
     "inputFiles": [
       "wwwroot/lib/json2/json2.js",
       "wwwroot/lib/jquery/dist/jquery.js",
+
+      "wwwroot/lib/jsrender/jsrender.min.js",
+      "wwwroot/lib/syncfusion-javascript/Scripts/ej/web/ej.web.all.min.js",
+
       "wwwroot/lib/jquery-ui/jquery-ui.js",
       "wwwroot/lib/bootstrap/dist/js/bootstrap.js",
       "wwwroot/lib/moment/min/moment-with-locales.js",
