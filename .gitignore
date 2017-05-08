@@ -250,3 +250,5 @@ paket-files/
 # JetBrains Rider
 .idea/
 *.sln.iml
+/src/RepairCore.Web.Host/App_Data/Logs
+/src/RepairCore.Web.Mvc/App_Data/Logs
