@@ -7,5 +7,7 @@
         public const string ConnectionStringName = "Default";
 
         public const bool MultiTenancyEnabled = false;
+
+        public const int MaxEntityNameLength = 200;
     }
 }
