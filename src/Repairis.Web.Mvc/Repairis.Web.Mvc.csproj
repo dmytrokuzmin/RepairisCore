@@ -56,7 +56,9 @@
     <PackageReference Include="Abp.HangFire" Version="2.0.1" />
     <PackageReference Include="Abp.RedisCache" Version="2.0.1" />
     <PackageReference Include="Abp.Castle.Log4Net" Version="2.0.1" />
+    <PackageReference Include="Syncfusion.Compression.AspNet.Core" Version="14.4600.0.20-preview2-final" />
     <PackageReference Include="Syncfusion.EJ.AspNet.Core" Version="15.2600.0.40" />
+    <PackageReference Include="Syncfusion.Pdf.AspNet.Core" Version="14.4600.0.20-preview2-final" />
   </ItemGroup>
   <ItemGroup Condition=" '$(TargetFramework)' == 'net461' ">
     <Reference Include="System" />

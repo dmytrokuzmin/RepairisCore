@@ -1,0 +1,38 @@
+﻿@using Repairis.Users.Dto
+@model Abp.Application.Services.Dto.ListResultDto<CustomerBasicEntityDto>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Client</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+
+@(Html.EJ().Grid<CustomerBasicEntityDto>("Customers")
+      .Datasource(Model.Items)
+      .AllowPaging()
+      .PageSettings(p => { p.PageSize(15); })
+      .AllowSelection(false)
+      .AllowTextWrap(true)
+      .AllowSorting()
+      .AllowResizeToFit()
+      .AllowSearching(true)
+      .EnableTouch(false)
+      .ToolbarSettings(toolbar => { toolbar.ShowToolbar().ToolbarItems(items => { items.AddTool(ToolBarItems.Search); }); })
+      .Columns(col =>
+      {
+          col.Template("<a href=\"/Customers/Edit/{{:Id}}\"><i class=\"fa fa-pencil fa\" aria-hidden=\"true\"></i></a>" +
+                       "<a href=\"/Customers/Delete/{{:Id}}\"><i class=\"fa fa-trash-o fa\" aria-hidden=\"true\"></i></a>").AllowSorting(false).AllowFiltering(false).AllowGrouping(false).Width(60).Add();
+          col.Field(p => p.Surname).HeaderText(L("Surname")).Width(100).Add();
+          col.Field(p => p.Name).HeaderText(L("Name")).Width(100).Add();
+          col.Field(p => p.FatherName).HeaderText(L("FatherName")).Width(100).Add();
+          col.Field(p => p.PhoneNumber).HeaderText(L("MobilePhoneNumber")).Width(100).Add();
+          col.Field(p => p.SecondaryPhoneNumber).HeaderText(L("SecondaryPhoneNumber")).Width(100).Add();
+          col.Field(p => p.EmailAddress).HeaderText(L("Email")).Add();
+          col.Field(p => p.Address).HeaderText(L("Address")).Add();
+          col.Field(p => p.CustomerType).HeaderText(L("ClientType")).Add();
+          col.Field(p => p.AdditionalInfo).HeaderText(L("AdditionalInfo")).Add();
+      }))

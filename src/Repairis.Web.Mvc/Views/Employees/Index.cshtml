@@ -1,0 +1,39 @@
+﻿@using Repairis.Users.Dto
+@model Abp.Application.Services.Dto.ListResultDto<EmployeeBasicEntityDto>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Employee</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+
+@(Html.EJ().Grid<EmployeeBasicEntityDto>("Employees")
+      .Datasource(Model.Items)
+      .AllowPaging()
+      .PageSettings(p => { p.PageSize(15); })
+      .AllowSelection(false)
+      .AllowTextWrap(true)
+      .AllowSorting()
+      .AllowResizeToFit()
+      .AllowSearching(true)
+      .EnableTouch(false)
+      .ToolbarSettings(toolbar => { toolbar.ShowToolbar().ToolbarItems(items => { items.AddTool(ToolBarItems.Search); }); })
+      .Columns(col =>
+      {
+          col.Template("<a href=\"/Employees/Edit/{{:Id}}\"><i class=\"fa fa-pencil fa\" aria-hidden=\"true\"></i></a>" +
+                       "<a href=\"/Employees/Delete/{{:Id}}\"><i class=\"fa fa-trash-o fa\" aria-hidden=\"true\"></i></a>").AllowSorting(false).AllowFiltering(false).AllowGrouping(false).Width(60).Add();
+          col.Field(p => p.Surname).HeaderText(L("Surname")).Width(100).Add();
+          col.Field(p => p.Name).HeaderText(L("Name")).Width(100).Add();
+          col.Field(p => p.FatherName).HeaderText(L("FatherName")).Width(100).Add();
+          col.Field(p => p.PhoneNumber).HeaderText(L("MobilePhoneNumber")).Width(100).Add();
+          col.Field(p => p.SecondaryPhoneNumber).HeaderText(L("SecondaryPhoneNumber")).Width(100).Add();
+          col.Field(p => p.EmailAddress).HeaderText(L("Email")).Add();
+          col.Field(p => p.Address).HeaderText(L("Address")).Add();
+          col.Field(p => p.SalaryType).HeaderText(L("SalaryType")).Add();
+          col.Field(p => p.SalaryPercentage).HeaderText(L("SalaryPercentage")).Add();
+          col.Field(p => p.FixedSalaryValue).HeaderText(L("FixedSalaryValue")).Add();
+      }))

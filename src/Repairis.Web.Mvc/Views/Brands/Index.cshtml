@@ -1,0 +1,36 @@
+﻿@model Repairis.Brands.Dto.BrandBasicListDto
+@{
+ViewBag.Title = "Brands";
+}
+<h2>Index</h2>
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @L("BrandName")
+        </th>
+        <th>@L("Enabled")</th>
+        <th></th>
+    </tr>
+    @foreach (var item in Model.Brands)
+    {
+    <tr>
+        <td>
+            @Html.ActionLink(item.BrandName, "Details", new { brandName = item.BrandName })
+        </td>
+        <td>
+            @if (item.IsActive) {
+            <span class="text-success">@L("Yes")</span>
+            }
+            else {
+            <span class="text-danger">@L("No")</span>
+            }
+        </td>
+        <td>
+            @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+        </td>
+    </tr>
+    }
+</table>

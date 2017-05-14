@@ -1,0 +1,142 @@
+﻿@using Repairis.Orders.Dto
+@model Repairis.Users.Dto.EmployeeFullEntityDto
+@{
+    ViewBag.Title = "Edit";
+}
+<h2>Edit</h2>
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h4>Employee:</h4>
+    </div>
+    <div class="panel-body">
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+            <div class="form-horizontal">
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                @Html.HiddenFor(model => model.Id)
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Surname, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.Surname, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.Surname, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.FatherName, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.FatherName, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.FatherName, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.PhoneNumber, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.PhoneNumber, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.PhoneNumber, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.SecondaryPhoneNumber, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.SecondaryPhoneNumber, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.SecondaryPhoneNumber, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.EmailAddress, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.EmailAddress, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.EmailAddress, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Address, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.Address, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.Address, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.SalaryType, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EnumDropDownListFor(model => model.SalaryType, htmlAttributes: new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.SalaryType, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.FixedSalaryValue, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.FixedSalaryValue, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.FixedSalaryValue, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.SalaryPercentage, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.SalaryPercentage, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.SalaryPercentage, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <input type="submit" value="Save" class="btn btn-default" />
+                    </div>
+                </div>
+            </div>
+        }
+
+        <div>
+            @Html.ActionLink("Back to List", "Index")
+        </div>
+    </div>
+</div>
+
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h4>Is assigned to orders:</h4>
+    </div>
+    <div class="panel-body">
+        @(Html.EJ().Grid<OrderBasicEntityDto>("Orders")
+              .Datasource(Model.AssignedOrders.Items)
+              .AllowSelection(false)
+              .AllowSorting()
+              .SortSettings(sort => sort.SortedColumns(col => col.Field("Id").Direction(SortOrder.Descending).Add()))
+              .AllowPaging()
+              .AllowTextWrap(true)
+              //.EnablePersistence(true)
+              .PageSettings(p => { p.PageSize(10); })
+              .AllowFiltering(true)
+              .FilterSettings(filter => filter.FilterType(FilterType.Excel))
+              .EnableTouch(false)
+
+
+              //.ToolbarSettings(toolbar => { toolbar.ShowToolbar().ToolbarItems(items => { items.AddTool(ToolBarItems.Search); }); })
+              //.ClientSideEvents(eve => eve.Load("loadAdaptor"))
+              .Columns(col =>
+              {
+                  col.Template("<a href=\"/Orders/Edit/{{:Id}}\"><i class=\"fa fa-pencil fa\" aria-hidden=\"true\"></i></a>" +
+                               "<a href=\"/Orders/Delete/{{:Id}}\"><i class=\"fa fa-trash-o fa\" aria-hidden=\"true\"></i></a>").AllowSorting(false).AllowFiltering(false).AllowGrouping(false).Width(60).Add();
+                  col.Field(x => x.Id).HeaderText("OrderId").Width(75).IsPrimaryKey(true).Add();
+                  col.Field(x => x.OrderCreationDate).HeaderText(L("OrderCreationDate")).Width(90).Format("{0:dd.MM.yyyy}").Add();
+                  //col.HeaderText(L("OrderStatus")).Template("{{:Id}}").Add();
+                  //col.Field(x => x.IsUrgent).HeaderText("OrderIsUrgent").Width(75).Add();
+                  //col.Field(x => x.IsWarrantyComplaint).HeaderText("OrderIsWarrantyComplaint").Width(75).Add();
+                  col.Field(x => x.OrderStatus).HeaderText(L("OrderStatus")).Width(75).Add();
+                  col.Field(x => x.AssignedMasterFullName).HeaderText(L("AssignedMaster")).Width(150).Add();
+                  col.Field(x => x.DeviceModel).HeaderText(L("Device")).Width(200).Add();
+                  col.Field(x => x.IssueDescription).HeaderText(L("IssueDescription")).Width(200).Add();
+                  col.Field(x => x.CustomerFullName).HeaderText(L("Customer")).Add();
+                  col.Field(x => x.CustomerPhoneNumber).HeaderText(L("CustomerPhoneNumber")).Add();
+              }))
+    </div>
+</div>

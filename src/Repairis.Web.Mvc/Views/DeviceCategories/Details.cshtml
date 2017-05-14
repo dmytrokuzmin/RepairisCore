@@ -1,0 +1,25 @@
+﻿@model Repairis.DeviceCategories.Dto.DeviceCategoryFullEntityDto
+@using Repairis.DeviceModels.Dto
+<div>
+    <h2>@Model.DeviceCategoryName</h2>
+
+    @if (Model.DeviceModels.Count != 0)
+    {
+        <h4>Device Models: @Model.DeviceModels.Count</h4>
+        @(Html.EJ().Grid<DeviceModelBasicEntityDto>("GridModels")
+            .Datasource(Model.DeviceModels)
+            .AllowGrouping()
+            .AllowSelection(false)
+            .GroupSettings(group => { group.GroupedColumns(col => { col.Add("BrandName"); }); })
+            .Columns(col =>
+            {
+                col.Field(p => p.DeviceCategoryName).HeaderText(L("DeviceCategory")).Add();
+                col.Field(p => p.BrandName).HeaderText(L("Brand")).Add();
+                col.Field(p => p.DeviceModelName).HeaderText(L("DeviceModel")).Add();
+            })
+        )
+    }
+</div>
+<p>
+    @Html.ActionLink("Back to List", "Index")
+</p>

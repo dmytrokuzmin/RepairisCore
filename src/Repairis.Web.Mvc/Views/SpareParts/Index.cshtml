@@ -1,0 +1,42 @@
+﻿@using Repairis.SpareParts.Dto
+@{
+    ViewBag.Title = "Orders";
+}
+
+<h2>SpareParts</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+
+@(Html.EJ().Grid<SparePartBasicEntityDto>("SpareParts")
+      .Datasource(ds => ds.URL("/odata/SpareParts").Adaptor(AdaptorType.ODataV4Adaptor))
+      .AllowSelection(false)
+      .AllowSorting()
+      .SortSettings(sort => sort.SortedColumns(col => col.Field("StockStatus").Direction(SortOrder.Descending).Add()))
+      .AllowPaging()
+      .AllowTextWrap(true)
+      //.EnablePersistence(true)
+      .PageSettings(p => { p.PageSize(10); })
+      .AllowFiltering(true)
+      .FilterSettings(filter => filter.FilterType(FilterType.Excel))
+      .EnableTouch(false)
+
+
+      //.ToolbarSettings(toolbar => { toolbar.ShowToolbar().ToolbarItems(items => { items.AddTool(ToolBarItems.Search); }); })
+      //.ClientSideEvents(eve => eve.Load("loadAdaptor"))
+      .Columns(col =>
+      {
+          col.Template("<a href=\"/SpareParts/Edit/{{:Id}}\"><i class=\"fa fa-pencil fa\" aria-hidden=\"true\"></i></a>" +
+                       "<a href=\"/SpareParts/Delete/{{:Id}}\"><i class=\"fa fa-trash-o fa\" aria-hidden=\"true\"></i></a>").AllowSorting(false).AllowFiltering(false).AllowGrouping(false).Width(60).Add();
+          col.Field(x => x.Id).HeaderText("SparePartId").Width(75).IsPrimaryKey(true).Add();
+          col.Field(x => x.BrandName).HeaderText(L("BrandName")).Width(90).Format("{0:dd.MM.yyyy}").Add();
+          col.Field(x => x.SparePartName).HeaderText(L("SparePartName")).Width(75).Add();
+          col.Field(x => x.SparePartCode).HeaderText(L("SparePartCode")).Width(150).Add();
+          col.Field(x => x.SupplierPrice).HeaderText(L("SupplierPrice")).Width(200).Add();
+          col.Field(x => x.RecommendedPrice).HeaderText(L("RecommendedPrice")).Width(200).Add();
+          col.Field(x => x.StockStatus).HeaderText(L("StockStatus")).Add();
+          col.Field(x => x.StockQuantity).HeaderText(L("StockQuantity")).Add();
+          col.Field(x => x.Notes).HeaderText(L("Notes")).Add();
+
+      }))

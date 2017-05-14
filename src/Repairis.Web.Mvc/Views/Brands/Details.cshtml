@@ -1,0 +1,43 @@
+﻿@*@model Repairis.Brands.Dto.BrandFullEntityDto
+@using Repairis.DeviceModels.Dto
+<div>
+    <h2>@Model.BrandName</h2>
+    @if (Model.DeviceModels.Count != 0)
+    {
+    <h4>Device Models: @Model.DeviceModels.Count</h4>
+    @(Html.EJ().Grid<DeviceModelBasicEntityDto>("GridModels")
+    .Datasource(Model.DeviceModels)
+    .AllowGrouping()
+    .AllowSelection(false)
+    .GroupSettings(group => { group.GroupedColumns(col => { col.Add("DeviceCategoryName"); }); })
+    .Columns(col =>
+    {
+    col.Field(p => p.DeviceCategoryName).HeaderText(L("DeviceCategory")).Add();
+    col.Field(p => p.BrandName).HeaderText(L("Brand")).Add();
+    col.Field(p => p.DeviceModelName).HeaderText(L("DeviceModel")).Add();
+    })
+    )
+    }*@
+
+
+    @*@if (Model.SpareParts.Count != 0)
+    {
+    <h4>Spare Parts: @Model.SpareParts.Count</h4>
+    <table>
+        @foreach (var sp in Model.SpareParts)
+        {
+        <tr>
+            <td>
+                @Html.Display(sp.SparePartName)
+            </td>
+            <td>
+                @Html.Display(sp.ArticleNumber)
+            </td>
+        </tr>
+        }
+    </table>
+    }*@
+@*</div>
+<p>
+    @Html.ActionLink("Back to List", "Index")
+</p>*@

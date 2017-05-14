@@ -1,0 +1,41 @@
+﻿@model Repairis.DeviceModels.Dto.DeviceModelFullEntityDto
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>DeviceModel</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.DeviceCategory.DeviceCategoryName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DeviceCategory.DeviceCategoryName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Brand.BrandName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Brand.BrandName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DeviceModelName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DeviceModelName)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Back to List", "Index")
+</p>
