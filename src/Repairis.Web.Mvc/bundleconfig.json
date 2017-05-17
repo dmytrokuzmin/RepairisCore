@@ -10,10 +10,6 @@
     "inputFiles": [
       "wwwroot/lib/jquery-ui/themes/base/all.css",
       "wwwroot/lib/bootstrap-theme-cosmo/cosmo.min.css",
-
-      "wwwroot/lib/syncfusion-javascript/Content/ej/web/bootstrap-theme/ej.web.all.min.css",
-      "wwwroot/lib/syncfusion-javascript/Content/ej/web/responsive-css/ej.responsive.css",
-
       "wwwroot/lib/toastr/toastr.css",
       "wwwroot/lib/sweetalert/dist/sweetalert.css",
       "wwwroot/lib/famfamfam-flags/dist/sprite/famfamfam-flags.css",

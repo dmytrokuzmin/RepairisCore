@@ -24,7 +24,7 @@
 
     <link rel="shortcut icon" href="~/favicon.ico">
 
-    <title>Repairis</title>
+    <title>@ViewBag.Title</title>
 
     <environment names="Development">
         <!-- ~/Bundles/vendor/css -->
@@ -45,6 +45,8 @@
 
     <environment names="Staging,Production">
         <link rel="stylesheet" href="~/view-resources/Views/_Bundles/layout-libs.min.css" asp-append-version="true" />
+        <link href="~/lib/syncfusion-javascript/Content/ej/web/bootstrap-theme/ej.web.all.min.css" rel="stylesheet" asp-append-version="true" />
+        <link href="~/lib/syncfusion-javascript/Content/ej/web/responsive-css/ej.responsive.css" rel="stylesheet" asp-append-version="true" />
     </environment>
 
 
@@ -100,6 +102,7 @@
 
     <environment names="Staging,Production">
         <script src="~/view-resources/Views/_Bundles/layout-libs.min.js" asp-append-version="true"></script>
+        <script src="~/view-resources/Views/_Bundles/ej.min.js" asp-append-version="true"></script>
         <script src="~/js/main.min.js" asp-append-version="true"></script>
     </environment>
 

@@ -38,7 +38,7 @@ namespace Repairis.Web.Startup
             services.AddMvc(options =>
             {
                 options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
-            });
+            });         
 
             services.AddAbpIdentity<Tenant, User, Role, SecurityStampValidator>(options =>
                 {
@@ -74,6 +74,7 @@ namespace Repairis.Web.Startup
             }
             else
             {
+                app.UseStatusCodePagesWithRedirects("~/Error?statusCode={0}");
                 app.UseExceptionHandler("/Error");
             }
 
