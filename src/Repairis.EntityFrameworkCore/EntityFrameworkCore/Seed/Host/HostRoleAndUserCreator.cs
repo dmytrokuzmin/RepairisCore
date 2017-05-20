@@ -30,7 +30,25 @@ namespace Repairis.EntityFrameworkCore.Seed.Host
             var adminRoleForHost = _context.Roles.FirstOrDefault(r => r.TenantId == null && r.Name == StaticRoleNames.Host.Admin);
             if (adminRoleForHost == null)
             {
-                adminRoleForHost = _context.Roles.Add(new Role(null, StaticRoleNames.Host.Admin, StaticRoleNames.Host.Admin) { IsStatic = true, IsDefault = true }).Entity;
+                adminRoleForHost = _context.Roles.Add(new Role(null, StaticRoleNames.Host.Admin, StaticRoleNames.Host.Admin) { IsStatic = true }).Entity;
+                _context.SaveChanges();
+            }
+
+            //Employee role for host
+
+            var employeeRoleForHost = _context.Roles.FirstOrDefault(r => r.TenantId == null && r.Name == StaticRoleNames.Host.Employee);
+            if (employeeRoleForHost == null)
+            {
+                _context.Roles.Add(new Role(null, StaticRoleNames.Host.Employee, StaticRoleNames.Host.Employee) { IsStatic = true });
+                _context.SaveChanges();
+            }
+
+            //Customer role for host
+
+            var customerRoleForHost = _context.Roles.FirstOrDefault(r => r.TenantId == null && r.Name == StaticRoleNames.Host.Customer);
+            if (customerRoleForHost == null)
+            {
+                _context.Roles.Add(new Role(null, StaticRoleNames.Host.Customer, StaticRoleNames.Host.Customer) { IsStatic = true });
                 _context.SaveChanges();
             }
 

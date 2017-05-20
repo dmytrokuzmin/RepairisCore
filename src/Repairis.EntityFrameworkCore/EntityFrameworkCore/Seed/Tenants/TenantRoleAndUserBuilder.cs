@@ -58,6 +58,24 @@ namespace Repairis.EntityFrameworkCore.Seed.Tenants
                 _context.SaveChanges();
             }
 
+            //Employee role for host
+
+            var employeeRole = _context.Roles.FirstOrDefault(r => r.TenantId == _tenantId && r.Name == StaticRoleNames.Tenants.Employee);
+            if (employeeRole == null)
+            {
+                _context.Roles.Add(new Role(null, StaticRoleNames.Host.Employee, StaticRoleNames.Host.Employee) { IsStatic = true });
+                _context.SaveChanges();
+            }
+
+            //Customer role for host
+
+            var customerRoleForHost = _context.Roles.FirstOrDefault(r => r.TenantId == _tenantId && r.Name == StaticRoleNames.Tenants.Customer);
+            if (customerRoleForHost == null)
+            {
+                _context.Roles.Add(new Role(null, StaticRoleNames.Host.Customer, StaticRoleNames.Host.Customer) { IsStatic = true });
+                _context.SaveChanges();
+            }
+
             //admin user
 
             var adminUser = _context.Users.FirstOrDefault(u => u.TenantId == _tenantId && u.UserName == AbpUserBase.AdminUserName);

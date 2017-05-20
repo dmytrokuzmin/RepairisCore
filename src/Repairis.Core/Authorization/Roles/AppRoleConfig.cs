@@ -14,6 +14,16 @@ namespace Repairis.Authorization.Roles
                     StaticRoleNames.Host.Admin,
                     MultiTenancySides.Host)
                 );
+            roleManagementConfig.StaticRoles.Add(
+                new StaticRoleDefinition(
+                    StaticRoleNames.Host.Employee,
+                    MultiTenancySides.Host)
+            );
+            roleManagementConfig.StaticRoles.Add(
+                new StaticRoleDefinition(
+                    StaticRoleNames.Host.Customer,
+                    MultiTenancySides.Host)
+            );
 
             //Static tenant roles
 
@@ -22,6 +32,16 @@ namespace Repairis.Authorization.Roles
                     StaticRoleNames.Tenants.Admin,
                     MultiTenancySides.Tenant)
                 );
+            roleManagementConfig.StaticRoles.Add(
+                new StaticRoleDefinition(
+                    StaticRoleNames.Tenants.Employee,
+                    MultiTenancySides.Tenant)
+            );
+            roleManagementConfig.StaticRoles.Add(
+                new StaticRoleDefinition(
+                    StaticRoleNames.Tenants.Customer,
+                    MultiTenancySides.Tenant)
+            );
         }
     }
 }
