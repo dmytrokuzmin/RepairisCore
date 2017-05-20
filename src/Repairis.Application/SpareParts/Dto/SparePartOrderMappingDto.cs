@@ -3,7 +3,7 @@ using Abp.AutoMapper;
 
 namespace Repairis.SpareParts.Dto
 {
-    [AutoMapFrom(typeof(SparePartOrderMapping))]
+    [AutoMap(typeof(SparePartOrderMapping))]
     public class SparePartOrderMappingDto
     {
         [Required]

@@ -1,42 +1,39 @@
-﻿@using Repairis.SpareParts.Dto
-@{
-    ViewBag.Title = "Orders";
+﻿@{
+    ViewBag.Title = "Spare parts";
 }
 
-<h2>SpareParts</h2>
+<h2>Spare parts</h2>
 
 <p>
-    @Html.ActionLink("Create New", "Create")
+    <a asp-action="Create" class="btn btn-success"><i class="fa fa-plus"></i> New spare part</a>
 </p>
 
-@(Html.EJ().Grid<SparePartBasicEntityDto>("SpareParts")
-      .Datasource(ds => ds.URL("/odata/SpareParts").Adaptor(AdaptorType.ODataV4Adaptor))
-      .AllowSelection(false)
-      .AllowSorting()
-      .SortSettings(sort => sort.SortedColumns(col => col.Field("StockStatus").Direction(SortOrder.Descending).Add()))
-      .AllowPaging()
-      .AllowTextWrap(true)
-      //.EnablePersistence(true)
-      .PageSettings(p => { p.PageSize(10); })
-      .AllowFiltering(true)
-      .FilterSettings(filter => filter.FilterType(FilterType.Excel))
-      .EnableTouch(false)
+<ej-grid id="SpareParts" allow-text-wrap="true" allow-selection="false" allow-sorting="true" allow-paging="true" allow-filtering="true" enable-touch="false" enable-alt-row="false">
+    <e-datamanager url="/api/SpareParts" adaptor="UrlAdaptor" offline="false" />
+    <e-sort-settings>
+        <e-sorted-columns>
+            <e-sorted-column field="StockStatus" direction="Ascending" />
+        </e-sorted-columns>
+    </e-sort-settings>
+    <e-page-settings page-size="10" />
+    <e-filter-settings filter-type="Excel" />
+    <e-columns>
+        <e-column template-id="#gridActionsTemplate" allow-sorting="false" allow-filtering="false" allow-grouping="false" width="50" />
+        <e-column field="Id" type="number" header-text="@L("SparePartID")" is-primary-key="true" text-align="Center" width="75" />
+        <e-column field="BrandName" type="string" header-text="@L("BrandName")" width="90"  />
+        <e-column field="SparePartName" type="string" header-text="@L("SparePartName")" />
+        <e-column field="SparePartCode" type="string" header-text="@L("SparePartCode")" />
+        <e-column field="SupplierPrice" type="number" header-text="@L("SupplierPrice")" />
+        <e-column field="RecommendedPrice" type="string" header-text="@L("RecommendedPrice")" />
+        <e-column field="StockStatus" type="number" header-text="@L("StockStatus")" />
+        <e-column field="StockQuantity" type="number" header-text="@L("StockQuantity")" />
+        <e-column field="Notes" type="string" header-text="@L("Notes")" />
+    </e-columns>
+</ej-grid>
 
-
-      //.ToolbarSettings(toolbar => { toolbar.ShowToolbar().ToolbarItems(items => { items.AddTool(ToolBarItems.Search); }); })
-      //.ClientSideEvents(eve => eve.Load("loadAdaptor"))
-      .Columns(col =>
-      {
-          col.Template("<a href=\"/SpareParts/Edit/{{:Id}}\"><i class=\"fa fa-pencil fa\" aria-hidden=\"true\"></i></a>" +
-                       "<a href=\"/SpareParts/Delete/{{:Id}}\"><i class=\"fa fa-trash-o fa\" aria-hidden=\"true\"></i></a>").AllowSorting(false).AllowFiltering(false).AllowGrouping(false).Width(60).Add();
-          col.Field(x => x.Id).HeaderText("SparePartId").Width(75).IsPrimaryKey(true).Add();
-          col.Field(x => x.BrandName).HeaderText(L("BrandName")).Width(90).Format("{0:dd.MM.yyyy}").Add();
-          col.Field(x => x.SparePartName).HeaderText(L("SparePartName")).Width(75).Add();
-          col.Field(x => x.SparePartCode).HeaderText(L("SparePartCode")).Width(150).Add();
-          col.Field(x => x.SupplierPrice).HeaderText(L("SupplierPrice")).Width(200).Add();
-          col.Field(x => x.RecommendedPrice).HeaderText(L("RecommendedPrice")).Width(200).Add();
-          col.Field(x => x.StockStatus).HeaderText(L("StockStatus")).Add();
-          col.Field(x => x.StockQuantity).HeaderText(L("StockQuantity")).Add();
-          col.Field(x => x.Notes).HeaderText(L("Notes")).Add();
-
-      }))
+@section Scripts{
+    <script id="gridActionsTemplate" type="text/x-jsrender">
+        <a href="/SpareParts/Edit/{{:Id}}"><i class="fa fa-pencil text-success fa" aria-hidden="true"></i></a>
+        <a href="/SpareParts/Delete/{{:Id}}"><i class="fa fa-trash-o text-danger fa" aria-hidden="true"></i></a>
+    </script>
+}

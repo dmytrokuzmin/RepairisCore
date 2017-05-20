@@ -1,13 +1,22 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections;
+using System.Linq;
+using System.Linq.Dynamic.Core;
+using System.Threading.Tasks;
 using Abp.AspNetCore.Mvc.Authorization;
 using Abp.AutoMapper;
 using Abp.Domain.Repositories;
 using Abp.Runtime.Validation;
+using Abp.Web.Models;
+using AutoMapper.QueryableExtensions;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 using Repairis.Brands;
 using Repairis.Controllers;
 using Repairis.SpareParts;
 using Repairis.SpareParts.Dto;
+using Syncfusion.JavaScript;
+using Syncfusion.JavaScript.DataSources;
 
 namespace Repairis.Web.Controllers
 {
@@ -32,6 +41,24 @@ namespace Repairis.Web.Controllers
             var spareParts = await _sparePartAppService.GetSparePartsAsync();
             return View(spareParts);
         }
+
+
+        [Route("/api/SpareParts/")]
+        [DontWrapResult]
+        public ActionResult OrdersDataSource([FromBody] DataManager dm)
+        {
+            var ordersQueryable = _sparePartRepository.GetAll();
+            int count = ordersQueryable.AsQueryable().Count();
+            IEnumerable data = ordersQueryable.ProjectTo<SparePartBasicEntityDto>();
+            DataOperations operation = new DataOperations();
+            data = operation.Execute(data, dm);
+
+            return Json(new { result = data.ToDynamicList(), count = count }, new JsonSerializerSettings
+            {
+                ContractResolver = new DefaultContractResolver()
+            });
+        }
+
 
 
         // GET: SpareParts/Create

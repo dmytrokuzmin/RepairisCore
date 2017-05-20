@@ -1,58 +1,55 @@
-﻿@using Repairis.Orders.Dto
-
-@{
+﻿@{
     ViewBag.Title = "Orders";
 }
 
 <h2>Orders</h2>
 
 <p>
-    @Html.ActionLink("Create New", "Create")
+    <a asp-action="Create" class="btn btn-success"><i class="fa fa-plus"></i> New order</a>
 </p>
 
-@(Html.EJ().Grid<OrderBasicEntityDto>("Orders")
-      .Datasource(ds => ds.URL("/odata/Orders").Adaptor(AdaptorType.ODataV4Adaptor))
-      .AllowSelection(false)
-      .AllowSorting()
-      .SortSettings(sort => sort.SortedColumns(col => col.Field("Id").Direction(SortOrder.Descending).Add()))
-      .AllowPaging()
-      .AllowTextWrap(true)
-      //.EnablePersistence(true)
-      .PageSettings(p => { p.PageSize(10); })
-      .AllowFiltering(true)
-      .FilterSettings(filter => filter.FilterType(FilterType.Excel))
-      .EnableTouch(false)
-      .EnableAltRow(true)
 
+<ej-grid id="Orders" allow-text-wrap="true" allow-selection="false" allow-sorting="true" allow-paging="true" allow-filtering="true" enable-touch="false" enable-alt-row="false">
+    <e-datamanager url="/api/Orders" adaptor="UrlAdaptor" offline="false"/>
+    <e-sort-settings>
+        <e-sorted-columns >
+            <e-sorted-column field="Id" direction="Descending" />
+        </e-sorted-columns>
+    </e-sort-settings>
+    <e-page-settings page-size="10" />
+    <e-filter-settings filter-type="Excel" />
+    <e-columns>
+        <e-column template-id="#gridActionsTemplate" allow-sorting="false" allow-filtering="false" allow-grouping="false" width="50" />      
+        <e-column field="Id" template-id="#orderIdTemplate" type="number" header-text="Order ID" is-primary-key="true" text-align="Center" width="75" />
+        <e-column field="OrderCreationDate" type="datetime" header-text="Created" width="90" format="{0:dd.MM.yyyy}"/>
+        <e-column field="OrderStatus" header-text="Status" width="75" />
+        <e-column field="AssignedMasterFullName" type="string" header-text="Assigned master" width="150"/>
+        <e-column field="DeviceModel" type="string" header-text="Device" width="200"/>
+        <e-column field="IssueDescription" type="string" header-text="Issue description" width="200"/>
+        <e-column field="CustomerFullName" type="string" header-text="Customer"/>
+        <e-column field="CustomerPhoneNumber" type="string" header-text="Customer phone"/>
+        <e-column template-id="#orderInvoicesTemplate" allow-sorting="false" allow-filtering="false" allow-grouping="false" width="70"/>    
+    </e-columns>
+</ej-grid>
 
-      //.ToolbarSettings(toolbar => { toolbar.ShowToolbar().ToolbarItems(items => { items.AddTool(ToolBarItems.Search); }); })
-      //.ClientSideEvents(eve => eve.Load("loadAdaptor"))
-      .Columns(col =>
-      {
-          col.Template("<a href=\"/Orders/Edit/{{:Id}}\"><i class=\"fa fa-pencil text-success fa\" aria-hidden=\"true\"></i></a>" +
-                       "<a href=\"/Orders/Delete/{{:Id}}\"><i class=\"fa fa-trash-o text-danger fa\" aria-hidden=\"true\"></i></a>").AllowSorting(false).AllowFiltering(false).AllowGrouping(false).Width(60).Add();
-          col.Field(x => x.Id).HeaderText("OrderId").Width(75).IsPrimaryKey(true).Add();
-          col.Field(x => x.OrderCreationDate).HeaderText(L("OrderCreationDate")).Width(90).Format("{0:dd.MM.yyyy}").Add();
-          //col.HeaderText(L("OrderStatus")).Template("{{:Id}}").Add();
-          //col.Field(x => x.IsUrgent).HeaderText("OrderIsUrgent").Width(75).Add();
-          //col.Field(x => x.IsWarrantyComplaint).HeaderText("OrderIsWarrantyComplaint").Width(75).Add();
-          col.Field(x => x.OrderStatus).HeaderText(L("OrderStatus")).Width(75).Add();
-          col.Field(x => x.AssignedMasterFullName).HeaderText(L("AssignedMaster")).Width(150).Add();
-          col.Field(x => x.DeviceModel).HeaderText(L("Device")).Width(200).Add();
-          col.Field(x => x.IssueDescription).HeaderText(L("IssueDescription")).Width(200).Add();
-          col.Field(x => x.CustomerFullName).HeaderText(L("Customer")).Add();
-          col.Field(x => x.CustomerPhoneNumber).HeaderText(L("CustomerPhoneNumber")).Add();
-          col.Template("<a href=\"/Orders/CreationInvoice/{{:Id}}\" target=\"_blank\"><i class=\"fa fa-file-pdf-o fa\" aria-hidden=\"true\"></i></a>" +
-                       "{{if OrderStatus == 'Ready'}}"+
-                       "<a href=\"/Orders/Complete/{{:Id}}\">" +
-                       "<span class=\"fa-stack text-success\"><i class=\"fa fa-square fa-stack-2x\"></i><i class=\"fa fa-arrow-circle-o-right fa-stack-1x fa-inverse\"></i></span>" +
-                       "</a> "+
-                       "{{/if}}" +
-                       "{{if OrderStatus == 'Closed' || OrderStatus == 'OnWarranty' }}" +
-                       "<a href=\"/Orders/FinalInvoice/{{:Id}}\" target=\"_blank\">" +
-                       "<span class=\"fa-stack text-info\"><i class=\"fa fa-square fa-stack-2x\"></i><i class=\"fa fa-file-pdf-o fa-stack-1x fa-inverse\"></i></span>" +
-                       "</a> " +
-                       "{{/if}}"
-                       ).AllowSorting(false).AllowFiltering(false).AllowGrouping(false).Width(70).Add();
+@section Scripts{
+    <script id="gridActionsTemplate" type="text/x-jsrender">
+        <a href="/Orders/Edit/{{:Id}}"><i class="fa fa-pencil text-success fa" aria-hidden="true"></i></a>
+        <a href="/Orders/Delete/{{:Id}}"><i class="fa fa-trash-o text-danger fa" aria-hidden="true"></i></a>
+    </script>
 
-      }))
+    <script id="orderIdTemplate" type="text/x-jsrender">
+        {{:Id}} <a href="/Orders/CreationInvoice/{{:Id}}" target="_blank"><i class="fa fa-file-pdf-o fa" aria-hidden="true"></i></a>
+    </script>
+
+    <script id="orderInvoicesTemplate" type="text/x-jsrender">
+    {{if OrderStatus == '4'}}
+        <a href="/Orders/Complete/{{:Id}}">
+            <span class="fa-stack text-success"><i class="fa fa-square fa-stack-2x"></i><i class="fa fa-arrow-circle-o-right fa-stack-1x fa-inverse"></i></span>
+        </a>
+    {{/if}}
+    {{if OrderStatus == '5' || OrderStatus == '6' }}
+        <a href="/Orders/FinalInvoice/{{:Id}}" target="_blank"><i class="fa fa-file-pdf-o fa" aria-hidden="true"></i></a>
+    {{/if}}
+    </script>
+}

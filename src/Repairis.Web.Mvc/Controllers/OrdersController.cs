@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
-using System.Net;
 using System.Threading.Tasks;
 using Abp.AspNetCore.Mvc.Authorization;
 using Abp.AutoMapper;
@@ -16,12 +16,19 @@ using Repairis.Orders.Dto;
 using Repairis.SpareParts;
 using Repairis.SpareParts.Dto;
 using Repairis.Users;
-using Repairis.Web.Helpers;
 using Syncfusion.Drawing;
 using Syncfusion.JavaScript;
 using Syncfusion.JavaScript.DataSources;
 using Syncfusion.Pdf;
 using Syncfusion.Pdf.Graphics;
+using System.Linq.Dynamic.Core;
+using Abp.Domain.Uow;
+using Abp.Web.Models;
+using AutoMapper.QueryableExtensions;
+using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
+using Syncfusion.JavaScript.Shared.Serializer;
 
 namespace Repairis.Web.Controllers
 {
@@ -45,11 +52,77 @@ namespace Repairis.Web.Controllers
         }
 
         // GET: Orders
-        public async Task<ActionResult> Index()
+        public ActionResult Index()
         {
-            var orders = await _orderAppService.GetAllActiveOrdersAsync();
-            return View(orders);
+            return View();
         }
+
+
+        [Route("/api/Orders/")]
+        [DontWrapResult]
+        public ActionResult OrdersDataSource([FromBody] DataManager dm)
+        {
+            var ordersQueryable = _orderRepository.GetAll();
+            int count = ordersQueryable.AsQueryable().Count();
+            IEnumerable data = ordersQueryable.ProjectTo<OrderBasicEntityDto>();
+            DataOperations operation = new DataOperations();
+            data = operation.Execute(data, dm);
+
+            return Json(new { result = data.ToDynamicList(), count = count },  new JsonSerializerSettings
+            {   
+                ContractResolver = new DefaultContractResolver()
+            });
+        }
+
+
+        [DontWrapResult]
+        public ActionResult GetOrderSpareParts([FromQuery]long orderId)
+        {
+            var order = _orderRepository.GetAllIncluding(x => x.SparePartsUsed).FirstOrDefault(x => x.Id == orderId);
+            if (order == null)
+            {
+                return NotFound();
+            }
+
+            var spareParts = order.SparePartsUsed.MapTo<List<SparePartOrderMappingDto>>();
+
+            return Json(new {result = spareParts, count = spareParts.Count}, new JsonSerializerSettings
+            {
+                ContractResolver = new DefaultContractResolver()
+            });
+        }
+
+
+        [DontWrapResult]
+        public ActionResult SparePartUpdate([FromBody]CRUDModel<SparePartOrderMapping> value)
+        {
+            var action = value.Action;
+            var mapping = value.Value;
+
+            if (action == "insert")
+                _sparePartDomainService.AddMapping(mapping.SparePartId, mapping.OrderId, mapping.Quantity,
+                    mapping.PricePerItem);
+            else if (action == "update")
+            {
+                _sparePartDomainService.UpdateMapping(mapping.SparePartId, mapping.OrderId, mapping.Quantity,
+                    mapping.PricePerItem);
+            }
+            else
+            {
+                int sparePartId = Int32.Parse(Request.Headers["sparepartid"]);
+                int orderId = Int32.Parse(Request.Headers["orderid"]);
+                _sparePartDomainService.RemovePartsFromOrder(sparePartId, orderId, null);
+            }
+
+            return Json(value, new JsonSerializerSettings
+            {
+                ContractResolver = new DefaultContractResolver()
+            });
+        }
+
+
+
+
 
 
         // GET: Orders/Create
@@ -199,8 +272,8 @@ namespace Repairis.Web.Controllers
 
         public ActionResult GetCompatibleSpareParts(int deviceModelId, DataManager dm)
         {
-            var spareParts = _sparePartRepository.GetAllList();//.Where(x => x.CompatibleDeviceModels.Any(y => y.DeviceModelId == deviceModelId));
-            IEnumerable data = spareParts.MapTo<List<SparePartBasicEntityDto>>();
+            var spareParts = _sparePartRepository.GetAll();//.Where(x => x.CompatibleDeviceModels.Any(y => y.DeviceModelId == deviceModelId));
+            IEnumerable data = spareParts.ProjectTo<List<SparePartBasicEntityDto>>();
             DataOperations operation = new DataOperations();
             if (dm.Sorted != null && dm.Sorted.Count > 0) //Sorting
             {
@@ -223,43 +296,24 @@ namespace Repairis.Web.Controllers
         }
 
 
-        public void SparePartUpdate(SparePartOrderMappingDto value, string action)
-        {
-            if (action == "insert")
-            {
-                _sparePartDomainService.AddMapping(value.SparePartId, value.OrderId, value.Quantity, value.PricePerItem);
-            }
-            else if (action == "update")
-            {
-                _sparePartDomainService.UpdateMapping(value.SparePartId, value.OrderId, value.Quantity,
-                    value.PricePerItem);
-            }
-            else
-            {
-                int sparePartId = Int32.Parse(Request.Headers["sparepartid"]);
-                int orderId = Int32.Parse(Request.Headers["orderid"]);
-
-                _sparePartDomainService.RemovePartsFromOrder(sparePartId, orderId, null);
-            }
-
-        }
-
-
         // GET: Orders/Complete/5
-        public async Task<ActionResult> Complete(long? id)
+        public async Task<ActionResult> Complete(long id)
         {
-            if (id == null)
-            {
-                return BadRequest();
-            }
-            var order = await _orderRepository.GetAsync((long)id);
+            var orderCompletion = await _orderRepository
+                .GetAll()
+                .Where(x => x.Id == id && x.OrderStatus != OrderStatusEnum.Closed &&
+                            x.OrderStatus != OrderStatusEnum.OnWarranty)
+                .ProjectTo<OrderCompletionDto>()
+                .FirstOrDefaultAsync();
 
-            if (order.OrderStatus == OrderStatusEnum.OnWarranty || order.OrderStatus == OrderStatusEnum.Closed)
+            if (orderCompletion == null)
             {
-                throw new UserFriendlyException(L("OrderIsAlreadyCompleted"));
+                return NotFound();
             }
-            return View(order.MapTo<OrderCompletionDto>());
+
+            return View(orderCompletion);
         }
+
 
         // POST: Orders/Complete/5
         [HttpPost, ActionName("Complete")]
@@ -281,65 +335,85 @@ namespace Repairis.Web.Controllers
                 await _orderRepository.UpdateAsync(order);
                 return RedirectToAction("FinalInvoice", new { @id = order.Id });
             }
-            var orderCompletionDto = await _orderAppService.GetOrderCompletionDto(input.Id);
-            return View(orderCompletionDto);
+
+            return View(input);
         }
 
         public async Task<ActionResult> CreationInvoice(long id)
         {
-            var order = await _orderRepository.GetAsync(id);
+            string directory = $"{Directory.GetCurrentDirectory()}\\wwwroot\\invoices\\";
+            if (!Directory.Exists(directory))
+            {
+                Directory.CreateDirectory(directory);
+            }
 
-            // Create a new PdfDocument
-            PdfDocument document = new PdfDocument();
+            string filePath = $"{directory}\\OrderCreationInvoice_{ id}.pdf";
+            if (!System.IO.File.Exists(filePath))
+            {
+                var order = await _orderRepository.GetAsync(id);
 
-            // Add a page to the document
-            PdfPage page = document.Pages.Add();
+                // Create a new PdfDocument
+                PdfDocument document = new PdfDocument();
 
-            // Create Pdf graphics for the page
-            PdfGraphics graphics = page.Graphics;
+                // Add a page to the document
+                PdfPage page = document.Pages.Add();
 
-            // Create a solid brush
-            PdfBrush brush = new PdfSolidBrush(Color.Black);
+                // Create Pdf graphics for the page
+                PdfGraphics graphics = page.Graphics;
 
-            // Set the font
-            PdfFont font = new PdfStandardFont(PdfFontFamily.Helvetica, 20f);
+                // Create a solid brush
+                PdfBrush brush = new PdfSolidBrush(Color.Black);
 
-            // Draw the text
-            graphics.DrawString(L("OrderCreationInvoice") + " " + order.Id, font, brush, new PointF(20, 20));
+                // Set the font
+                PdfFont font = new PdfStandardFont(PdfFontFamily.Helvetica, 20f);
 
-            //Export the document after saving     
-            return document.ExportAsActionResult("OrderCreation.pdf", Response, HttpReadType.Open);
+                // Draw the text
+                graphics.DrawString(L("OrderCreationInvoice") + " " + order.Id, font, brush, new PointF(20, 20));
 
-            //return View();
+                // Save the document
+                document.Save(filePath);
+            }
+
+            return new PhysicalFileResult(filePath, "application/pdf");
         }
 
 
         public async Task<ActionResult> FinalInvoice(long id)
         {
-            var order = await _orderRepository.GetAsync(id);
+            string directory = $"{Directory.GetCurrentDirectory()}\\wwwroot\\invoices\\";
+            if (!Directory.Exists(directory))
+            {
+                Directory.CreateDirectory(directory);
+            }
 
-            // Create a new PdfDocument
-            PdfDocument document = new PdfDocument();
+            string filePath = $"{directory}\\OrderFinalInvoice_{ id}.pdf";                
+            if (!System.IO.File.Exists(filePath))
+            {
+                var order = await _orderRepository.GetAsync(id);
 
-            // Add a page to the document
-            PdfPage page = document.Pages.Add();
+                // Create a new PdfDocument
+                PdfDocument document = new PdfDocument();
 
-            // Create Pdf graphics for the page
-            PdfGraphics graphics = page.Graphics;
+                // Add a page to the document
+                PdfPage page = document.Pages.Add();
 
-            // Create a solid brush
-            PdfBrush brush = new PdfSolidBrush(Color.Black);
+                // Create Pdf graphics for the page
+                PdfGraphics graphics = page.Graphics;
 
-            // Set the font
-            PdfFont font = new PdfStandardFont(PdfFontFamily.Helvetica, 20f);
+                // Create a solid brush
+                PdfBrush brush = new PdfSolidBrush(Color.Black);
 
-            // Draw the text
-            graphics.DrawString(L("OrderFinalInvoice") + " " + order.Id, font, brush, new PointF(20, 20));
+                // Set the font
+                PdfFont font = new PdfStandardFont(PdfFontFamily.Helvetica, 20f);
 
-            //Export the document after saving     
-            return document.ExportAsActionResult("OrderCompletion.pdf", Response, HttpReadType.Open);
+                // Draw the text
+                graphics.DrawString(L("OrderFinalInvoice") + " " + order.Id, font, brush, new PointF(20, 20));
 
-            //return View();
+                // Save the document
+                document.Save(filePath);
+            }
+
+            return new PhysicalFileResult(filePath, "application/pdf");
         }
     }
 }

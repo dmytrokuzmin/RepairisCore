@@ -2,51 +2,47 @@
 @{
     ViewBag.Title = "Create";
 }
-<h2>Create</h2>
-@using (Html.BeginForm())
-{
-    @Html.AntiForgeryToken()
-
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+<h3>Create new order</h3>
+<hr />
+<form asp-controller="Orders" asp-action="Create" method="post">
     <div class="form-horizontal">
-        <h1>New Order</h1>
-        <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div asp-validation-summary="ModelOnly"></div>
         <div class="panel panel-default">
             <div class="panel-heading">
-                <h4>DeviceModel:</h4>
+                <h4>Device Model:</h4>
             </div>
             <div class="panel-body">
                 <div class="form-group">
-                    @Html.LabelFor(model => model.Device.DeviceCategoryName, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <label asp-for="Device.DeviceCategoryName" class="control-label col-md-2"></label>
                     <div class="col-md-10">
-                        @Html.EditorFor(model => model.Device.DeviceCategoryName, new { htmlAttributes = new { @class = "form-control" } })
-                        @*@Html.EJ().AutocompleteFor(model => model.Device.DeviceCategoryName).AutocompleteFields(f => f.Text("DeviceCategoryName")).Datasource(Model.OrderViewBagDto.DeviceCategories).ShowPopupButton()*@
-                        @Html.ValidationMessageFor(model => model.Device.DeviceCategoryName, "", new {@class = "text-danger"})
+                        <input asp-for="Device.DeviceCategoryName" class="form-control" />
+                        <span asp-validation-for="Device.DeviceCategoryName" class="text-danger"></span>
                     </div>
                 </div>
                 <div class="form-group">
-                    @Html.LabelFor(model => model.Device.BrandName, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <label asp-for="Device.BrandName" class="control-label col-md-2"></label>
                     <div class="col-md-10">
-                        @Html.EditorFor(model => model.Device.BrandName, new { htmlAttributes = new { @class = "form-control" } })
-                        @*@Html.EJ().AutocompleteFor(model => model.Device.BrandName).AutocompleteFields(f => f.Text("BrandName")).Datasource(Model.OrderViewBagDto.Brands).ShowPopupButton()*@
-                        @Html.ValidationMessageFor(model => model.Device.BrandName, "", new {@class = "text-danger"})
+                        <input asp-for="Device.BrandName" class="form-control" />
+                        <span asp-validation-for="Device.BrandName" class="text-danger"></span>
                     </div>
                 </div>
                 <div class="form-group">
-                    @Html.LabelFor(model => model.Device.DeviceModelName, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <label asp-for="Device.DeviceModelName" class="control-label col-md-2"></label>
                     <div class="col-md-10">
-                        @Html.EditorFor(model => model.Device.DeviceModelName, new { htmlAttributes = new { @class = "form-control" } })
-                        @*@Html.EJ().AutocompleteFor(model => model.Device.DeviceModelName).Datasource(Model.OrderViewBagDto.DeviceModels).AutocompleteFields(f => f.Text("DeviceModelName").GroupBy("Brand.BrandName")).ShowPopupButton()*@
-                        @Html.ValidationMessageFor(model => model.Device.DeviceModelName, "", new {@class = "text-danger"})
+                        <input asp-for="Device.DeviceModelName" class="form-control" />
+                        <span asp-validation-for="Device.DeviceModelName" class="text-danger"></span>
                     </div>
-                </div>
+                </div>              
                 <div class="form-group">
-                    @Html.LabelFor(model => model.Device.SerialNumber, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <label asp-for="Device.SerialNumber" class="control-label col-md-2"></label>
                     <div class="col-md-10">
-                        @Html.EditorFor(model => model.Device.SerialNumber, new { htmlAttributes = new { @class = "form-control" } })
-                        @Html.ValidationMessageFor(model => model.Device.SerialNumber, "", new { @class = "text-danger" })
+                        <input asp-for="Device.SerialNumber" class="form-control" />
+                        <span asp-validation-for="Device.SerialNumber" class="text-danger"></span>
                     </div>
-                </div>
+                </div>    
             </div>
         </div>
         <div class="panel panel-default">
@@ -55,20 +51,19 @@
             </div>
             <div class="panel-body">
                 <div class="form-group">
-                    @Html.LabelFor(model => model.AdditionalEquipment, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <label asp-for="AdditionalEquipment" class="control-label col-md-2"></label>
                     <div class="col-md-10">
-                        @Html.EditorFor(model => model.AdditionalEquipment, new { htmlAttributes = new { @class = "form-control" } })
-                        @Html.ValidationMessageFor(model => model.AdditionalEquipment, "", new { @class = "text-danger" })
+                        <input asp-for="AdditionalEquipment" class="form-control" />
+                        <span asp-validation-for="AdditionalEquipment" class="text-danger"></span>
                     </div>
-                </div>
-
+                </div>  
                 <div class="form-group">
-                    @Html.LabelFor(model => model.IssueDescription, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <label asp-for="IssueDescription" class="control-label col-md-2"></label>
                     <div class="col-md-10">
-                        @Html.EditorFor(model => model.IssueDescription, new { htmlAttributes = new { @class = "form-control" } })
-                        @Html.ValidationMessageFor(model => model.IssueDescription, "", new { @class = "text-danger" })
+                        <input asp-for="IssueDescription" class="form-control" />
+                        <span asp-validation-for="IssueDescription" class="text-danger"></span>
                     </div>
-                </div>
+                </div>  
             </div>
         </div>
         <div class="panel panel-default">
@@ -77,68 +72,68 @@
             </div>
             <div class="panel-body">
                 <div class="form-group">
-                    @Html.LabelFor(model => model.Customer.CustomerType, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <label asp-for="Customer.CustomerType" class="control-label col-md-2"></label>
                     <div class="col-md-10">
-                        @Html.EnumDropDownListFor(model => model.Customer.CustomerType, htmlAttributes: new { @class = "form-control" })
-                        @Html.ValidationMessageFor(model => model.Customer.CustomerType, "", new { @class = "text-danger" })
+                        <select asp-for="Customer.CustomerType" asp-items="Html.GetEnumSelectList<Repairis.Authorization.Users.CustomerType>()" class="form-control" ></select>
+                        <span asp-validation-for="Customer.CustomerType" class="text-danger"></span>
+                    </div>
+                </div> 
+                <div class="form-group">
+                    <label asp-for="Customer.Surname" class="control-label col-md-2"></label>
+                    <div class="col-md-10">
+                        <input asp-for="Customer.Surname" class="form-control" />
+                        <span asp-validation-for="Customer.Surname" class="text-danger"></span>
+                    </div>
+                </div> 
+                <div class="form-group">
+                    <label asp-for="Customer.Name" class="control-label col-md-2"></label>
+                    <div class="col-md-10">
+                        <input asp-for="Customer.Name" class="form-control" />
+                        <span asp-validation-for="Customer.Name" class="text-danger"></span>
+                    </div>
+                </div> 
+                <div class="form-group">
+                    <label asp-for="Customer.FatherName" class="control-label col-md-2"></label>
+                    <div class="col-md-10">
+                        <input asp-for="Customer.FatherName" class="form-control" />
+                        <span asp-validation-for="Customer.FatherName" class="text-danger"></span>
+                    </div>
+                </div> 
+                <div class="form-group">
+                    <label asp-for="Customer.PhoneNumber" class="control-label col-md-2"></label>
+                    <div class="col-md-10">
+                        <input asp-for="Customer.PhoneNumber" class="form-control" />
+                        <span asp-validation-for="Customer.PhoneNumber" class="text-danger"></span>
+                    </div>
+                </div> 
+                <div class="form-group">
+                    <label asp-for="Customer.SecondaryPhoneNumber" class="control-label col-md-2"></label>
+                    <div class="col-md-10">
+                        <input asp-for="Customer.SecondaryPhoneNumber" class="form-control" />
+                        <span asp-validation-for="Customer.SecondaryPhoneNumber" class="text-danger"></span>
+                    </div>
+                </div> 
+                <div class="form-group">
+                    <label asp-for="Customer.EmailAddress" class="control-label col-md-2"></label>
+                    <div class="col-md-10">
+                        <input asp-for="Customer.EmailAddress" class="form-control" />
+                        <span asp-validation-for="Customer.EmailAddress" class="text-danger"></span>
+                    </div>
+                </div> 
+                <div class="form-group">
+                    <label asp-for="Customer.Address" class="control-label col-md-2"></label>
+                    <div class="col-md-10">
+                        <input asp-for="Customer.Address" class="form-control" />
+                        <span asp-validation-for="Customer.Address" class="text-danger"></span>
                     </div>
                 </div>
                 <div class="form-group">
-                    @Html.LabelFor(model => model.Customer.Surname, htmlAttributes: new {@class = "control-label col-md-2"})
+                    <label asp-for="Customer.AdditionalInfo" class="control-label col-md-2"></label>
                     <div class="col-md-10">
-                        @Html.EditorFor(model => model.Customer.Surname, new {htmlAttributes = new {@class = "form-control"}})
-                        @Html.ValidationMessageFor(model => model.Customer.Surname, "", new {@class = "text-danger"})
+                        <input asp-for="Customer.AdditionalInfo" class="form-control" />
+                        <span asp-validation-for="Customer.AdditionalInfo" class="text-danger"></span>
                     </div>
-                </div>                <div class="form-group">
-                    @Html.LabelFor(model => model.Customer.Name, htmlAttributes: new {@class = "control-label col-md-2"})
-                    <div class="col-md-10">
-                        @Html.EditorFor(model => model.Customer.Name, new {htmlAttributes = new {@class = "form-control"}})
-                        @Html.ValidationMessageFor(model => model.Customer.Name, "", new {@class = "text-danger"})
-                    </div>
-                </div>                <div class="form-group">
-                    @Html.LabelFor(model => model.Customer.FatherName, htmlAttributes: new {@class = "control-label col-md-2"})
-                    <div class="col-md-10">
-                        @Html.EditorFor(model => model.Customer.FatherName, new {htmlAttributes = new {@class = "form-control"}})
-                        @Html.ValidationMessageFor(model => model.Customer.FatherName, "", new {@class = "text-danger"})
-                    </div>
-                </div>
-                <div class="form-group">
-                    @Html.LabelFor(model => model.Customer.PhoneNumber, htmlAttributes: new {@class = "control-label col-md-2"})
-                    <div class="col-md-10">
-                        @Html.EditorFor(model => model.Customer.PhoneNumber, new {htmlAttributes = new {@class = "form-control"}})
-                        @Html.ValidationMessageFor(model => model.Customer.PhoneNumber, "", new {@class = "text-danger"})
-                    </div>
-                </div>
-                <div class="form-group">
-                    @Html.LabelFor(model => model.Customer.SecondaryPhoneNumber, htmlAttributes: new {@class = "control-label col-md-2"})
-                    <div class="col-md-10">
-                        @Html.EditorFor(model => model.Customer.SecondaryPhoneNumber, new {htmlAttributes = new {@class = "form-control"}})
-                        @Html.ValidationMessageFor(model => model.Customer.SecondaryPhoneNumber, "", new {@class = "text-danger"})
-                    </div>
-                </div>
-                <div class="form-group">
-                    @Html.LabelFor(model => model.Customer.EmailAddress, htmlAttributes: new {@class = "control-label col-md-2"})
-                    <div class="col-md-10">
-                        @Html.EditorFor(model => model.Customer.EmailAddress, new {htmlAttributes = new {@class = "form-control"}})
-                        @Html.ValidationMessageFor(model => model.Customer.EmailAddress, "", new {@class = "text-danger"})
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    @Html.LabelFor(model => model.Customer.Address, htmlAttributes: new {@class = "control-label col-md-2"})
-                    <div class="col-md-10">
-                        @Html.EditorFor(model => model.Customer.Address, new {htmlAttributes = new {@class = "form-control"}})
-                        @Html.ValidationMessageFor(model => model.Customer.Address, "", new {@class = "text-danger"})
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    @Html.LabelFor(model => model.Customer.AdditionalInfo, htmlAttributes: new {@class = "control-label col-md-2"})
-                    <div class="col-md-10">
-                        @Html.EditorFor(model => model.Customer.AdditionalInfo, new {htmlAttributes = new {@class = "form-control"}})
-                        @Html.ValidationMessageFor(model => model.Customer.AdditionalInfo, "", new {@class = "text-danger"})
-                    </div>
-                </div>
+                </div> 
             </div>
         </div>
         <div class="panel panel-default">
@@ -147,25 +142,20 @@
             </div>
             <div class="panel-body">
                 <div class="form-group">
-                    @Html.LabelFor(model => model.AdditionalNotes, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <label asp-for="AdditionalNotes" class="control-label col-md-2"></label>
                     <div class="col-md-10">
-                        @Html.EditorFor(model => model.AdditionalNotes, new { htmlAttributes = new { @class = "form-control" } })
-                        @Html.ValidationMessageFor(model => model.AdditionalNotes, "", new { @class = "text-danger" })
-                    </div>
-                </div>
-                <div class="form-group">
-                    @Html.LabelFor(model => model.IsUrgent, htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="col-md-1">
-                        @Html.CheckBoxFor(model => model.IsUrgent, htmlAttributes: new { @class = "form-control" })
-                        @Html.ValidationMessageFor(model => model.IsUrgent, "", new { @class = "text-danger" })
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    @Html.LabelFor(model => model.IsWarrantyComplaint, htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="col-md-1">
-                        @Html.CheckBoxFor(model => model.IsWarrantyComplaint, htmlAttributes: new { @class = "form-control" })
-                        @Html.ValidationMessageFor(model => model.IsWarrantyComplaint, "", new { @class = "text-danger" })
+                        <input asp-for="AdditionalNotes" class="form-control" />
+                        <span asp-validation-for="AdditionalNotes" class="text-danger"></span>
+                        <div class="checkbox">
+                            <label>
+                                <input asp-for="IsUrgent" /> @L("Urgent")
+                            </label>
+                        </div>
+                        <div class="checkbox">
+                            <label>
+                                <input asp-for="IsWarrantyComplaint" /> @L("WarrantyComplaint")
+                            </label>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -176,8 +166,5 @@
             </div>
         </div>
     </div>
-}
+</form>
 
-<div>
-    @Html.ActionLink("Back to List", "Index")
-</div>

@@ -1,72 +1,14 @@
-﻿@model Repairis.Users.Dto.EmployeeFullEntityDto
+﻿@model Repairis.Users.Dto.EmployeeBasicEntityDto
 
 @{
     ViewBag.Title = "Delete";
 }
-
-<h2>Delete</h2>
-
-<h3>Are you sure you want to delete this?</h3>
 <div>
-    <h4>Employee</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Name)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.PhoneNumber)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.PhoneNumber)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.SecondaryPhoneNumber)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.SecondaryPhoneNumber)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.EmailAddress)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.EmailAddress)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Address)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Address)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.SalaryType)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.SalaryType)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.SalaryPercentage)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.SalaryPercentage)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.FixedSalaryValue)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.FixedSalaryValue)
-        </dd>
-    </dl>
-
-    @using (Html.BeginForm()) {
-        @Html.AntiForgeryToken()
-
-        <div class="form-actions no-color">
-            <input type="submit" value="Delete" class="btn btn-default" /> |
-            @Html.ActionLink("Back to List", "Index")
-        </div>
-    }
+    <a asp-action="Index">Back to List</a>
 </div>
+<h3>@Model.Surname @Model.Name  @Model.FatherName</h3>
+<p>Are you sure you want to delete this employee?</p>
+
+<form asp-action="Delete" method="post">
+    <input type="submit" value="Delete" class="btn btn-default" />
+</form>

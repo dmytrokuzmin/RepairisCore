@@ -10,5 +10,7 @@ namespace Repairis.DeviceCategories.Dto
     {
         public string DeviceCategoryName { get; set; }
         public List<DeviceModelBasicEntityDto> DeviceModels { get; set; }
+
+        public bool IsActive { get; set; }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using Abp.Application.Services;
 using Repairis.DeviceCategories.Dto;
 
@@ -8,16 +9,14 @@ namespace Repairis.DeviceCategories
     {
         Task CreateDeviceCategoryAsync(DeviceCategoryBasicEntityDto input);
 
-        Task<DeviceCategoryBasicListDto> GetAllDeviceCategoriesAsync();
+        Task<List<DeviceCategoryBasicEntityDto>> GetAllDeviceCategoriesAsync();
 
-        Task<DeviceCategoryBasicListDto> GetAllActiveDeviceCategoriesAsync();
 
-        Task<DeviceCategoryBasicListDto> GetAllPassiveDeviceCategoriesAsync();
         Task<DeviceCategory> GetOrCreateAsync(string deviceCategoryName);
 
         Task<DeviceCategoryFullEntityDto> GetDeviceCategoryAsync(int id);
 
-        Task<DeviceCategoryFullEntityDto> GetDeviceCategoryAsync(string deviceCategoryName);
+        //Task<DeviceCategoryFullEntityDto> GetDeviceCategoryAsync(string deviceCategoryName);
 
         Task DeleteAsync(int id);
 

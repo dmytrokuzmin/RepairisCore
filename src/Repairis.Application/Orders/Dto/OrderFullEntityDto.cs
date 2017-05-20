@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using Abp.Application.Services.Dto;
 using Repairis.Devices.Dto;
+using Repairis.SpareParts;
 using Repairis.SpareParts.Dto;
 using Repairis.Users.Dto;
 
@@ -47,7 +48,7 @@ namespace Repairis.Orders.Dto
         //public virtual List<IssueOrderMapping> IssueOrderMappings { get; set; } = new List<IssueOrderMapping>();
 
         //Spare parts used to repair the device
-        public virtual List<SparePartOrderMappingDto> SparePartsUsed { get; set; } = new List<SparePartOrderMappingDto>();
+        public virtual List<SparePartOrderMapping> SparePartsUsed { get; set; } = new List<SparePartOrderMapping>();
 
         public bool IsActive { get; set; } = true;
 

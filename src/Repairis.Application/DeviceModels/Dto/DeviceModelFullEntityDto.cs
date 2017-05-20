@@ -1,13 +1,17 @@
-﻿using Abp.Application.Services.Dto;
-using Repairis.Brands.Dto;
-using Repairis.DeviceCategories.Dto;
+﻿using System.Collections.Generic;
+using Abp.Application.Services.Dto;
+using Repairis.Devices;
+using Repairis.SpareParts;
 
 namespace Repairis.DeviceModels.Dto
 {
     public class DeviceModelFullEntityDto : EntityDto
     {
         public string DeviceModelName { get; set; }
-        public BrandBasicEntityDto Brand { get; set; }
-        public DeviceCategoryBasicEntityDto DeviceCategory { get; set; }
+        public string BrandName { get; set; }
+        public string DeviceCategoryName { get; set; }
+        public bool IsActive { get; set; }
+        public List<SparePartCompatibility> CompatibleSpareParts { get; set; }
+        public List<Device> Devices { get; set; }
     }
 }

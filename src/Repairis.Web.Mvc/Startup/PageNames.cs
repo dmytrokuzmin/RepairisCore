@@ -6,6 +6,7 @@
         public const string About = "About";
         public const string Tenants = "Tenants";
         public const string Users = "Users";
+        public const string Employees = "Employees";
         public const string Orders = "Orders";
         public const string Customers = "Customers";
         public const string Devices = "Devices";

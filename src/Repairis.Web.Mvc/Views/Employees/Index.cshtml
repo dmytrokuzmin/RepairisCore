@@ -1,39 +1,37 @@
-﻿@using Repairis.Users.Dto
-@model Abp.Application.Services.Dto.ListResultDto<EmployeeBasicEntityDto>
-
-@{
-    ViewBag.Title = "Index";
+﻿@{
+    ViewBag.Title = "Employees";
 }
 
-<h2>Employee</h2>
+<h3>Employees</h3>
 
 <p>
-    @Html.ActionLink("Create New", "Create")
+    <a asp-action="Create" class="btn btn-success"><i class="fa fa-plus"></i> New employee</a>
 </p>
 
-@(Html.EJ().Grid<EmployeeBasicEntityDto>("Employees")
-      .Datasource(Model.Items)
-      .AllowPaging()
-      .PageSettings(p => { p.PageSize(15); })
-      .AllowSelection(false)
-      .AllowTextWrap(true)
-      .AllowSorting()
-      .AllowResizeToFit()
-      .AllowSearching(true)
-      .EnableTouch(false)
-      .ToolbarSettings(toolbar => { toolbar.ShowToolbar().ToolbarItems(items => { items.AddTool(ToolBarItems.Search); }); })
-      .Columns(col =>
-      {
-          col.Template("<a href=\"/Employees/Edit/{{:Id}}\"><i class=\"fa fa-pencil fa\" aria-hidden=\"true\"></i></a>" +
-                       "<a href=\"/Employees/Delete/{{:Id}}\"><i class=\"fa fa-trash-o fa\" aria-hidden=\"true\"></i></a>").AllowSorting(false).AllowFiltering(false).AllowGrouping(false).Width(60).Add();
-          col.Field(p => p.Surname).HeaderText(L("Surname")).Width(100).Add();
-          col.Field(p => p.Name).HeaderText(L("Name")).Width(100).Add();
-          col.Field(p => p.FatherName).HeaderText(L("FatherName")).Width(100).Add();
-          col.Field(p => p.PhoneNumber).HeaderText(L("MobilePhoneNumber")).Width(100).Add();
-          col.Field(p => p.SecondaryPhoneNumber).HeaderText(L("SecondaryPhoneNumber")).Width(100).Add();
-          col.Field(p => p.EmailAddress).HeaderText(L("Email")).Add();
-          col.Field(p => p.Address).HeaderText(L("Address")).Add();
-          col.Field(p => p.SalaryType).HeaderText(L("SalaryType")).Add();
-          col.Field(p => p.SalaryPercentage).HeaderText(L("SalaryPercentage")).Add();
-          col.Field(p => p.FixedSalaryValue).HeaderText(L("FixedSalaryValue")).Add();
-      }))
+
+<ej-grid id="Employees" allow-text-wrap="true" allow-selection="false" allow-sorting="true" allow-paging="true" allow-filtering="true" enable-touch="false" allow-resize-to-fit="true" enable-alt-row="false">
+    <e-datamanager url="/api/Employees" adaptor="UrlAdaptor" offline="false" />
+    <e-sort-settings>
+        <e-sorted-columns>
+            <e-sorted-column field="Surname" direction="Ascending" />
+        </e-sorted-columns>
+    </e-sort-settings>
+    <e-page-settings page-size="10" />
+    <e-filter-settings filter-type="Excel" />
+    <e-columns>
+        <e-column template-id="#gridActionsTemplate" allow-sorting="false" allow-filtering="false" allow-grouping="false" width="50" />
+        <e-column field="Surname" type="string" header-text="@L("Surname")" text-align="Center" width="100" />
+        <e-column field="Name" type="string" header-text="@L("Name")" text-align="Center" width="100" />
+        <e-column field="FatherName" type="string" header-text="@L("FatherName")" text-align="Center" width="100" />
+        <e-column field="AdditionalInfo" type="string" header-text="@L("AdditionalInfo")" />
+        <e-column field="CustomerPhoneNumber" type="string" header-text="@L("MobilePhoneNumber")" width="100" />
+        <e-column field="SecondaryPhoneNumber" type="string" header-text="@L("SecondaryPhoneNumber")" width="100" />
+        <e-column field="EmailAddress" type="string" header-text="@L("Email")" />
+        <e-column field="Address" type="string" header-text="@L("Address")" />
+    </e-columns>
+</ej-grid>
+
+<script id="gridActionsTemplate" type="text/x-jsrender">
+    <a href="/Employees/Edit/{{:Id}}"><i class="fa fa-pencil text-success fa" aria-hidden="true"></i></a>
+    <a href="/Employees/Delete/{{:Id}}"><i class="fa fa-trash-o text-danger fa" aria-hidden="true"></i></a>
+</script>

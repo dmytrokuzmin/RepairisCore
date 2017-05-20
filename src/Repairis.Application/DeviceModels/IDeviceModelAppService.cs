@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using Abp.Application.Services;
 using Repairis.DeviceModels.Dto;
 
@@ -8,13 +9,11 @@ namespace Repairis.DeviceModels
     {
         Task CreateDeviceModelAsync(DeviceModelBasicEntityDto input);
         Task<bool> ExistsAsync(DeviceModelBasicEntityDto input);
-        Task<DeviceModelViewBagDto> GenerateViewBagDtoAsync();
         Task<DeviceModel> FindDeviceModelAsync(DeviceModelBasicEntityDto input);
-        Task<DeviceModelFullEntityDto> GetDeviceModelAsync(int id);
+        Task<DeviceModelBasicEntityDto> GetDeviceModelAsync(int id);
         Task<DeviceModel> GetOrCreateAsync(DeviceModelBasicEntityDto input);
-        Task<DeviceModelBasicListDto> GetAllDeviceModelsAsync();
-        Task<DeviceModelBasicListDto> GetAllActiveDeviceModelsAsync();
-        Task<DeviceModelBasicListDto> GetAllPassiveDeviceModelsAsync();
+        Task<List<DeviceModelBasicEntityDto>> GetAllDeviceModelsAsync();
+
         Task DeleteAsync(int id);
         Task RestoreAsync(int id);
     }

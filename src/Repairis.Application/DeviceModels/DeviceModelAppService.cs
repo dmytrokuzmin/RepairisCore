@@ -3,6 +3,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Abp.AutoMapper;
 using Abp.Domain.Repositories;
+using AutoMapper.QueryableExtensions;
+using Microsoft.EntityFrameworkCore;
 using Repairis.Brands;
 using Repairis.DeviceCategories;
 using Repairis.DeviceModels.Dto;
@@ -35,10 +37,13 @@ namespace Repairis.DeviceModels
             return await _deviceModelDomainService.FindDeviceModelAsync(input.DeviceModelName, input.DeviceCategoryName, input.BrandName);
         }
 
-        public async Task<DeviceModelFullEntityDto> GetDeviceModelAsync(int id)
+        public async Task<DeviceModelBasicEntityDto> GetDeviceModelAsync(int id)
         {
-            var deviceModel = await _deviceModelDomainService.GetDeviceModelAsync(id);
-            return deviceModel.MapTo<DeviceModelFullEntityDto>();
+            return await _deviceModelRepository
+                .GetAll()
+                .Where(x => x.Id == id)
+                .ProjectTo<DeviceModelBasicEntityDto>()
+                .FirstOrDefaultAsync();
         }
 
 
@@ -65,47 +70,10 @@ namespace Repairis.DeviceModels
         }
 
 
-        public async Task<DeviceModelViewBagDto> GenerateViewBagDtoAsync()
+        public async Task<List<DeviceModelBasicEntityDto>> GetAllDeviceModelsAsync()
         {
-            var brands = await _brandAppService.GetAllBrandsAsync();
-            var categories = await _deviceCategoryAppService.GetAllDeviceCategoriesAsync();
-            var deviceModels = await GetAllDeviceModelsAsync();
-
-            return new DeviceModelViewBagDto
-            {
-                Brands = brands.Brands,
-                DeviceCategories = categories.DeviceCategories,
-                DeviceModels = deviceModels.DeviceModels
-            };
+            return await _deviceModelRepository.GetAll().ProjectTo<DeviceModelBasicEntityDto>().ToListAsync();
         }
-
-
-        public async Task<DeviceModelBasicListDto> GetAllDeviceModelsAsync()
-        {
-            var deviceModels = await _deviceModelRepository.GetAllListAsync();
-            var deviceModelsDto = deviceModels.MapTo<List<DeviceModelBasicEntityDto>>();
-            var sortedDeviceModelsDto = deviceModelsDto.OrderBy(x => x.DeviceCategoryName).ThenBy(x => x.BrandName).ThenBy(x => x.DeviceModelName).ToList();
-            return new DeviceModelBasicListDto { DeviceModels = sortedDeviceModelsDto };
-        }
-
-
-        public async Task<DeviceModelBasicListDto> GetAllActiveDeviceModelsAsync()
-        {
-            var deviceModels = await _deviceModelRepository.GetAllListAsync(x => x.IsActive);
-            var deviceModelsDto = deviceModels.MapTo<List<DeviceModelBasicEntityDto>>();
-            var sortedDeviceModelsDto = deviceModelsDto.OrderBy(x => x.DeviceCategoryName).ThenBy(x => x.BrandName).ThenBy(x => x.DeviceModelName).ToList();
-            return new DeviceModelBasicListDto { DeviceModels = sortedDeviceModelsDto };
-        }
-
-
-        public async Task<DeviceModelBasicListDto> GetAllPassiveDeviceModelsAsync()
-        {
-            var deviceModels = await _deviceModelRepository.GetAllListAsync(x => !x.IsActive);
-            var deviceModelsDto = deviceModels.MapTo<List<DeviceModelBasicEntityDto>>();
-            var sortedDeviceModelsDto = deviceModelsDto.OrderBy(x => x.DeviceCategoryName).ThenBy(x => x.BrandName).ThenBy(x => x.DeviceModelName).ToList();
-            return new DeviceModelBasicListDto { DeviceModels = sortedDeviceModelsDto };
-        }
-
 
         public async Task DeleteAsync(int id)
         {

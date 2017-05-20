@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <VersionPrefix>1.0.0.0</VersionPrefix>
     <TargetFramework>netcoreapp1.1</TargetFramework>
@@ -10,6 +10,9 @@
     <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
     <RootNamespace>Repairis</RootNamespace>
   </PropertyGroup>
+  <ItemGroup>
+    <None Include="Helpers\EnumHelper.cs" />
+  </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Repairis.Core\Repairis.Core.csproj" />
   </ItemGroup>

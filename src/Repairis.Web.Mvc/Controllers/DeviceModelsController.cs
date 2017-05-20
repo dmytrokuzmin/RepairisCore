@@ -20,7 +20,7 @@ namespace Repairis.Web.Controllers
         // GET: DeviceModels
         public async Task<ActionResult> Index()
         {
-            var deviceModels = await _deviceModelAppService.GetAllActiveDeviceModelsAsync();
+            var deviceModels = await _deviceModelAppService.GetAllDeviceModelsAsync();
             return View(deviceModels);
         }
 
@@ -38,11 +38,9 @@ namespace Repairis.Web.Controllers
 
 
         // GET: DeviceModels/Create
-        public async Task<ActionResult> Create(CreateDeviceModelViewModel input)
-        {
-            input.DeviceModelViewBagDto = input.DeviceModelViewBagDto ?? await _deviceModelAppService.GenerateViewBagDtoAsync();
-            input.DeviceModelInput = input.DeviceModelInput ?? new DeviceModelBasicEntityDto();
-            return View(input);
+        public ActionResult Create()
+        {       
+            return View();
         }
 
 
@@ -52,14 +50,14 @@ namespace Repairis.Web.Controllers
         [HttpPost]
         [ActionName("Create")]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create_Post(CreateDeviceModelViewModel input)
+        public async Task<ActionResult> Create_Post(DeviceModelBasicEntityDto input)
         {
             if (ModelState.IsValid)
             {
-                await _deviceModelAppService.CreateDeviceModelAsync(input.DeviceModelInput);
+                await _deviceModelAppService.CreateDeviceModelAsync(input);
                 return RedirectToAction("Index");
             }
-            input.DeviceModelViewBagDto = input.DeviceModelViewBagDto ?? await _deviceModelAppService.GenerateViewBagDtoAsync();
+
             return View(input);
         }
 

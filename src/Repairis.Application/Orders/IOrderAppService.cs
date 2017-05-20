@@ -13,6 +13,8 @@ namespace Repairis.Orders
         Task CreateOrderAsync(CreateOrderInput input);
         Task<OrderFullEntityDto> GetOrderDtoAsync(long id);
 
+        IQueryable<OrderBasicEntityDto> GetOrdersQueryableDto();
+
 
 
         Task<OrderBasicListDto> GetAllOrdersAsync();
@@ -21,6 +23,5 @@ namespace Repairis.Orders
 
 
         //Task NotifyOrderStatusHasChanged(int id);
-        Task<OrderCompletionDto> GetOrderCompletionDto(long id);
     }
 }

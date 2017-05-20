@@ -1,36 +1,43 @@
-﻿@model Repairis.Brands.Dto.BrandBasicListDto
+﻿@model List<Repairis.Brands.Dto.BrandBasicEntityDto>
 @{
-ViewBag.Title = "Brands";
+    ViewBag.Title = "Brands";
 }
-<h2>Index</h2>
+<h2>Brands</h2>
 <p>
-    @Html.ActionLink("Create New", "Create")
+    <a asp-action="Create" class="btn btn-success"><i class="fa fa-plus"></i> New brand</a>
 </p>
-<table class="table">
+<table class="table table-striped">
+    <thead>
     <tr>
+        <th></th>
         <th>
             @L("BrandName")
         </th>
         <th>@L("Enabled")</th>
-        <th></th>
     </tr>
-    @foreach (var item in Model.Brands)
+    </thead>
+    <tbody>
+    @foreach (var item in Model)
     {
-    <tr>
-        <td>
-            @Html.ActionLink(item.BrandName, "Details", new { brandName = item.BrandName })
-        </td>
-        <td>
-            @if (item.IsActive) {
-            <span class="text-success">@L("Yes")</span>
-            }
-            else {
-            <span class="text-danger">@L("No")</span>
-            }
-        </td>
-        <td>
-            @Html.ActionLink("Delete", "Delete", new { id = item.Id })
-        </td>
-    </tr>
+        <tr>
+            <td>
+                <a asp-action="Details" asp-route-id="@item.Id"><i class="fa fa-pencil text-success fa" aria-hidden="true"></i></a>
+                <a asp-action="Delete" asp-route-id="@item.Id"><i class="fa fa-trash-o text-danger fa" aria-hidden="true"></i></a>
+            </td>
+            <td>
+                @item.BrandName
+            </td>
+            <td>
+                @if (item.IsActive)
+                {
+                    <span class="text-success">@L("Yes")</span>
+                }
+                else
+                {
+                    <span class="text-danger">@L("No")</span>
+                }
+            </td>
+        </tr>
     }
+    </tbody>
 </table>

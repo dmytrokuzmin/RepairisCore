@@ -25,13 +25,13 @@ namespace Repairis.Web.Controllers
         }
 
         // GET: Brands/Details/5
-        public async Task<ActionResult> Details(string brandName)
+        public async Task<ActionResult> Details(int? id)
         {
-            if (string.IsNullOrEmpty(brandName))
+            if (id == null)
             {
                 return BadRequest();
             }
-            var brand = await _brandAppService.GetBrandAsync(brandName);
+            var brand = await _brandAppService.GetBrandAsync(id.Value);
             return View(brand);
         }
 
@@ -54,6 +54,7 @@ namespace Repairis.Web.Controllers
 
             return View(brand);
         }
+
 
         // GET: Brands/Delete/5
         public async Task<ActionResult> Delete(int? id)

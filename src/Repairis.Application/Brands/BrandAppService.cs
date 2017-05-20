@@ -1,9 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Dynamic.Core;
 using System.Threading.Tasks;
 using Abp.AutoMapper;
 using Abp.Domain.Repositories;
 using Abp.UI;
+using AutoMapper.QueryableExtensions;
+using Microsoft.EntityFrameworkCore;
 using Repairis.Brands.Dto;
 
 namespace Repairis.Brands
@@ -28,33 +31,28 @@ namespace Repairis.Brands
 
         public async Task<BrandFullEntityDto> GetBrandAsync(int id)
         {
-            var brand = await _brandRepository.FirstOrDefaultAsync(id);
+            var brand = await _brandRepository.GetAll().Where(x => x.Id == id).ProjectTo<BrandFullEntityDto>().FirstOrDefaultAsync();
             if (brand == null)
             {
                 throw new UserFriendlyException(LocalizationSource.GetString("BrandNotFound"));
             }
-            return brand.MapTo<BrandFullEntityDto>();
+            return brand;
         }
 
-        public async Task<BrandFullEntityDto> GetBrandAsync(string brandName)
+        //public async Task<BrandFullEntityDto> GetBrandAsync(string brandName)
+        //{
+        //    var brand = await _brandDomainService.GetByNameAsync(brandName);
+        //    if (brand == null)
+        //    {
+        //        throw new UserFriendlyException(LocalizationSource.GetString("BrandNotFound"));
+        //    }
+        //    return brand.MapTo<BrandFullEntityDto>();
+        //}
+
+
+        public async Task<List<BrandBasicEntityDto>> GetAllBrandsAsync()
         {
-            var brand = await _brandDomainService.GetByNameAsync(brandName);
-            if (brand == null)
-            {
-                throw new UserFriendlyException(LocalizationSource.GetString("BrandNotFound"));
-            }
-            return brand.MapTo<BrandFullEntityDto>();
-        }
-
-
-        public async Task<BrandBasicListDto> GetAllBrandsAsync()
-        {
-            var brands = await _brandRepository.GetAllListAsync();
-
-            return new BrandBasicListDto
-            {
-                Brands = brands.OrderBy(m => m.BrandName).MapTo<List<BrandBasicEntityDto>>()
-            };
+            return (await _brandRepository.GetAllListAsync()).MapTo<List<BrandBasicEntityDto>>();       
         }
 
         public Task<Brand> GetOrCreateAsync(string brandName)

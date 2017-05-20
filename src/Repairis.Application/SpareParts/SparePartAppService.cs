@@ -1,10 +1,14 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Abp.Application.Services;
 using Abp.Application.Services.Dto;
 using Abp.AutoMapper;
 using Abp.Domain.Repositories;
+using AutoMapper.QueryableExtensions;
+using Microsoft.EntityFrameworkCore;
 using Repairis.Brands;
+using Repairis.Devices;
 using Repairis.SpareParts.Dto;
 
 namespace Repairis.SpareParts
@@ -12,20 +16,27 @@ namespace Repairis.SpareParts
     public class SparePartAppService : ApplicationService, ISparePartAppService
     {
         private readonly IRepository<SparePart> _sparePartRepository;
+        private readonly IRepository<Device> _deviceRepository;
 
         private readonly IBrandAppService _brandAppService;
 
         public SparePartAppService(IRepository<SparePart> sparePartRepository,
-            IBrandAppService brandAppService)
+            IBrandAppService brandAppService, IRepository<Device> deviceRepository)
         {
             _sparePartRepository = sparePartRepository;
             _brandAppService = brandAppService;
+            _deviceRepository = deviceRepository;
         }
 
-        public List<SparePartBasicEntityDto> GetCompatibleSpareParts(int deviceModelId)
+        public async Task<List<SparePartBasicEntityDto>> GetCompatibleSpareParts(int deviceId)
         {
-            var spareParts = _sparePartRepository.GetAllList();//.Where(x => x.CompatibleDeviceModels.Any(y => y.DeviceModelId == deviceModelId));
-            return spareParts.MapTo<List<SparePartBasicEntityDto>>();
+            var device = await _deviceRepository.GetAll().Include(x => x.DeviceModel.CompatibleSpareParts).Where(x => x.Id == deviceId)
+                .FirstOrDefaultAsync();
+
+            var sparePartIds = device.DeviceModel.CompatibleSpareParts.Select(x => x.SparePartId);
+            var spareParts = _sparePartRepository.GetAll().Where(x => sparePartIds.Contains(x.Id)).MapTo<List<SparePartBasicEntityDto>>();
+
+            return spareParts;
         }
 
         public async Task<ListResultDto<SparePartBasicEntityDto>> GetSparePartsAsync()

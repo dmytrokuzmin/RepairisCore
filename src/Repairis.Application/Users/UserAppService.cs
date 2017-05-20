@@ -77,8 +77,6 @@ namespace Repairis.Users
 
         public async Task<ListResultDto<CustomerBasicEntityDto>> GetAllActiveCustomersAsync()
         {
-            //UserManager.GetRolesAsync()
-            //var role = _roleManager.GetRoleByNameAsync("Customer");
             var customers = await _userRepository.GetAllListAsync(x => x.IsActive && x.CustomerInfoId != null);
 
             return new ListResultDto<CustomerBasicEntityDto>(

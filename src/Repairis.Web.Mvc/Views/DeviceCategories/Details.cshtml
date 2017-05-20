@@ -1,25 +1,30 @@
 ﻿@model Repairis.DeviceCategories.Dto.DeviceCategoryFullEntityDto
-@using Repairis.DeviceModels.Dto
 <div>
-    <h2>@Model.DeviceCategoryName</h2>
-
-    @if (Model.DeviceModels.Count != 0)
-    {
-        <h4>Device Models: @Model.DeviceModels.Count</h4>
-        @(Html.EJ().Grid<DeviceModelBasicEntityDto>("GridModels")
-            .Datasource(Model.DeviceModels)
-            .AllowGrouping()
-            .AllowSelection(false)
-            .GroupSettings(group => { group.GroupedColumns(col => { col.Add("BrandName"); }); })
-            .Columns(col =>
-            {
-                col.Field(p => p.DeviceCategoryName).HeaderText(L("DeviceCategory")).Add();
-                col.Field(p => p.BrandName).HeaderText(L("Brand")).Add();
-                col.Field(p => p.DeviceModelName).HeaderText(L("DeviceModel")).Add();
-            })
-        )
-    }
+    <a asp-action="Index">Back to List</a>
 </div>
-<p>
-    @Html.ActionLink("Back to List", "Index")
-</p>
+<h3>Edit device category @Model.DeviceCategoryName</h3>
+<hr/>
+<form asp-action="Details" method="post">
+    <div class="form-horizontal">
+        <div asp-validation-summary="ModelOnly"></div>
+        <input asp-for="Id" hidden />
+        <div class="form-group">
+            <label asp-for="DeviceCategoryName" class="control-label col-md-2"></label>
+            <div class="col-md-10">
+                <input asp-for="DeviceCategoryName" class="form-control" />
+                <span asp-validation-for="DeviceCategoryName" class="text-danger"></span>
+                <div class="checkbox">
+                    <label>
+                        <input asp-for="IsActive" checked /> @L("Enabled")
+                    </label>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Save" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+</form>
+

@@ -14,5 +14,6 @@ namespace Repairis.DeviceModels.Dto
         [Required]
         [StringLength(RepairisConsts.MaxEntityNameLength)]
         public string DeviceCategoryName { get; set; }
+        public bool IsActive { get; set; }
     }
 }

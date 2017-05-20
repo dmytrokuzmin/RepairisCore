@@ -12,9 +12,9 @@ namespace Repairis.Devices
     public class Device : Entity, IPassivable, IDeletionAudited
     {
         [Required]
+        [ForeignKey(nameof(DeviceModel))]
         public int DeviceModelId { get; set; }
 
-        [ForeignKey(nameof(DeviceModelId))]
         public virtual DeviceModel DeviceModel { get; set; }
 
         [StringLength(100)]

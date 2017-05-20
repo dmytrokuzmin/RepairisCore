@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
+using System.Runtime.Serialization;
 using Abp.Domain.Entities;
 using Abp.Domain.Entities.Auditing;
 using Repairis.Authorization.Users;
@@ -15,9 +16,9 @@ namespace Repairis.Orders
     public class Order : FullAuditedEntity<long>, IPassivable
     {
         [Required]
+        [ForeignKey(nameof(Device))]
         public int DeviceId { get; set; }
 
-        [ForeignKey(nameof(DeviceId))]
         public virtual Device Device { get; set; }
 
         public string AdditionalEquipment { get; set; }
@@ -32,13 +33,14 @@ namespace Repairis.Orders
         public string AdditionalNotes { get; set; }
 
         [Required]
+        [ForeignKey(nameof(Customer))]
         public long CustomerId { get; set; }
-        [ForeignKey(nameof(CustomerId))]
         public virtual CustomerInfo Customer { get; set; }
 
         //Assigned master
+        [ForeignKey(nameof(AssignedEmployee))]
         public long? AssignedEmployeeId { get; set; }
-        [ForeignKey(nameof(AssignedEmployeeId))]
+
         public virtual EmployeeInfo AssignedEmployee { get; set; }
 
         public OrderStatusEnum OrderStatus { get; set; } = OrderStatusEnum.Open;
@@ -77,12 +79,19 @@ namespace Repairis.Orders
 
     public enum OrderStatusEnum
     {
+        [Display(Name = "Open")]
         Open = 0,
+        [Display(Name = "Waiting for device")]
         WaitingForDeviceArrival = 1,
+        [Display(Name = "In progress")]
         InProgress = 2,
+        [Display(Name = "Waiting for spare parts")]
         WaitingForParts = 3,
+        [Display(Name = "Ready")]
         Ready = 4,
+        [Display(Name = "On warranty")]
         OnWarranty = 5,
+        [Display(Name = "Archived")]
         Closed = 6
     }
 }

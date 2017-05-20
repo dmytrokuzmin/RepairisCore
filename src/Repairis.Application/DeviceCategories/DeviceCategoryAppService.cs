@@ -44,39 +44,23 @@ namespace Repairis.DeviceCategories
         }
 
 
-        public async Task<DeviceCategoryFullEntityDto> GetDeviceCategoryAsync(string deviceCategoryName)
+        //public async Task<DeviceCategoryFullEntityDto> GetDeviceCategoryAsync(string deviceCategoryName)
+        //{
+        //    var category = await _deviceCategoryDomainService.GetByNameAsync(deviceCategoryName);
+        //    if (category == null)
+        //    {
+        //        throw new UserFriendlyException(LocalizationSource.GetString("DeviceCategoryNotFound"));
+        //    }
+        //    return category.MapTo<DeviceCategoryFullEntityDto>();
+        //}
+
+
+        public async Task<List<DeviceCategoryBasicEntityDto>> GetAllDeviceCategoriesAsync()
         {
-            var category = await _deviceCategoryDomainService.GetByNameAsync(deviceCategoryName);
-            if (category == null)
-            {
-                throw new UserFriendlyException(LocalizationSource.GetString("DeviceCategoryNotFound"));
-            }
-            return category.MapTo<DeviceCategoryFullEntityDto>();
+            return (await _deviceCategoryRepository.GetAllListAsync()).MapTo<List<DeviceCategoryBasicEntityDto>>();  
         }
 
 
-        public async Task<DeviceCategoryBasicListDto> GetAllDeviceCategoriesAsync()
-        {
-            var categories = await _deviceCategoryRepository.GetAllListAsync();
-            var sortedCategories = categories.OrderBy(c => c.DeviceCategoryName);
-            return new DeviceCategoryBasicListDto { DeviceCategories = sortedCategories.MapTo<List<DeviceCategoryBasicEntityDto>>() };
-        }
-
-
-        public async Task<DeviceCategoryBasicListDto> GetAllActiveDeviceCategoriesAsync()
-        {
-            var categories = await _deviceCategoryRepository.GetAllListAsync(x => x.IsActive);
-            var sortedCategories = categories.OrderBy(c => c.DeviceCategoryName);
-            return new DeviceCategoryBasicListDto { DeviceCategories = sortedCategories.MapTo<List<DeviceCategoryBasicEntityDto>>() };
-        }
-
-
-        public async Task<DeviceCategoryBasicListDto> GetAllPassiveDeviceCategoriesAsync()
-        {
-            var categories = await _deviceCategoryRepository.GetAllListAsync(x => !x.IsActive);
-            var sortedCategories = categories.OrderBy(c => c.DeviceCategoryName);
-            return new DeviceCategoryBasicListDto { DeviceCategories = sortedCategories.MapTo<List<DeviceCategoryBasicEntityDto>>() };
-        }
 
         public async Task DeleteAsync(int id)
         {

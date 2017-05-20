@@ -35,6 +35,8 @@ namespace Repairis.Orders.Dto
 
         public virtual List<SparePartOrderMapping> SparePartsUsed { get; set; } = new List<SparePartOrderMapping>();
 
+        public OrderStatusEnum OrderStatus { get; set; }
+
 
     }
 }

@@ -14,9 +14,11 @@
   </PropertyGroup>
   <ItemGroup>
     <Content Remove="wwwroot/lib\syncfusion-javascript\README.md" />
+    <Content Remove="wwwroot/OrderCreationInvoice_17.pdf" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="wwwroot\images\app-logo-small.png" />
+    <Content Include="wwwroot\invoices\a.txt" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

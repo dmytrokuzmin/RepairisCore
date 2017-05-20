@@ -252,3 +252,4 @@ paket-files/
 *.sln.iml
 /src/Repairis.Web.Host/App_Data/Logs
 /src/Repairis.Web.Mvc/App_Data/Logs
+/src/Repairis.Web.Mvc/wwwroot/invoices

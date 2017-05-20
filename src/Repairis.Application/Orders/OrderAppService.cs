@@ -4,6 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Abp.AutoMapper;
 using Abp.Domain.Repositories;
+using AutoMapper.QueryableExtensions;
+using Microsoft.EntityFrameworkCore;
 using Repairis.Brands;
 using Repairis.DeviceCategories;
 using Repairis.DeviceModels;
@@ -78,6 +80,11 @@ namespace Repairis.Orders
 
         }
 
+        public IQueryable<OrderBasicEntityDto> GetOrdersQueryableDto()
+        {
+            return _orderRepository.GetAll().ProjectTo<OrderBasicEntityDto>();
+        }
+
         public async Task<OrderBasicListDto> GetAllOrdersAsync()
         {
             var orders = await _orderRepository.GetAllListAsync();
@@ -100,9 +107,11 @@ namespace Repairis.Orders
 
         public async Task<OrderFullEntityDto> GetOrderDtoAsync(long id)
         {
-            var order = await _orderRepository.FirstOrDefaultAsync(id);
-
-            return order.MapTo<OrderFullEntityDto>();
+            return await _orderRepository
+                .GetAll()
+                .Where(x => x.Id == id)
+                .ProjectTo<OrderFullEntityDto>()
+                .FirstOrDefaultAsync();
         }
 
         //public async Task NotifyOrderStatusHasChanged(int id)
@@ -135,12 +144,5 @@ namespace Repairis.Orders
             //    }
             //}
         //}
-
-        public async Task<OrderCompletionDto> GetOrderCompletionDto(long id)
-        {
-            var order = await _orderRepository.FirstOrDefaultAsync(id);
-
-            return order.MapTo<OrderCompletionDto>();
-        }
     }
 }

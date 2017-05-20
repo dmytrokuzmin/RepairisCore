@@ -1,41 +1,43 @@
-﻿@model Repairis.DeviceModels.Dto.DeviceModelFullEntityDto
+﻿@model Repairis.DeviceModels.Dto.DeviceModelBasicEntityDto
 
 @{
-    ViewBag.Title = "Details";
+    ViewBag.Title = $"Details: {Model.DeviceCategoryName} {Model.BrandName} {Model.DeviceModelName}";
 }
-
-<h2>Details</h2>
-
 <div>
-    <h4>DeviceModel</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.DeviceCategory.DeviceCategoryName)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.DeviceCategory.DeviceCategoryName)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Brand.BrandName)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Brand.BrandName)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.DeviceModelName)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.DeviceModelName)
-        </dd>
-
-    </dl>
+    <a asp-action="Index">Back to List</a>
 </div>
-<p>
-    @Html.ActionLink("Back to List", "Index")
-</p>
+<h3>Device model details</h3>
+<hr />
+<form asp-action="Details" method="post">
+    <div class="form-horizontal">
+        <div asp-validation-summary="ModelOnly"></div>
+        <input asp-for="Id" hidden />
+        <div class="form-group">
+            <label asp-for="DeviceCategoryName" class="control-label col-md-2"></label>
+            <div class="col-md-10">
+                <input asp-for="DeviceCategoryName" class="form-control" disabled/>
+                <span asp-validation-for="BrandName" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="BrandName" class="control-label col-md-2"></label>
+            <div class="col-md-10">
+                <input asp-for="BrandName" class="form-control" disabled/>
+                <span asp-validation-for="BrandName" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="DeviceModelName" class="control-label col-md-2"></label>
+            <div class="col-md-10">
+                <input asp-for="DeviceModelName" class="form-control" disabled/>
+                <span asp-validation-for="BrandName" class="text-danger"></span>
+                <div class="checkbox">
+                    <label>
+                        <input asp-for="IsActive"/> @L("IsActive")
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+

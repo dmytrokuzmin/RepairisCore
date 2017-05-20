@@ -19,7 +19,7 @@ namespace Repairis.Web.Controllers
         // GET: DeviceCategories
         public async Task<ActionResult> Index()
         {
-            var categories = await _deviceCategoryAppService.GetAllActiveDeviceCategoriesAsync();
+            var categories = await _deviceCategoryAppService.GetAllDeviceCategoriesAsync();
             return View(categories);
         }
 

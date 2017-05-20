@@ -108,6 +108,14 @@ namespace Repairis.Web.Startup
                             )
                         ).AddItem(
                             new MenuItemDefinition(
+                                PageNames.Employees, 
+                                L("Employees"),
+                                url: "Employees",
+                                icon: "fa fa-users",
+                                requiresAuthentication: true
+                            )
+                        ).AddItem(
+                            new MenuItemDefinition(
                                 PageNames.About,
                                 L("About"),
                                 url: "About",
