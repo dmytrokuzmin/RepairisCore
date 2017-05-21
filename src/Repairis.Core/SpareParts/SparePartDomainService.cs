@@ -47,6 +47,7 @@ namespace Repairis.SpareParts
             if (sparePart.StockQuantity <= 0)
             {
                 sparePart.StockStatus = StockStatusEnum.OutOfStock;
+                sparePart.StockQuantity = 0;
             }
 
             _sparePartRepository.Update(sparePart);

@@ -50,9 +50,20 @@ namespace Repairis.Web.Controllers
         [DontWrapResult]
         public ActionResult SparePartsDataSource([FromBody] DataManager dm)
         {
-            var ordersQueryable = _sparePartRepository.GetAll();
-            int count = ordersQueryable.AsQueryable().Count();
-            IEnumerable data = ordersQueryable.ProjectTo<SparePartBasicEntityDto>();
+            IQueryable<SparePart> sparePartsQueryable;
+            var deviceModelId = Request.Headers["deviceModelId"];
+            if (string.IsNullOrEmpty(deviceModelId))
+            {
+                sparePartsQueryable = _sparePartRepository.GetAll();
+            }
+            else
+            {
+                sparePartsQueryable = _compatibilityRepository
+                    .GetAllIncluding(x => x.SparePart)
+                    .Where(x => x.DeviceModelId == int.Parse(deviceModelId[0])).Select(x => x.SparePart);
+            }
+            int count = sparePartsQueryable.Count();
+            IEnumerable data = sparePartsQueryable.ProjectTo<SparePartBasicEntityDto>();
             DataOperations operation = new DataOperations();
             data = operation.Execute(data, dm);
 
@@ -61,7 +72,6 @@ namespace Repairis.Web.Controllers
                 ContractResolver = new DefaultContractResolver()
             });
         }
-
 
 
         // GET: SpareParts/Create
@@ -86,6 +96,7 @@ namespace Repairis.Web.Controllers
             return View(input);
         }
 
+
         // GET: SpareParts/Edit/5
         public async Task<ActionResult> Edit(int? id)
         {
@@ -102,6 +113,7 @@ namespace Repairis.Web.Controllers
 
             return View(sparePartDto);
         }
+
 
         // POST: SpareParts/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
@@ -145,6 +157,7 @@ namespace Repairis.Web.Controllers
             return View(input);
         }
 
+
         // GET: SpareParts/Delete/5
         public async Task<ActionResult> Delete(int? id)
         {
@@ -159,6 +172,7 @@ namespace Repairis.Web.Controllers
             }
             return View(sparePart.MapTo<SparePartBasicEntityDto>());
         }
+
 
         // POST: SpareParts/Delete/5
         [HttpPost, ActionName("Delete")]

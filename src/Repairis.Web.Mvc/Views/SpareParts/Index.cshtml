@@ -1,15 +1,27 @@
-﻿@{
+﻿@inject Repairis.Web.Helpers.IFormHelper FormHelper
+@{
     ViewBag.Title = "Spare parts";
 }
 
 <h2>Spare parts</h2>
 
-<p>
-    <a asp-action="Create" class="btn btn-success"><i class="fa fa-plus"></i> New spare part</a>
-</p>
+
+
+<div class="row">
+    <div class="col-md-4">    
+        <p>
+            <a asp-action="Create" class="btn btn-success"><i class="fa fa-plus"></i> New spare part</a>
+        </p>
+    </div>
+    <div class="col-md-4 col-md-offset-4" >
+        <ej-autocomplete id="CompatibleDeviceModelId" datasource="await FormHelper.GetDeviceModels()" show-popup-button="true" filter-type="@FilterOperatorType.Contains" highlight-search="true" watermark-text="FilterByCompatibleDevice" width="100%" change="updateGridIfSelectionIsEmpty" select="updateGridAfterSelection">
+            <e-autocomplete-fields text="DeviceModelName" key="Id" group-by="DeviceCategoryName"  />
+        </ej-autocomplete>
+        </div>
+</div>
 
 <ej-grid id="SpareParts" allow-text-wrap="true" allow-selection="false" allow-sorting="true" allow-paging="true" allow-filtering="true" enable-touch="false" enable-alt-row="false">
-    <e-datamanager url="/api/SpareParts" adaptor="UrlAdaptor" offline="false" />
+    <e-datamanager url="/api/SpareParts/" adaptor="UrlAdaptor" offline="false" />
     <e-sort-settings>
         <e-sorted-columns>
             <e-sorted-column field="StockStatus" direction="Ascending" />
@@ -20,7 +32,7 @@
     <e-columns>
         <e-column template-id="#gridActionsTemplate" allow-sorting="false" allow-filtering="false" allow-grouping="false" width="50" />
         <e-column field="Id" type="number" header-text="@L("SparePartID")" is-primary-key="true" text-align="Center" width="75" />
-        <e-column field="BrandName" type="string" header-text="@L("BrandName")" width="90"  />
+        <e-column field="BrandName" type="string" header-text="@L("BrandName")" width="90" />
         <e-column field="SparePartName" type="string" header-text="@L("SparePartName")" />
         <e-column field="SparePartCode" type="string" header-text="@L("SparePartCode")" />
         <e-column field="SupplierPrice" type="number" header-text="@L("SupplierPrice")" />
@@ -31,9 +43,26 @@
     </e-columns>
 </ej-grid>
 
-@section Scripts{
-    <script id="gridActionsTemplate" type="text/x-jsrender">
-        <a href="/SpareParts/Edit/{{:Id}}"><i class="fa fa-pencil text-success fa" aria-hidden="true"></i></a>
-        <a href="/SpareParts/Delete/{{:Id}}"><i class="fa fa-trash-o text-danger fa" aria-hidden="true"></i></a>
-    </script>
-}
+    @section Scripts{
+        <script id="gridActionsTemplate" type="text/x-jsrender">
+            <a href="/SpareParts/Edit/{{:Id}}"><i class="fa fa-pencil text-success fa" aria-hidden="true"></i></a>
+            <a href="/SpareParts/Delete/{{:Id}}"><i class="fa fa-trash-o text-danger fa" aria-hidden="true"></i></a>
+        </script>
+
+        <script type="text/javascript">
+            function updateGridAfterSelection(args) {               
+                var gridObj = $("#SpareParts").ejGrid("instance");
+                gridObj.model.dataSource.dataSource.headers = [];
+                gridObj.model.dataSource.dataSource.headers.push({ "deviceModelId": args.key});
+                gridObj.refreshContent();
+            }
+
+            function updateGridIfSelectionIsEmpty(args) {
+                if (!args.value || 0 === args.value.length) {
+                    var gridObj = $("#SpareParts").ejGrid("instance");
+                    gridObj.model.dataSource.dataSource.headers = [];
+                    gridObj.refreshContent();
+                }              
+            }
+        </script>
+    }
