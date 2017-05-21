@@ -49,6 +49,12 @@ namespace Repairis
                     .ForMember(dest => dest.CompatibleSpareParts, opt => opt.MapFrom(src => src.CompatibleSpareParts));
 
 
+                cfg.CreateMap<DeviceModel, DeviceModelAutocompleteDto>()
+                    .ForMember(dest => dest.DeviceModelName, opt => opt.MapFrom(src => src.Brand.BrandName + " " + src.DeviceModelName))
+                    .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id.ToString()))
+                    .ForMember(dest => dest.DeviceCategoryName, opt => opt.MapFrom(src => src.DeviceCategory.DeviceCategoryName));
+
+
                 //Device -> DeviceBasicEntityDto
                 cfg.CreateMap<Device, DeviceBasicEntityDto>()
                     .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
