@@ -1,15 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using Abp.Domain.Repositories;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
 using Repairis.Brands;
 using Repairis.DeviceCategories;
 using Repairis.DeviceModels;
-using Repairis.SpareParts;
+using Repairis.DeviceModels.Dto;
 
 namespace Repairis.Web.Helpers
 {
@@ -17,14 +13,14 @@ namespace Repairis.Web.Helpers
     {
         private readonly IBrandAppService _brandAppService;
         private readonly IDeviceCategoryAppService _deviceCategoryAppService;
-        private readonly IRepository<DeviceModel> _deviceModelRepository;
-        private readonly IRepository<SparePart> _sparePartRepository;
+        private readonly IDeviceModelAppService _deviceModelAppService;
 
-        public FormHelper(IBrandAppService brandAppService, IDeviceCategoryAppService devicecategoryAppService, IRepository<SparePart> sparePartRepository)
+
+        public FormHelper(IBrandAppService brandAppService, IDeviceCategoryAppService devicecategoryAppService, IDeviceModelAppService deviceModelAppService)
         {
             _brandAppService = brandAppService;
             _deviceCategoryAppService = devicecategoryAppService;
-            _sparePartRepository = sparePartRepository;
+            _deviceModelAppService = deviceModelAppService;
         }
 
         public async Task<List<SelectListItem>> GetBrands()
@@ -37,6 +33,11 @@ namespace Repairis.Web.Helpers
         {
             return (await _deviceCategoryAppService.GetAllDeviceCategoriesAsync())
                 .Select(x => new SelectListItem { Text = x.DeviceCategoryName, Value = x.DeviceCategoryName }).ToList();
+        }
+
+        public async Task<List<DeviceModelAutocompleteDto>> GetDeviceModels()
+        {
+            return await _deviceModelAppService.GetAllDeviceModelsForAutocompleteAsync();
         }
     }
 }

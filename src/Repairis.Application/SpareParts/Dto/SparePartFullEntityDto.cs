@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using Abp.Application.Services.Dto;
 
 namespace Repairis.SpareParts.Dto
@@ -32,7 +33,6 @@ namespace Repairis.SpareParts.Dto
 
         public StockStatusEnum StockStatus { get; set; } = StockStatusEnum.OutOfStock;
 
-        //public List<SparePartCompatibility> CompatibleDevices { get; set; }
-
+        public List<int> CompatibleDeviceModelIds { get; set; } = new List<int>();
     }
 }

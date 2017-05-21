@@ -50,8 +50,11 @@ namespace Repairis.SpareParts
 
     public enum StockStatusEnum
     {
+        [Display(Name = "Out of stock")]
         OutOfStock = 0,
+        [Display(Name = "Waiting for arrival")]
         WaitingForArrival = 1,
+        [Display(Name = "In stock")]
         InStock = 2
     }
 }

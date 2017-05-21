@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Collections.Generic;
 using Abp.Application.Services.Dto;
 using Abp.AutoMapper;
@@ -46,7 +47,7 @@ namespace Repairis
                     .ForMember(dest => dest.IsActive, opt => opt.MapFrom(src => src.IsActive))
                     .ForMember(dest => dest.Devices, opt => opt.MapFrom(src => src.Devices))
                     .ForMember(dest => dest.CompatibleSpareParts, opt => opt.MapFrom(src => src.CompatibleSpareParts));
-                  
+
 
                 //Device -> DeviceBasicEntityDto
                 cfg.CreateMap<Device, DeviceBasicEntityDto>()
@@ -85,6 +86,11 @@ namespace Repairis
                     .ForMember(dest => dest.StockStatus, opt => opt.MapFrom(src => src.StockStatus))
                     .ForMember(dest => dest.StockQuantity, opt => opt.MapFrom(src => src.StockQuantity));
 
+                //SparePartCompatibility -> DeviceModelAutocompleteDto
+                cfg.CreateMap<SparePartCompatibility, DeviceModelAutocompleteDto>()
+                    .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.DeviceModelId))
+                    .ForMember(dest => dest.DeviceModelName, opt => opt.MapFrom(src => src.DeviceModel.Brand.BrandName + " " + src.DeviceModel.DeviceModelName))
+                    .ForMember(dest => dest.DeviceCategoryName, opt => opt.MapFrom(src => src.DeviceModel.DeviceCategory.DeviceCategoryName));
 
                 //SparePart -> SparePartFullEntityDto
                 cfg.CreateMap<SparePart, SparePartFullEntityDto>()
@@ -96,7 +102,9 @@ namespace Repairis
                     .ForMember(dest => dest.RecommendedPrice, opt => opt.MapFrom(src => src.RecommendedPrice))
                     .ForMember(dest => dest.Notes, opt => opt.MapFrom(src => src.Notes))
                     .ForMember(dest => dest.StockStatus, opt => opt.MapFrom(src => src.StockStatus))
-                    .ForMember(dest => dest.StockQuantity, opt => opt.MapFrom(src => src.StockQuantity));
+                    .ForMember(dest => dest.StockQuantity, opt => opt.MapFrom(src => src.StockQuantity))
+                    .ForMember(dest => dest.CompatibleDeviceModelIds, opt => opt.MapFrom(src => src.CompatibleDeviceModels.Select(x => x.DeviceModelId)));
+
 
 
                 cfg.CreateMap<List<Order>, ListResultDto<OrderBasicEntityDto>>()

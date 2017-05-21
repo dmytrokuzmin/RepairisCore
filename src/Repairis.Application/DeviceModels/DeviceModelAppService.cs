@@ -75,6 +75,11 @@ namespace Repairis.DeviceModels
             return await _deviceModelRepository.GetAll().ProjectTo<DeviceModelBasicEntityDto>().ToListAsync();
         }
 
+        public async Task<List<DeviceModelAutocompleteDto>> GetAllDeviceModelsForAutocompleteAsync()
+        {
+            return await _deviceModelRepository.GetAll().ProjectTo<DeviceModelAutocompleteDto>().OrderBy(x => x.DeviceModelName).ToListAsync();
+        }
+
         public async Task DeleteAsync(int id)
         {
             await _deviceModelDomainService.DeleteAsync(id);

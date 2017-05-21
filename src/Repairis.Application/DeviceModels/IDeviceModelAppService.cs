@@ -13,6 +13,7 @@ namespace Repairis.DeviceModels
         Task<DeviceModelBasicEntityDto> GetDeviceModelAsync(int id);
         Task<DeviceModel> GetOrCreateAsync(DeviceModelBasicEntityDto input);
         Task<List<DeviceModelBasicEntityDto>> GetAllDeviceModelsAsync();
+        Task<List<DeviceModelAutocompleteDto>> GetAllDeviceModelsForAutocompleteAsync();
 
         Task DeleteAsync(int id);
         Task RestoreAsync(int id);

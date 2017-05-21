@@ -66,8 +66,7 @@ namespace Repairis.SpareParts
 
         public async Task<SparePartFullEntityDto> GetSparePartDtoAsync(int id)
         {
-            var sparePart = await _sparePartRepository.GetAsync(id);
-
+            var sparePart = await _sparePartRepository.GetAll().Where(x => x.Id == id).Include(x => x.CompatibleDeviceModels).FirstOrDefaultAsync();
             return sparePart.MapTo<SparePartFullEntityDto>();
         }
     }

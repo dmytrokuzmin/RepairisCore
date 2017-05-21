@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Abp.AspNetCore.Mvc.Authorization;
 using Abp.AutoMapper;
 using Abp.Domain.Repositories;
+using Abp.Domain.Uow;
 using Abp.Runtime.Validation;
 using Abp.Web.Models;
 using AutoMapper.QueryableExtensions;
@@ -24,15 +25,17 @@ namespace Repairis.Web.Controllers
     public class SparePartsController : RepairisControllerBase
     {
         private readonly IRepository<SparePart> _sparePartRepository;
+        private readonly IRepository<SparePartCompatibility, string> _compatibilityRepository;
         private readonly ISparePartAppService _sparePartAppService;
         private readonly IBrandAppService _brandAppService;
 
 
-        public SparePartsController(IRepository<SparePart> sparePartRepository, ISparePartAppService sparePartAppService, IBrandAppService brandAppService)
+        public SparePartsController(IRepository<SparePart> sparePartRepository, ISparePartAppService sparePartAppService, IBrandAppService brandAppService, IRepository<SparePartCompatibility, string> compatibilityRepository)
         {
             _sparePartRepository = sparePartRepository;
             _sparePartAppService = sparePartAppService;
             _brandAppService = brandAppService;
+            _compatibilityRepository = compatibilityRepository;
         }
 
         // GET: SpareParts
@@ -45,7 +48,7 @@ namespace Repairis.Web.Controllers
 
         [Route("/api/SpareParts/")]
         [DontWrapResult]
-        public ActionResult OrdersDataSource([FromBody] DataManager dm)
+        public ActionResult SparePartsDataSource([FromBody] DataManager dm)
         {
             var ordersQueryable = _sparePartRepository.GetAll();
             int count = ordersQueryable.AsQueryable().Count();
@@ -106,6 +109,7 @@ namespace Repairis.Web.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [DisableValidation]
+        [UnitOfWork]
         public async Task<ActionResult> Edit(SparePartFullEntityDto input)
         {
             if (ModelState.IsValid)
@@ -120,10 +124,21 @@ namespace Repairis.Web.Controllers
                 sparePart.RecommendedPrice = input.RecommendedPrice;
                 sparePart.StockStatus = input.StockStatus;
                 sparePart.StockQuantity = input.StockQuantity;
-                //sparePart.CompatibleDeviceModels = input.CompatibleDeviceModels;
-
                 await _sparePartRepository.InsertOrUpdateAsync(sparePart);
 
+                var inputDeviceModelIds = input.CompatibleDeviceModelIds.Distinct();
+                await _compatibilityRepository.DeleteAsync(x => x.SparePartId == sparePart.Id);
+                CurrentUnitOfWork.SaveChanges();
+                foreach (var deviceModelId in inputDeviceModelIds)
+                {
+                    await _compatibilityRepository.InsertAsync(new SparePartCompatibility
+                    {
+                        DeviceModelId = deviceModelId,
+                        SparePartId = sparePart.Id
+                    });
+                    CurrentUnitOfWork.SaveChanges();
+                }
+                
                 return RedirectToAction("Index");
             }
 
