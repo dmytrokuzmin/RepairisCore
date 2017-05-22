@@ -80,6 +80,14 @@ namespace Repairis
                         src.Device.DeviceModel.Brand.BrandName + " " +
                         src.Device.DeviceModel.DeviceModelName));
 
+                cfg.CreateMap<Order, OrderReportItemDto>()
+                    .ForMember(dest => dest.AssignedMasterFullName, opt => opt.MapFrom(src => src.AssignedEmployee.EmployeeUser.Surname + " " + src.AssignedEmployee.EmployeeUser.Name)).ForMember(dest => dest.AssignedMasterFullName, opt => opt.MapFrom(src => src.AssignedEmployee.EmployeeUser.Surname + " " + src.AssignedEmployee.EmployeeUser.Name))
+                    .ForMember(dest => dest.DevicePickupDate, opt => opt.MapFrom(src => src.DevicePickupDate))
+                    .ForMember(dest => dest.RepairPrice, opt => opt.MapFrom(src => src.RepairPrice ?? 0))
+                    .ForMember(dest => dest.SparePartsTotalCost, opt => opt.MapFrom(src => src.SparePartsUsed.Sum(x => x.PricePerItem * x.Quantity)))
+                    .ForMember(dest => dest.SparePartsTotalSupplierCost, opt => opt.MapFrom(src => src.SparePartsUsed.Sum(x => x.SparePart.SupplierPrice * x.Quantity)));
+
+
                 //SparePart -> SparePartBasicEntityDto
                 cfg.CreateMap<SparePart, SparePartBasicEntityDto>()
                     .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))

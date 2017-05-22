@@ -14,5 +14,6 @@
         public const string DeviceCategories = "DeviceCategories";
         public const string DeviceModels = "DeviceModels";
         public const string SpareParts = "SpareParts";
+        public const string Reports = "Reports";
     }
 }

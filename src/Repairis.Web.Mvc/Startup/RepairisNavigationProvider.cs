@@ -122,6 +122,15 @@ namespace Repairis.Web.Startup
                                 icon: "fa fa-info"
                             )
                         )
+                        .AddItem(
+                            new MenuItemDefinition(
+                                PageNames.Reports,
+                                L("Reports"),
+                                url: "Reports",
+                                icon: "fa fa-bar-chart",
+                                requiresAuthentication: true
+                            )
+                        )
                 );
         }
 
