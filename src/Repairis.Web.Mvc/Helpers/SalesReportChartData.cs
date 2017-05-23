@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Repairis.Web.Helpers
 {
@@ -20,7 +16,13 @@ namespace Repairis.Web.Helpers
         }
 
         public int Year { get; set; }
-        public int RepairTotalPrice { get; set; }
+
+        public decimal TotalRevenue
+        {
+            get { return RepairTotalPrice + SparePartsTotalCost - SparePartsTotalSupplierCost; }
+        }
+
+        public decimal RepairTotalPrice { get; set; }
         public decimal SparePartsTotalCost { get; set; }
         public decimal SparePartsTotalSupplierCost { get; set; }
     }

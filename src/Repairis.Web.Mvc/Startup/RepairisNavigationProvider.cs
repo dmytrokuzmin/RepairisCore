@@ -14,15 +14,6 @@ namespace Repairis.Web.Startup
             context.Manager.MainMenu
                 .AddItem(
                     new MenuItemDefinition(
-                        PageNames.Home,
-                        L("HomePage"),
-                        url: "",
-                        icon: "fa fa-home",
-                        requiresAuthentication: true
-                    )
-                )
-                .AddItem(
-                    new MenuItemDefinition(
                         PageNames.Orders,
                         L("Orders"),
                         url: "Orders",
@@ -85,6 +76,35 @@ namespace Repairis.Web.Startup
                 )
                 .AddItem(
                     new MenuItemDefinition(
+                            PageNames.Reports,
+                            L("Reports"),                         
+                            icon: "fa fa-bar-chart"
+                        )
+                        .AddItem(
+                            new MenuItemDefinition(
+                                PageNames.CompanySalesReport,
+                                L("CompanySalesReport"),
+                                url: "Reports/CompanySalesReport",
+                                requiresAuthentication: true
+                            ))
+                        .AddItem(
+                            new MenuItemDefinition(
+                                PageNames.CompanyOrdersReport,
+                                L("CompanyOrdersReport"),
+                                url: "Reports/CompanyOrdersReport",
+                                requiresAuthentication: true
+                            ))
+                        .AddItem(
+                            new MenuItemDefinition(
+                                PageNames.EmployeesSalaryReport,
+                                L("EmployeesSalaryReport"),
+                                url: "Reports/EmployeesSalaryReport",
+                                requiresAuthentication: true
+                            ))
+
+                )
+                .AddItem(
+                    new MenuItemDefinition(
                             "Settings",
                             new LocalizableString("Settings", "Repairis"),
                             icon: "fa fa-cogs"
@@ -112,22 +132,6 @@ namespace Repairis.Web.Startup
                                 L("Employees"),
                                 url: "Employees",
                                 icon: "fa fa-users",
-                                requiresAuthentication: true
-                            )
-                        ).AddItem(
-                            new MenuItemDefinition(
-                                PageNames.About,
-                                L("About"),
-                                url: "About",
-                                icon: "fa fa-info"
-                            )
-                        )
-                        .AddItem(
-                            new MenuItemDefinition(
-                                PageNames.Reports,
-                                L("Reports"),
-                                url: "Reports",
-                                icon: "fa fa-bar-chart",
                                 requiresAuthentication: true
                             )
                         )

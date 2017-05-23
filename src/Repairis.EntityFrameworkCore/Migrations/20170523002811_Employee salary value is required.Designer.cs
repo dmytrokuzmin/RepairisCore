@@ -14,9 +14,10 @@ using Repairis.SpareParts;
 namespace Repairis.Migrations
 {
     [DbContext(typeof(RepairisDbContext))]
-    partial class RepairisDbContextModelSnapshot : ModelSnapshot
+    [Migration("20170523002811_Employee salary value is required")]
+    partial class Employeesalaryvalueisrequired
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.1.1")

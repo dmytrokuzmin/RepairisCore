@@ -15,5 +15,8 @@
         public const string DeviceModels = "DeviceModels";
         public const string SpareParts = "SpareParts";
         public const string Reports = "Reports";
+        public const string CompanySalesReport = "CompanySalesReport";
+        public const string CompanyOrdersReport = "CompanyOrdersReport";
+        public const string EmployeesSalaryReport = "EmployeesSalaryReport";
     }
 }

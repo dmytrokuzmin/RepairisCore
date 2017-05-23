@@ -1,0 +1,84 @@
+﻿@{
+    ViewBag.Title = "Company report";
+}
+
+<div class="row"> 
+    <div class="col-md-2">
+        <form>
+            <div class="form-group">
+                <label for="YearSelector">@L("SelectedYear")</label>
+                <ej-drop-down-list id="YearSelector" datasource="ViewBag.Years" width="100%" change="updateChartDatasource" selected-index="0">
+                </ej-drop-down-list>
+            </div>
+        </form>
+        </div>
+    <div class="col-md-10">
+        <ej-chart id="chart" is-responsive="true">
+            <e-primary-y-axis label-format="UAH {value}"/>            
+            <e-chart-series>
+                <e-series name="@L("TotalRevenue")" x-name="MonthName" y-name="TotalRevenue" type="Column">
+                    <e-chart-tooltip visible="true"/>
+                </e-series>
+                <e-series name="@L("RepairWorkPrice")" x-name="MonthName" y-name="RepairTotalPrice" type="Column">
+                    <e-chart-tooltip visible="true"/>
+                </e-series>
+                <e-series name="@L("SparePartSales")" x-name="MonthName" y-name="SparePartsTotalCost" type="Column">
+                    <e-chart-tooltip visible="true"/>
+                </e-series>
+                <e-series name="@L("SparePartCost")" x-name="MonthName" y-name="SparePartsTotalSupplierCost" type="Column">
+                    <e-chart-tooltip visible="true"/>
+                </e-series>
+            </e-chart-series>
+        </ej-chart>
+    </div>
+</div>
+
+
+@section Scripts{
+    <script type="text/javascript">
+        var dataManager = new ej.DataManager({
+            url: "/api/SalesReportDatasource"
+        });
+        $("#chart").ejChart({
+            series: [
+                {
+                    dataSource: dataManager
+                },
+                {
+                    dataSource: dataManager
+                },
+                {
+                    dataSource: dataManager
+                },
+                {
+                    dataSource: dataManager
+                }
+            ]
+        });
+
+        function updateChartDatasource(args) {
+            var chartObj = $("#chart").ejChart("instance");
+            var dataManager = new ej.DataManager({
+                url: "/api/SalesReportDatasource",
+                headers: [{ "year": args.value }]
+            });
+            $("#chart").ejChart({
+                series: [
+                    {
+                        dataSource: dataManager
+                    },
+                    {
+                        dataSource: dataManager
+                    },
+                    {
+                        dataSource: dataManager
+                    },
+                    {
+                        dataSource: dataManager
+                    }
+                ]
+            });
+            chartObj.redraw();
+        }
+    </script>
+}

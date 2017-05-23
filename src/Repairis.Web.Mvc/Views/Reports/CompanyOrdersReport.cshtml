@@ -1,0 +1,72 @@
+﻿@{
+    ViewBag.Title = "Company report";
+}
+
+<div class="row"> 
+    <div class="col-md-2">
+        <form>
+            <div class="form-group">
+                <label for="YearSelector">@L("SelectedYear")</label>
+                <ej-drop-down-list id="YearSelector" datasource="ViewBag.Years" width="100%" change="updateChartDatasource" selected-index="0">
+                </ej-drop-down-list>
+            </div>
+        </form>
+        </div>
+    <div class="col-md-10">
+        <ej-chart id="chart" is-responsive="true">        
+            <e-chart-series>
+                <e-series name="@L("NewOrders")" x-name="MonthName" y-name="NewOrdersCount" type="Column">
+                    <e-chart-tooltip visible="true"/>
+                </e-series>
+                <e-series name="@L("CompletedOrders")" x-name="MonthName" y-name="CompletedOrdersCount" type="Column">
+                    <e-chart-tooltip visible="true"/>
+                </e-series>
+            </e-chart-series>
+        </ej-chart>
+    </div>
+</div>
+
+
+@section Scripts{
+    <script type="text/javascript">
+        var dataManager1 = new ej.DataManager({
+            url: "/api/NewOrdersReportDatasource"
+        });
+        var dataManager2 = new ej.DataManager({
+            url: "/api/CompletedOrdersReportDatasource"
+        });
+        $("#chart").ejChart({
+            series: [
+                {
+                    dataSource: dataManager1
+                },
+                {
+                    dataSource: dataManager2
+                }
+            ]
+        });
+
+        function updateChartDatasource(args) {
+            var chartObj = $("#chart").ejChart("instance");
+            dataManager1 = new ej.DataManager({
+                url: "/api/NewOrdersReportDatasource",
+                headers: [{ "year": args.value }]
+            });
+            dataManager2 = new ej.DataManager({
+                url: "/api/CompletedOrdersReportDatasource",
+                headers: [{ "year": args.value }]
+            });
+            $("#chart").ejChart({
+                series: [
+                    {
+                        dataSource: dataManager1
+                    },
+                    {
+                        dataSource: dataManager2
+                    }
+                ]
+            });
+            chartObj.redraw();
+        }
+    </script>
+}

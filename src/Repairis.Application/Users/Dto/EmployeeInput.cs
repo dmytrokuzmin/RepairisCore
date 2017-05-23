@@ -42,6 +42,6 @@ namespace Repairis.Users.Dto
         public string Address { get; set; }
 
         public bool SalaryIsFlat { get; set; }
-        public decimal? SalaryValue { get; set; }
+        public decimal SalaryValue { get; set; }
     }
 }

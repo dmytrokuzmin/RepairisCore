@@ -19,7 +19,7 @@ namespace Repairis.Authorization.Users
 
         public bool SalaryIsFlat { get; set; } = false;
 
-        public decimal? SalaryValue { get; set; }
+        public decimal SalaryValue { get; set; }
 
         public bool IsDeleted { get; set; } = false;
         public DateTime? DeletionTime { get; set; }

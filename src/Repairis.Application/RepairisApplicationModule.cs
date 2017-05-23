@@ -199,6 +199,12 @@ namespace Repairis
                     .ForMember(dest => dest.SalaryIsFlat, opt => opt.MapFrom(src => src.EmployeeInfo.SalaryIsFlat))
                     .ForMember(dest => dest.AssignedOrders, opt => opt.MapFrom(src => src.EmployeeInfo.AssignedOrders));
 
+                cfg.CreateMap<EmployeeInfo, EmployeeDropDownListDto>()
+                    .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
+                    .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.EmployeeUser.Name))
+                    .ForMember(dest => dest.Surname, opt => opt.MapFrom(src => src.EmployeeUser.Surname))
+                    .ForMember(dest => dest.FatherName, opt => opt.MapFrom(src => src.EmployeeUser.FatherName));
+
                 //Order -> OrderFullEntityDto
                 cfg.CreateMap<Order, OrderFullEntityDto>()
                     .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))

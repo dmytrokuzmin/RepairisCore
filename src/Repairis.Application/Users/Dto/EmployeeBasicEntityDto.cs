@@ -12,7 +12,7 @@ namespace Repairis.Users.Dto
         public string SecondaryPhoneNumber { get; set; }
         public string EmailAddress { get; set; }
         public bool SalaryIsFlat { get; set; }
-        public decimal? SalaryValue { get; set; }
+        public decimal SalaryValue { get; set; }
 
     }
 }
