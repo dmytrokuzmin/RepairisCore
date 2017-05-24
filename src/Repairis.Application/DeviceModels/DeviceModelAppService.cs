@@ -34,7 +34,7 @@ namespace Repairis.DeviceModels
 
         public async Task<DeviceModel> FindDeviceModelAsync(DeviceModelBasicEntityDto input)
         {
-            return await _deviceModelDomainService.FindDeviceModelAsync(input.DeviceModelName, input.DeviceCategoryName, input.BrandName);
+            return await _deviceModelDomainService.FindDeviceModelAsync(input.DeviceCategoryName, input.BrandName, input.DeviceModelName);
         }
 
         public async Task<DeviceModelBasicEntityDto> GetDeviceModelAsync(int id)
@@ -49,24 +49,18 @@ namespace Repairis.DeviceModels
 
         public async Task<bool> ExistsAsync(DeviceModelBasicEntityDto input)
         {
-            return await _deviceModelDomainService.ExistsAsync(input.DeviceModelName, input.DeviceCategoryName, input.BrandName);
+            return await _deviceModelDomainService.ExistsAsync(input.DeviceCategoryName, input.BrandName, input.DeviceModelName);
         }
 
         public async Task<DeviceModel> GetOrCreateAsync(DeviceModelBasicEntityDto input)
         {
-            return await _deviceModelDomainService.GetOrCreateAsync(input.DeviceModelName, input.DeviceCategoryName, input.BrandName);
+            return await _deviceModelDomainService.GetOrCreateAsync(input.DeviceCategoryName, input.BrandName, input.DeviceModelName);
 
         }
 
         public async Task CreateDeviceModelAsync(DeviceModelBasicEntityDto input)
         {
-            await
-                _deviceModelDomainService.CreateAsync(input.DeviceModelName, input.DeviceCategoryName, input.BrandName);
-
-            Logger.Info("DeviceModels: Created a new device model: " +
-                        input.BrandName + " " +
-                        input.DeviceModelName + " (" +
-                        input.DeviceCategoryName + ")");
+            await _deviceModelDomainService.CreateAsync(input.DeviceCategoryName, input.BrandName, input.DeviceModelName);
         }
 
 
