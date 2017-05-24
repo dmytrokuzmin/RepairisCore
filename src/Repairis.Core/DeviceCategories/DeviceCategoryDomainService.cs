@@ -44,8 +44,11 @@ namespace Repairis.DeviceCategories
 
         public async Task<DeviceCategory> CreateAsync(DeviceCategory deviceCategory)
         {
-            var id = await _deviceCategoryRepository.InsertAndGetIdAsync(deviceCategory);
-            return await _deviceCategoryRepository.GetAsync(id);
+            if (await ExistsAsync(deviceCategory.DeviceCategoryName))
+            {
+                throw new UserFriendlyException(L("DeviceCategoryAlreadyExists"));
+            }
+            return await _deviceCategoryRepository.InsertAsync(deviceCategory);
         }
 
 
@@ -74,7 +77,7 @@ namespace Repairis.DeviceCategories
 
             if (deviceCategory.DeviceModels.Count != 0)
             {
-                throw new UserFriendlyException(LocalizationSource.GetString("CannotDeleteDeviceCategoryBecauseIsBeingUsed"));
+                throw new UserFriendlyException(L("CannotDeleteDeviceCategoryBecauseIsBeingUsed"));
             }
 
             if (deviceCategory.IsActive)
@@ -94,7 +97,7 @@ namespace Repairis.DeviceCategories
 
             if (deviceCategory == null)
             {
-                throw new UserFriendlyException(LocalizationSource.GetString("DeviceCategoryNotFound"));
+                throw new UserFriendlyException(L("DeviceCategoryNotFound"));
             }
 
             deviceCategory.IsActive = true;

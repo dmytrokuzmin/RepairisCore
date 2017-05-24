@@ -41,8 +41,12 @@ namespace Repairis.Brands
 
         public async Task<Brand> CreateAsync(Brand brand)
         {
-            var id = await _brandRepository.InsertAndGetIdAsync(brand);
-            return await _brandRepository.GetAsync(id);
+            if (await ExistsAsync(brand.BrandName))
+            {
+                throw new UserFriendlyException(L("BrandAlreadyExists"));
+            }
+
+            return await _brandRepository.InsertAsync(brand);
         }
 
 
@@ -72,8 +76,7 @@ namespace Repairis.Brands
 
             if ((brand.DeviceModels.Count != 0) || (brand.SpareParts.Count != 0))
             {
-                throw new UserFriendlyException(
-                    LocalizationSource.GetString("CannotDeleteBrandBecauseIsBeingUsed"));
+                throw new UserFriendlyException(L("CannotDeleteBrandBecauseIsBeingUsed"));
             }
 
             if (brand.IsActive)
@@ -92,7 +95,7 @@ namespace Repairis.Brands
 
             if (brand == null)
             {
-                throw new UserFriendlyException(LocalizationSource.GetString("BrandNotFound"));
+                throw new UserFriendlyException(L("BrandNotFound"));
             }
 
             brand.IsActive = true;

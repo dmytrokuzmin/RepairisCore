@@ -5,6 +5,6 @@ namespace Repairis.Devices
 {
     public interface IDeviceDomainService : IDomainService
     {
-        Task<Device> GetOrCreateAsync(string deviceCategoryName, string manufacturerName, string deviceModelName, string serialNumber);
+        Task<Device> GetOrCreateAsync(string deviceCategoryName, string brandName, string deviceModelName, string serialNumber);
     }
 }

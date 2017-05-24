@@ -14,35 +14,22 @@ namespace Repairis.Devices
         {
             _deviceModelDomainService = deviceModelDomainService;
             _deviceRepository = deviceRepository;
-            LocalizationSourceName = RepairisConsts.LocalizationSourceName;
         }
 
         public async Task<Device> GetOrCreateAsync(string deviceCategoryName, string brandName, string deviceModelName, string serialNumber)
         {
-            var deviceModel =
-                await _deviceModelDomainService.GetOrCreateAsync(deviceCategoryName, brandName, deviceModelName);
+            var deviceModel = await _deviceModelDomainService.GetOrCreateAsync(deviceCategoryName, brandName, deviceModelName);
 
-            Device device = null;
-
-            if (!string.IsNullOrWhiteSpace(serialNumber))
+            var device = await _deviceRepository.FirstOrDefaultAsync(x =>
+                x.DeviceModelId == deviceModel.Id &&
+                x.SerialNumber.ToUpper() == serialNumber.ToUpper());
+            
+            return device ?? await _deviceRepository.InsertAsync(new Device
             {
-                device = await _deviceRepository.FirstOrDefaultAsync(x =>
-                    x.DeviceModelId == deviceModel.Id &&
-                    x.SerialNumber.ToUpper() == serialNumber.ToUpper());
-            }
-
-            if (device == null)
-            {
-                device = new Device
-                {
-                    DeviceModel = deviceModel,
-                    DeviceModelId = deviceModel.Id,
-                    SerialNumber = serialNumber
-                };
-            }
-
-            var id = await _deviceRepository.InsertAndGetIdAsync(device);
-            return _deviceRepository.Get(id);
+                DeviceModel = deviceModel,
+                DeviceModelId = deviceModel.Id,
+                SerialNumber = serialNumber
+            });          
         }
     }
 }

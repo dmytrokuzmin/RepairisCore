@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using Abp.AspNetCore.Mvc.Authorization;
+using Abp.UI;
 using Microsoft.AspNetCore.Mvc;
 using Repairis.Brands;
 using Repairis.Brands.Dto;
@@ -48,8 +49,15 @@ namespace Repairis.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                await _brandAppService.CreateBrandAsync(brand);
-                return RedirectToAction("Index");
+                try
+                {
+                    await _brandAppService.CreateBrandAsync(brand);
+                    return RedirectToAction("Index");
+                }
+                catch (UserFriendlyException ex)
+                {
+                    ModelState.AddModelError(nameof(brand.BrandName), ex.Message);
+                }
             }
 
             return View(brand);

@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using Abp.AspNetCore.Mvc.Authorization;
+using Abp.UI;
 using Microsoft.AspNetCore.Mvc;
 using Repairis.Controllers;
 using Repairis.DeviceCategories;
@@ -48,8 +49,15 @@ namespace Repairis.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                await _deviceCategoryAppService.CreateDeviceCategoryAsync(deviceCategory);
-                return RedirectToAction("Index");
+                try
+                {
+                    await _deviceCategoryAppService.CreateDeviceCategoryAsync(deviceCategory);
+                    return RedirectToAction("Index");
+                }
+                catch (UserFriendlyException ex)
+                {
+                    ModelState.AddModelError(nameof(deviceCategory.DeviceCategoryName), ex.Message);
+                }
             }
 
             return View(deviceCategory);

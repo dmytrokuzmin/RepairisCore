@@ -30,9 +30,7 @@ namespace Repairis.DeviceModels
 
         public async Task CreateAsync(DeviceModel deviceModel)
         {
-            if (
-                !await
-                    ExistsAsync(deviceModel.DeviceCategory.DeviceCategoryName, deviceModel.Brand.BrandName, deviceModel.DeviceModelName))
+            if (!await ExistsAsync(deviceModel.DeviceCategory.DeviceCategoryName, deviceModel.Brand.BrandName, deviceModel.DeviceModelName))
             {
                 await _deviceModelRepository.InsertAsync(deviceModel);
             }
@@ -42,7 +40,7 @@ namespace Repairis.DeviceModels
         {
             if (await ExistsAsync(deviceCategoryName, brandName, deviceModelName))
             {
-                throw new UserFriendlyException(LocalizationSource.GetString("DeviceModelAlreadyExists"));
+                throw new UserFriendlyException(L("DeviceModelAlreadyExists"));
             }
 
             var deviceCategory = await _deviceCategoryDomainService.GetOrCreateAsync(deviceCategoryName);
@@ -64,7 +62,7 @@ namespace Repairis.DeviceModels
         {
             if (await ExistsAsync(deviceCategoryName, brandName, deviceModelName))
             {
-                throw new UserFriendlyException(LocalizationSource.GetString("DeviceModelAlreadyExists"));
+                throw new UserFriendlyException(L("DeviceModelAlreadyExists"));
             }
 
             var deviceCategory = await _deviceCategoryDomainService.GetOrCreateAsync(deviceCategoryName);
@@ -134,12 +132,7 @@ namespace Repairis.DeviceModels
             }
 
 
-            if (deviceModel != null)
-            {
-                return deviceModel;
-            }
-
-            var id = await _deviceModelRepository.InsertAndGetIdAsync(new DeviceModel
+            return deviceModel ??  await _deviceModelRepository.InsertAsync(new DeviceModel
             {
                 BrandId = brand.Id,
                 Brand = brand,
@@ -147,20 +140,14 @@ namespace Repairis.DeviceModels
                 DeviceCategoryId = deviceCategory.Id,
                 DeviceModelName = deviceModelName
             });
-
-            return await _deviceModelRepository.GetAsync(id);
         }
-
-
-
-
 
         public async Task<DeviceModel> GetDeviceModelAsync(int id)
         {
             var deviceModel = await _deviceModelRepository.FirstOrDefaultAsync(id);
             if (deviceModel == null)
             {
-                throw new UserFriendlyException(LocalizationSource.GetString("DeviceModelNotFound"));
+                throw new UserFriendlyException(L("DeviceModelNotFound"));
             }
             return deviceModel;
         }
@@ -171,12 +158,12 @@ namespace Repairis.DeviceModels
 
             if (deviceModel == null)
             {
-                throw new UserFriendlyException(LocalizationSource.GetString("DeviceModelNotFound"));
+                throw new UserFriendlyException(L("DeviceModelNotFound"));
             }
 
             //if ((deviceModel.Orders.Count != 0))
             //{
-            //    throw new UserFriendlyException(LocalizationSource.GetString("CannotDeleteDeviceModelBecauseIsBeingUsed"));
+            //    throw new UserFriendlyException(L("CannotDeleteDeviceModelBecauseIsBeingUsed"));
             //}
 
             if (deviceModel.IsActive)
@@ -195,7 +182,7 @@ namespace Repairis.DeviceModels
 
             if (deviceModel == null)
             {
-                throw new UserFriendlyException(LocalizationSource.GetString("DeviceModelNotFound"));
+                throw new UserFriendlyException(L("DeviceModelNotFound"));
             }
 
             deviceModel.IsActive = true;

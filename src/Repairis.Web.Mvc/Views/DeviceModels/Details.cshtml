@@ -1,12 +1,13 @@
 ﻿@model Repairis.DeviceModels.Dto.DeviceModelBasicEntityDto
 
 @{
-    ViewBag.Title = $"Details: {Model.DeviceCategoryName} {Model.BrandName} {Model.DeviceModelName}";
+    var deviceModelName = "{Model.DeviceCategoryName} {Model.BrandName} {Model.DeviceModelName}";
+    ViewBag.Title = $"Details: {deviceModelName}";
 }
 <div>
     <a asp-action="Index">Back to List</a>
 </div>
-<h3>Device model details</h3>
+<h3>Edit device model @deviceModelName</h3>
 <hr />
 <form asp-action="Details" method="post">
     <div class="form-horizontal">

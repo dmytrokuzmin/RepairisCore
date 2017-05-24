@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using Abp.AspNetCore.Mvc.Authorization;
+using Abp.UI;
 using Microsoft.AspNetCore.Mvc;
 using Repairis.Controllers;
 using Repairis.DeviceModels;
@@ -54,8 +55,15 @@ namespace Repairis.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                await _deviceModelAppService.CreateDeviceModelAsync(input);
-                return RedirectToAction("Index");
+                try
+                {
+                    await _deviceModelAppService.CreateDeviceModelAsync(input);
+                    return RedirectToAction("Index");
+                }
+                catch (UserFriendlyException ex)
+                {
+                    ModelState.AddModelError(nameof(input.DeviceModelName), ex.Message);
+                }
             }
 
             return View(input);
