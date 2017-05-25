@@ -1,14 +1,14 @@
-﻿using Abp.Application.Services.Dto;
-
-namespace Repairis.Users.Dto
+﻿namespace Repairis.Users.Dto
 {
-    public class EmployeeDropDownListDto : EntityDto<long>
+    public class EmployeeDropDownListDto
     {
+        public long? Id { get; set; }
+
         public string FullName
         {
             get
             {
-                return $"{Surname} {Name[0]}." + (string.IsNullOrEmpty(FatherName) ? "" : $" {FatherName[0]}.");
+                return $"{Surname} {Name}" + (string.IsNullOrEmpty(FatherName) ? "" : $" {FatherName}");
             }
         }
 

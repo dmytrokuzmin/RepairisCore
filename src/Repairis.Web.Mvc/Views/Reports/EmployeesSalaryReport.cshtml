@@ -2,23 +2,28 @@
     ViewBag.Title = "Salary report";
 }
 
-<div class="row"> 
-    <div class="col-md-2">
-        <form>
+<div class="row">
+    <form>
+        <div class="col-md-2">
             <div class="form-group">
                 <label for="YearSelector">@L("SelectedYear")</label>
                 <ej-drop-down-list id="YearSelector" datasource="ViewBag.Years" width="100%" change="updateChartDatasource" selected-index="0">
                 </ej-drop-down-list>
             </div>
+        </div>
+        <div class="col-md-3">
             <div class="form-group">
                 <label for="EmployeeSelector">@L("SelectEmployee")</label>
                 <ej-drop-down-list id="EmployeeSelector" datasource="ViewBag.Employees" width="100%" action-begin="updateChartDatasource" change="updateChartDatasource" selected-index="0">                  
                     <e-drop-down-list-fields text="FullName" value="Id"  />
                 </ej-drop-down-list>
             </div>
-        </form>
-    </div>
-    <div class="col-md-10">
+        </div>
+    </form>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
         <ej-chart id="chart" is-responsive="true">
             <e-primary-y-axis label-format="UAH {value}"/>            
             <e-chart-series>
