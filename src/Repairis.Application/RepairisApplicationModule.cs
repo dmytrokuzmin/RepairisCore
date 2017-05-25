@@ -224,7 +224,7 @@ namespace Repairis
                     .ForMember(dest => dest.SparePartsUsed, opt => opt.MapFrom(src => src.SparePartsUsed))
                     .ForMember(dest => dest.RepairPrice, opt => opt.MapFrom(src => src.RepairPrice))
                     .ForMember(dest => dest.WorkDoneDescripton, opt => opt.MapFrom(src => src.WorkDoneDescripton))
-                    ;
+                    .ForMember(dest => dest.AssignedEmployeeId, opt => opt.MapFrom(src => src.AssignedEmployeeId));
 
 
                 cfg.CreateMap<Order, OrderCompletionDto>()
