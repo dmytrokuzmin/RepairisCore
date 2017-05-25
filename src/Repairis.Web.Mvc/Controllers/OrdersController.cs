@@ -153,12 +153,12 @@ namespace Repairis.Web.Controllers
         // GET: Orders/Edit/5
         public async Task<ActionResult> Edit(long? id)
         {
-            if (id == null)
+            if (!id.HasValue)
             {
                 return BadRequest();
             }
 
-            var orderDto = await _orderAppService.GetOrderDtoAsync((long)id);
+            var orderDto = await _orderAppService.GetOrderDtoAsync(id.Value);
             if (orderDto == null)
             {
                 return NotFound();
