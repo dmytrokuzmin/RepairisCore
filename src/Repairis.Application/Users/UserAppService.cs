@@ -7,6 +7,7 @@ using Abp.Domain.Repositories;
 using Abp.UI;
 using Repairis.Authorization;
 using Repairis.Authorization.Users;
+using Repairis.Authorization.Roles;
 using Repairis.Users.Dto;
 using Microsoft.AspNetCore.Identity;
 
@@ -17,17 +18,23 @@ namespace Repairis.Users
     public class UserAppService : RepairisAppServiceBase, IUserAppService
     {
         private readonly IRepository<User, long> _userRepository;
+        private readonly IRepository<CustomerInfo, long> _customerInfoRepository;
+        private readonly IRepository<EmployeeInfo, long> _employeeInfoRepository;
         private readonly IPermissionManager _permissionManager;
         private readonly IPasswordHasher<User> _passwordHasher;
+        private readonly UserRegistrationManager _userRegistrationManager;
 
         public UserAppService(
             IRepository<User, long> userRepository, 
             IPermissionManager permissionManager,
-            IPasswordHasher<User> passwordHasher)
+            IPasswordHasher<User> passwordHasher, UserRegistrationManager userRegistrationManager, IRepository<CustomerInfo, long> customerInfoRepository, IRepository<EmployeeInfo, long> employeeInfoRepository)
         {
             _userRepository = userRepository;
             _permissionManager = permissionManager;
             _passwordHasher = passwordHasher;
+            _userRegistrationManager = userRegistrationManager;
+            _customerInfoRepository = customerInfoRepository;
+            _employeeInfoRepository = employeeInfoRepository;
         }
 
         public async Task ProhibitPermission(ProhibitPermissionInput input)
@@ -85,33 +92,34 @@ namespace Repairis.Users
         }
 
 
-        public async Task<User> GetOrCreateCustomerAsync(CustomerInput input)
+        public async Task<CustomerInfo> GetOrCreateCustomerAsync(CustomerInput input)
         {
-            var customer = await _userRepository.FirstOrDefaultAsync(
+            var user = await _userRepository.FirstOrDefaultAsync(
                 x => x.Name.ToUpper() == input.Name.ToUpper() &&
                      x.Surname.ToUpper() == input.Surname.ToUpper() &&
                      x.FatherName.ToUpper() == input.FatherName.ToUpper() &&
                      (x.EmailAddress.ToUpper() == input.EmailAddress.ToUpper() ||
                       x.PhoneNumber == input.PhoneNumber));
 
-            if (customer == null)
+            if (user == null)
             {
-                customer = await CreateCustomerAsync(input);
-
-                //var customerInfo = (new CustomerInfo
-                //{
-                //    CustomerType = input.CustomerType,
-                //    AdditionalInfo = input.AdditionalInfo,
-                //    User = customer
-                //});
-
-                //customer.CustomerInfo = customerInfo;
-
-                //var customerRole = await _roleManager.GetRoleByNameAsync("Customer");
-                //customer.Roles.Add(new UserRole(null, customer.Id, customerRole.Id));          
+                return await CreateCustomerAsync(input);      
             }
 
-            return customer;
+            if (user.CustomerInfo == null)
+            {
+                var customerInfo = await _customerInfoRepository.InsertAsync(new CustomerInfo
+                {
+                    CustomerUserId = user.Id,
+                    CustomerType = input.CustomerType,
+                    AdditionalInfo = input.AdditionalInfo
+                });
+
+                user.CustomerInfoId = customerInfo.Id;
+                await _userRepository.UpdateAsync(user);
+            }
+
+            return user.CustomerInfo;
         }
 
         public async Task<CustomerFullEntityDto> GetCustomerDtoAsync(long id)
@@ -132,7 +140,7 @@ namespace Repairis.Users
             var customer = await _userRepository.FirstOrDefaultAsync(id);
             if (customer?.CustomerInfo == null)
             {
-                throw new UserFriendlyException(LocalizationSource.GetString("CustomerNotFound"));
+                throw new UserFriendlyException(L("CustomerNotFound"));
             }
 
             if (customer.IsActive)
@@ -146,42 +154,32 @@ namespace Repairis.Users
         }
 
 
-        public async Task<User> CreateCustomerAsync(CustomerInput input)
+        public async Task<CustomerInfo> CreateCustomerAsync(CustomerInput input)
         {
             string password = User.CreateRandomPassword();
 
-            var user = new User
-            {
-                Name = input.Name,
-                Surname = input.Surname,
-                FatherName = input.FatherName,
-                PhoneNumber = input.PhoneNumber,
-                SecondaryPhoneNumber = input.SecondaryPhoneNumber,
-                EmailAddress = input.EmailAddress,
-                Address = input.Address,
-                UserName = input.EmailAddress,
-                IsEmailConfirmed = false,
-                IsActive = true,
-                IsDeleted = false,
-                IsPhoneNumberConfirmed = false,
-                CustomerInfo = new CustomerInfo
-                {
-                    CustomerType = input.CustomerType,
-                    AdditionalInfo = input.AdditionalInfo,
-                }
-            };
-            user.Password = _passwordHasher.HashPassword(user, password);
-            var customerId = await _userRepository.InsertAndGetIdAsync(user
-            );
+            var user = await _userRegistrationManager.RegisterUserAsync(StaticRoleNames.Tenants.Customer, input.Name, input.Surname,
+                input.FatherName, input.PhoneNumber, input.SecondaryPhoneNumber, input.Address, input.EmailAddress,
+                input.PhoneNumber, password, false);
 
-            return await _userRepository.GetAsync(customerId);
+            var customerInfo = await _customerInfoRepository.InsertAsync(new CustomerInfo
+            {
+                CustomerUserId = user.Id,
+                CustomerType = input.CustomerType,
+                AdditionalInfo = input.AdditionalInfo
+            });
+
+            user.CustomerInfoId = customerInfo.Id;
+            await _userRepository.UpdateAsync(user);
+
+            //send password via email or sms
+
+            return customerInfo;
         }
 
 
         public async Task<ListResultDto<EmployeeBasicEntityDto>> GetAllActiveEmployeesAsync()
         {
-            //UserManager.GetRolesAsync()
-            //var role = _roleManager.GetRoleByNameAsync("Employee");
             var employees = await _userRepository.GetAllListAsync(x => x.IsActive && x.EmployeeInfo != null);
 
             return new ListResultDto<EmployeeBasicEntityDto>(
@@ -208,7 +206,7 @@ namespace Repairis.Users
             var employee = await _userRepository.FirstOrDefaultAsync(id);
             if (employee?.EmployeeInfo == null)
             {
-                throw new UserFriendlyException(LocalizationSource.GetString("EmployeeNotFound"));
+                throw new UserFriendlyException(L("EmployeeNotFound"));
             }
 
             if (employee.IsActive)
@@ -222,33 +220,26 @@ namespace Repairis.Users
         }
 
 
-        public async Task<User> CreateEmployeeAsync(EmployeeInput input)
+        public async Task<EmployeeInfo> CreateEmployeeAsync(EmployeeInput input)
         {
-            string password = User.CreateRandomPassword();
-            var user = new User
-            {
-                Name = input.Name,
-                Surname = input.Surname,
-                FatherName = input.FatherName,
-                PhoneNumber = input.PhoneNumber,
-                SecondaryPhoneNumber = input.SecondaryPhoneNumber,
-                EmailAddress = input.EmailAddress,
-                Address = input.Address,
-                UserName = input.EmailAddress,
-                IsEmailConfirmed = false,
-                IsActive = true,
-                IsDeleted = false,
-                IsPhoneNumberConfirmed = true,
-                EmployeeInfo = new EmployeeInfo
-                {
-                    SalaryIsFlat = input.SalaryIsFlat,
-                    SalaryValue = input.SalaryValue
-                }
-            };
-            user.Password = _passwordHasher.HashPassword(user, password);
-            var employeeId = await _userRepository.InsertAndGetIdAsync(user);
 
-            return await _userRepository.GetAsync(employeeId);
+            var user = await _userRegistrationManager.RegisterUserAsync(StaticRoleNames.Tenants.Employee, input.Name, input.Surname,
+                input.FatherName, input.PhoneNumber, input.SecondaryPhoneNumber, input.Address, input.EmailAddress,
+                input.PhoneNumber, input.Password, false);
+
+            var employeeInfo = await _employeeInfoRepository.InsertAsync(new EmployeeInfo
+            {
+                EmployeeUserId = user.Id,
+                SalaryIsFlat = input.SalaryIsFlat,
+                SalaryValue = input.SalaryValue
+            });
+
+            user.EmployeeInfoId = employeeInfo.Id;
+            await _userRepository.UpdateAsync(user);
+
+            //send password via email or sms
+
+            return employeeInfo;
         }
     }
 }

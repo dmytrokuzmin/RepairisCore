@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
+using Abp.Auditing;
+using Abp.Authorization.Users;
+using Repairis.Authorization.Users;
 
 namespace Repairis.Users.Dto
 {
@@ -42,6 +40,14 @@ namespace Repairis.Users.Dto
         public string Address { get; set; }
 
         public bool SalaryIsFlat { get; set; }
+        [Required]
+        [DataType(DataType.Currency)]
         public decimal SalaryValue { get; set; }
+
+        [Required]
+        [DataType(DataType.Password)]
+        [StringLength(AbpUserBase.MaxPlainPasswordLength)]
+        [DisableAuditing]
+        public string Password { get; set; }
     }
 }

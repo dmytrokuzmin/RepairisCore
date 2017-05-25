@@ -16,9 +16,9 @@ namespace Repairis.Users
 
         Task CreateUser(CreateUserInput input);
 
-        Task<User> CreateCustomerAsync(CustomerInput input);
+        Task<CustomerInfo> CreateCustomerAsync(CustomerInput input);
 
-        Task<User> GetOrCreateCustomerAsync(CustomerInput input);
+        Task<CustomerInfo> GetOrCreateCustomerAsync(CustomerInput input);
 
         Task<ListResultDto<CustomerBasicEntityDto>> GetAllActiveCustomersAsync();
 
@@ -26,7 +26,7 @@ namespace Repairis.Users
 
         Task DeleteCustomerAsync(long id);
 
-        Task<User> CreateEmployeeAsync(EmployeeInput input);
+        Task<EmployeeInfo> CreateEmployeeAsync(EmployeeInput input);
 
         Task<ListResultDto<EmployeeBasicEntityDto>> GetAllActiveEmployeesAsync();
 

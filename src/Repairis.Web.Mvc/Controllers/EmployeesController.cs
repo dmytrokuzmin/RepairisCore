@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections;
 using System.Linq;
 using System.Linq.Dynamic.Core;
-using System.Text;
 using System.Threading.Tasks;
 using Abp.AspNetCore.Mvc.Authorization;
 using Abp.Domain.Repositories;
@@ -27,14 +24,12 @@ namespace Repairis.Web.Controllers
     public class EmployeesController : RepairisControllerBase
     {
         private readonly IUserAppService _userAppService;
-        private readonly IRepository<User, long> _userRepository;
         private readonly IRepository<EmployeeInfo, long> _employeeInfoRepository;
 
 
-        public EmployeesController(IUserAppService userAppService, IRepository<User, long> userRepository, IRepository<EmployeeInfo, long> employeeInfoRepository)
+        public EmployeesController(IUserAppService userAppService, IRepository<EmployeeInfo, long> employeeInfoRepository)
         {
             _userAppService = userAppService;
-            _userRepository = userRepository;
             _employeeInfoRepository = employeeInfoRepository;
         }
 
@@ -77,8 +72,18 @@ namespace Repairis.Web.Controllers
         [DisableValidation]
         public async Task<ActionResult> Create_Post(EmployeeInput input)
         {
-            if (ModelState.IsValid)
+            if (input.SalaryValue < 0)
             {
+                ModelState.AddModelError(nameof(input.SalaryValue), L("SalaryValueMustBeNonNegativeNumber"));
+            }
+
+            if (!input.SalaryIsFlat && input.SalaryValue > 100)
+            {
+                ModelState.AddModelError(nameof(input.SalaryValue), L("SalaryValueMustBeBetween0And100"));
+            }
+
+            if (ModelState.IsValid)
+            {     
                 await _userAppService.CreateEmployeeAsync(input);
                 return RedirectToAction("Index");
             }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Abp.Authorization.Users;
+using Abp.Domain.Repositories;
 using Abp.Domain.Services;
 using Abp.IdentityFramework;
 using Abp.Runtime.Session;
@@ -37,6 +38,7 @@ namespace Repairis.Authorization.Users
             AbpSession = NullAbpSession.Instance;
         }
 
+
         public async Task<User> RegisterAsync(string name, string surname, string emailAddress, string userName, string plainPassword, bool isEmailConfirmed)
         {
             CheckForTenant();
@@ -67,6 +69,44 @@ namespace Repairis.Authorization.Users
             CheckErrors(await _userManager.CreateAsync(user));
             await CurrentUnitOfWork.SaveChangesAsync();
 
+            return user;
+        }
+
+
+        public async Task<User> RegisterUserAsync(string roleName, string name, string surname, string fatherName, string phoneNumber, string secondaryPhoneNumber, string address, string emailAddress, string userName, string plainPassword, bool isEmailConfirmed)
+        {
+            CheckForTenant();
+            
+            var tenant = await GetActiveTenantAsync();
+
+            var user = new User
+            {
+                TenantId = tenant?.Id,
+                Name = name,
+                Surname = surname,
+                FatherName = fatherName,
+                PhoneNumber = phoneNumber,
+                SecondaryPhoneNumber = secondaryPhoneNumber,
+                Address = address,
+                EmailAddress = emailAddress,
+                NormalizedEmailAddress = emailAddress.ToUpperInvariant(),
+                IsActive = true,
+                UserName = userName,
+                IsEmailConfirmed = true,
+                Roles = new List<UserRole>(),
+            };
+
+            user.Password = _passwordHasher.HashPassword(user, plainPassword);
+
+            var role = _roleManager.Roles.FirstOrDefault(r => r.TenantId == tenant.Id && r.Name == roleName);
+            if (role != null)
+            {
+                user.Roles.Add(new UserRole(tenant?.Id, user.Id, role.Id));
+            }
+
+            CheckErrors(await _userManager.CreateAsync(user));
+            await CurrentUnitOfWork.SaveChangesAsync();
+         
             return user;
         }
 

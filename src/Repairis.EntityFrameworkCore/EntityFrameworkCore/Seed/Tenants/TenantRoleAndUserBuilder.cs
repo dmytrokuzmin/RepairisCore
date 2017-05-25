@@ -63,7 +63,7 @@ namespace Repairis.EntityFrameworkCore.Seed.Tenants
             var employeeRole = _context.Roles.FirstOrDefault(r => r.TenantId == _tenantId && r.Name == StaticRoleNames.Tenants.Employee);
             if (employeeRole == null)
             {
-                _context.Roles.Add(new Role(null, StaticRoleNames.Host.Employee, StaticRoleNames.Host.Employee) { IsStatic = true });
+                _context.Roles.Add(new Role(null, StaticRoleNames.Tenants.Employee, StaticRoleNames.Tenants.Employee) { IsStatic = true });
                 _context.SaveChanges();
             }
 
@@ -72,7 +72,7 @@ namespace Repairis.EntityFrameworkCore.Seed.Tenants
             var customerRoleForHost = _context.Roles.FirstOrDefault(r => r.TenantId == _tenantId && r.Name == StaticRoleNames.Tenants.Customer);
             if (customerRoleForHost == null)
             {
-                _context.Roles.Add(new Role(null, StaticRoleNames.Host.Customer, StaticRoleNames.Host.Customer) { IsStatic = true });
+                _context.Roles.Add(new Role(null, StaticRoleNames.Tenants.Customer, StaticRoleNames.Tenants.Customer) { IsStatic = true, IsDefault = true });
                 _context.SaveChanges();
             }
 

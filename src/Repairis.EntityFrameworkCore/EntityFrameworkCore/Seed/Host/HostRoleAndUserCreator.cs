@@ -48,7 +48,7 @@ namespace Repairis.EntityFrameworkCore.Seed.Host
             var customerRoleForHost = _context.Roles.FirstOrDefault(r => r.TenantId == null && r.Name == StaticRoleNames.Host.Customer);
             if (customerRoleForHost == null)
             {
-                _context.Roles.Add(new Role(null, StaticRoleNames.Host.Customer, StaticRoleNames.Host.Customer) { IsStatic = true });
+                _context.Roles.Add(new Role(null, StaticRoleNames.Host.Customer, StaticRoleNames.Host.Customer) { IsStatic = true, IsDefault = true });
                 _context.SaveChanges();
             }
 
