@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using Abp.Authorization;
 using Abp.Authorization.Roles;
 using Abp.Authorization.Users;
@@ -31,49 +32,21 @@ namespace Repairis.EntityFrameworkCore.Seed.Tenants
         {
             //Admin role
 
-            var adminRole = _context.Roles.FirstOrDefault(r => r.TenantId == _tenantId && r.Name == StaticRoleNames.Tenants.Admin);
-            if (adminRole == null)
-            {
-                adminRole = _context.Roles.Add(new Role(_tenantId, StaticRoleNames.Tenants.Admin, StaticRoleNames.Tenants.Admin) { IsStatic = true }).Entity;
-                _context.SaveChanges();
+            var adminRole = _context.Roles.FirstOrDefault(r => r.TenantId == _tenantId && r.Name == StaticRoleNames.Tenants.Admin) ??
+                             CreateAdminRoleForTenant();
 
-                //Grant all permissions to admin role
-                var permissions = PermissionFinder
-                    .GetAllPermissions(new RepairisAuthorizationProvider())
-                    .Where(p => p.MultiTenancySides.HasFlag(MultiTenancySides.Tenant))
-                    .ToList();
-
-                foreach (var permission in permissions)
-                {
-                    _context.Permissions.Add(
-                        new RolePermissionSetting
-                        {
-                            TenantId = _tenantId,
-                            Name = permission.Name,
-                            IsGranted = true,
-                            RoleId = adminRole.Id
-                        });
-                }
-
-                _context.SaveChanges();
-            }
-
-            //Employee role for host
-
+            //Employee role
             var employeeRole = _context.Roles.FirstOrDefault(r => r.TenantId == _tenantId && r.Name == StaticRoleNames.Tenants.Employee);
             if (employeeRole == null)
             {
-                _context.Roles.Add(new Role(_tenantId, StaticRoleNames.Tenants.Employee, StaticRoleNames.Tenants.Employee) { IsStatic = true });
-                _context.SaveChanges();
+                CreateEmployeeRoleForTenant();
             }
 
-            //Customer role for host
-
-            var customerRoleForHost = _context.Roles.FirstOrDefault(r => r.TenantId == _tenantId && r.Name == StaticRoleNames.Tenants.Customer);
-            if (customerRoleForHost == null)
+            //Customer role
+            var customerRole = _context.Roles.FirstOrDefault(r => r.TenantId == _tenantId && r.Name == StaticRoleNames.Tenants.Customer);
+            if (customerRole == null)
             {
-                _context.Roles.Add(new Role(_tenantId, StaticRoleNames.Tenants.Customer, StaticRoleNames.Tenants.Customer) { IsStatic = true, IsDefault = true });
-                _context.SaveChanges();
+                CreateCustomerRoleForTenant();
             }
 
             //admin user
@@ -107,5 +80,109 @@ namespace Repairis.EntityFrameworkCore.Seed.Tenants
                 }
             }
         }
+
+
+        private Role CreateAdminRoleForTenant()
+        {
+            var adminRole = _context.Roles
+                .Add(new Role(_tenantId, StaticRoleNames.Tenants.Admin, StaticRoleNames.Tenants.Admin) { IsStatic = true })
+                .Entity;
+            _context.SaveChanges();
+
+            var disallowedAdminPermissions = new List<string>
+            {
+                PermissionNames.CustomerPages
+            };
+
+            //Grant all permissions to admin role
+            var permissions = PermissionFinder
+                .GetAllPermissions(new RepairisAuthorizationProvider())
+                .Where(p => p.MultiTenancySides.HasFlag(MultiTenancySides.Tenant) && !disallowedAdminPermissions.Contains(p.Name))
+                .ToList();
+
+            foreach (var permission in permissions)
+            {
+                _context.Permissions.Add(
+                    new RolePermissionSetting
+                    {
+                        TenantId = _tenantId,
+                        Name = permission.Name,
+                        IsGranted = true,
+                        RoleId = adminRole.Id
+                    });
+            }
+
+            _context.SaveChanges();
+            return adminRole;
+        }
+
+
+        private void CreateEmployeeRoleForTenant()
+        {
+            var employeeRoleForTenant = _context.Roles.Add(new Role(_tenantId, StaticRoleNames.Tenants.Employee, StaticRoleNames.Tenants.Employee) { IsStatic = true }).Entity;
+            _context.SaveChanges();
+
+            var disallowedEmployeePermissions = new List<string>
+            {
+                PermissionNames.Pages_Employees,
+                PermissionNames.Pages_Reports,
+                PermissionNames.Pages_Users,
+                PermissionNames.Pages_Tenants,
+                PermissionNames.CustomerPages
+            };
+
+            //Grant all permissions to employee role
+            var employeePermissions = PermissionFinder
+                .GetAllPermissions(new RepairisAuthorizationProvider())
+                .Where(p => p.MultiTenancySides.HasFlag(MultiTenancySides.Tenant) && !disallowedEmployeePermissions.Contains(p.Name))
+                .ToList();
+
+            foreach (var permission in employeePermissions)
+            {
+                _context.Permissions.Add(
+                    new RolePermissionSetting
+                    {
+                        TenantId = _tenantId,
+                        Name = permission.Name,
+                        IsGranted = true,
+                        RoleId = employeeRoleForTenant.Id
+                    });
+            }
+
+            _context.SaveChanges();
+        }
+
+        private void CreateCustomerRoleForTenant()
+        {
+            var customerRole = _context.Roles.Add(
+                new Role(_tenantId, StaticRoleNames.Tenants.Customer, StaticRoleNames.Tenants.Customer)
+                {
+                    IsStatic = true,
+                    IsDefault = true
+                }).Entity;
+            _context.SaveChanges();
+
+            var allowedCustomerPermissions = new List<string>
+            {
+                PermissionNames.CustomerPages
+            };
+
+            var customerPermissions = PermissionFinder
+                .GetAllPermissions(new RepairisAuthorizationProvider())
+                .Where(p => p.MultiTenancySides.HasFlag(MultiTenancySides.Tenant) && allowedCustomerPermissions.Contains(p.Name))
+                .ToList();
+
+            foreach (var permission in customerPermissions)
+            {
+                _context.Permissions.Add(
+                    new RolePermissionSetting
+                    {
+                        TenantId = _tenantId,
+                        Name = permission.Name,
+                        IsGranted = true,
+                        RoleId = customerRole.Id
+                    });
+            }
+        }    
     }
 }

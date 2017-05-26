@@ -28,13 +28,14 @@ using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
+using Repairis.Authorization;
 using Repairis.Authorization.Users;
 using Repairis.Users.Dto;
 using Syncfusion.JavaScript.Shared.Serializer;
 
 namespace Repairis.Web.Controllers
 {
-    [AbpMvcAuthorize()]
+    [AbpMvcAuthorize(PermissionNames.Pages_Orders)]
     public class OrdersController : RepairisControllerBase
     {
         private readonly IOrderAppService _orderAppService;

@@ -2,13 +2,14 @@
 using Abp.AspNetCore.Mvc.Authorization;
 using Abp.UI;
 using Microsoft.AspNetCore.Mvc;
+using Repairis.Authorization;
 using Repairis.Controllers;
 using Repairis.DeviceCategories;
 using Repairis.DeviceCategories.Dto;
 
 namespace Repairis.Web.Controllers
 {
-    [AbpMvcAuthorize]
+    [AbpMvcAuthorize(PermissionNames.Pages_DeviceCategories)]
     public class DeviceCategoriesController : RepairisControllerBase
     {
         private readonly IDeviceCategoryAppService _deviceCategoryAppService;

@@ -18,7 +18,8 @@ namespace Repairis.Web.Startup
                         L("Orders"),
                         url: "Orders",
                         icon: "fa fa-book",
-                        requiresAuthentication: true
+                        requiresAuthentication: true,
+                        requiredPermissionName: PermissionNames.Pages_Orders
                     )
                 )
                 .AddItem(
@@ -27,7 +28,8 @@ namespace Repairis.Web.Startup
                         L("Customers"),
                         url: "Customers",
                         icon: "fa fa-users",
-                        requiresAuthentication: true
+                        requiresAuthentication: true,
+                        requiredPermissionName: PermissionNames.Pages_Customers
                     )
                 )
                 .AddItem(
@@ -35,7 +37,8 @@ namespace Repairis.Web.Startup
                             PageNames.Devices,
                             L("Devices"),
                             icon: "fa fa-camera",
-                            requiresAuthentication: true
+                            requiresAuthentication: true,
+                            requiredPermissionName: PermissionNames.Pages_Devices
                         )
                         .AddItem(
                             new MenuItemDefinition(
@@ -43,7 +46,8 @@ namespace Repairis.Web.Startup
                                 L("Brands"),
                                 url: "Brands",
                                 icon: "fa fa-camera",
-                                requiresAuthentication: true
+                                requiresAuthentication: true,
+                                requiredPermissionName: PermissionNames.Pages_Brands
                             )
                         )
                         .AddItem(
@@ -52,7 +56,8 @@ namespace Repairis.Web.Startup
                                 L("DeviceCategories"),
                                 url: "DeviceCategories",
                                 icon: "fa fa-camera",
-                                requiresAuthentication: true
+                                requiresAuthentication: true,
+                                requiredPermissionName: PermissionNames.Pages_DeviceCategories
                             )
                         )
                         .AddItem(
@@ -61,7 +66,8 @@ namespace Repairis.Web.Startup
                                 L("DeviceModels"),
                                 url: "DeviceModels",
                                 icon: "fa fa-camera",
-                                requiresAuthentication: true
+                                requiresAuthentication: true,
+                                requiredPermissionName: PermissionNames.Pages_DeviceModels
                             )
                         )
                 )
@@ -71,35 +77,41 @@ namespace Repairis.Web.Startup
                         L("SpareParts"),
                         url: "SpareParts",
                         icon: "fa fa-wrench",
-                        requiresAuthentication: true
+                        requiresAuthentication: true,
+                        requiredPermissionName: PermissionNames.Pages_SpareParts
                     )
                 )
                 .AddItem(
                     new MenuItemDefinition(
                             PageNames.Reports,
                             L("Reports"),
-                            icon: "fa fa-bar-chart"
+                            icon: "fa fa-bar-chart",
+                            requiresAuthentication: true,
+                            requiredPermissionName: PermissionNames.Pages_Reports
                         )
                         .AddItem(
                             new MenuItemDefinition(
                                 PageNames.CompanySalesReport,
                                 L("CompanySalesReport"),
                                 url: "Reports/CompanySalesReport",
-                                requiresAuthentication: true
+                                requiresAuthentication: true,
+                                requiredPermissionName: PermissionNames.Pages_Reports
                             ))
                         .AddItem(
                             new MenuItemDefinition(
                                 PageNames.CompanyOrdersReport,
                                 L("CompanyOrdersReport"),
                                 url: "Reports/CompanyOrdersReport",
-                                requiresAuthentication: true
+                                requiresAuthentication: true,
+                                requiredPermissionName: PermissionNames.Pages_Reports
                             ))
                         .AddItem(
                             new MenuItemDefinition(
                                 PageNames.EmployeesSalaryReport,
                                 L("EmployeesSalaryReport"),
                                 url: "Reports/EmployeesSalaryReport",
-                                requiresAuthentication: true
+                                requiresAuthentication: true,
+                                requiredPermissionName: PermissionNames.Pages_Reports
                             ))
 
                 )
@@ -124,7 +136,9 @@ namespace Repairis.Web.Startup
                                 L("Employees"),
                                 url: "Employees",
                                 icon: "fa fa-users",
-                                requiresAuthentication: true
+                                requiresAuthentication: true,
+                                requiredPermissionName: PermissionNames.Pages_Employees
+
                             )
                         )
                 );

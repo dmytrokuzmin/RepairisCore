@@ -2,13 +2,14 @@
 using Abp.AspNetCore.Mvc.Authorization;
 using Abp.UI;
 using Microsoft.AspNetCore.Mvc;
+using Repairis.Authorization;
 using Repairis.Brands;
 using Repairis.Brands.Dto;
 using Repairis.Controllers;
 
 namespace Repairis.Web.Controllers
 {
-    [AbpMvcAuthorize]
+    [AbpMvcAuthorize(PermissionNames.Pages_Brands)]
     public class BrandsController : RepairisControllerBase
     {
         private readonly IBrandAppService _brandAppService;

@@ -12,6 +12,7 @@ using AutoMapper.QueryableExtensions;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
+using Repairis.Authorization;
 using Repairis.Brands;
 using Repairis.Controllers;
 using Repairis.SpareParts;
@@ -21,7 +22,7 @@ using Syncfusion.JavaScript.DataSources;
 
 namespace Repairis.Web.Controllers
 {
-    [AbpMvcAuthorize]
+    [AbpMvcAuthorize(PermissionNames.Pages_SpareParts)]
     public class SparePartsController : RepairisControllerBase
     {
         private readonly IRepository<SparePart> _sparePartRepository;

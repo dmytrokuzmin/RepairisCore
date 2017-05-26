@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
+using Repairis.Authorization;
 using Repairis.Authorization.Users;
 using Repairis.Controllers;
 using Repairis.Users;
@@ -20,7 +21,7 @@ using Syncfusion.JavaScript.DataSources;
 
 namespace Repairis.Web.Controllers
 {
-    [AbpMvcAuthorize]
+    [AbpMvcAuthorize(PermissionNames.Pages_Employees)]
     public class EmployeesController : RepairisControllerBase
     {
         private readonly IUserAppService _userAppService;

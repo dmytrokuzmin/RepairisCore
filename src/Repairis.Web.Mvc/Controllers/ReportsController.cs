@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
+using Repairis.Authorization;
 using Repairis.Authorization.Users;
 using Repairis.Controllers;
 using Repairis.Orders;
@@ -20,7 +21,7 @@ using Repairis.Web.Helpers;
 
 namespace Repairis.Web.Controllers
 {
-    [AbpMvcAuthorize]
+    [AbpMvcAuthorize(PermissionNames.Pages_Reports)]
     public class ReportsController : RepairisControllerBase
     {
         private readonly IOrderAppService _orderAppService;
