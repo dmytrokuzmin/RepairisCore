@@ -389,11 +389,6 @@ namespace Repairis.Web.Controllers
             return new PhysicalFileResult(filePath, "application/pdf");
         }
 
-        [HttpPost]
-        public ActionResult AssignEmployeeToOrder(long? employeeId, long orderId)
-        {
-            return Ok();
-        }
 
 
         public async Task<ActionResult> FinalInvoice(long id)
