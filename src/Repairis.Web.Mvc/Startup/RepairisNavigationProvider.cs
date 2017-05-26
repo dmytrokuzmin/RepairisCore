@@ -77,7 +77,7 @@ namespace Repairis.Web.Startup
                 .AddItem(
                     new MenuItemDefinition(
                             PageNames.Reports,
-                            L("Reports"),                         
+                            L("Reports"),
                             icon: "fa fa-bar-chart"
                         )
                         .AddItem(
@@ -117,18 +117,10 @@ namespace Repairis.Web.Startup
                                 url: "Tenants",
                                 icon: "fa fa-globe",
                                 requiredPermissionName: PermissionNames.Pages_Tenants
-                            )
-                        ).AddItem(
+                            ))
+                         .AddItem(
                             new MenuItemDefinition(
-                                PageNames.Users,
-                                L("Users"),
-                                url: "Users",
-                                icon: "fa fa-users",
-                                requiredPermissionName: PermissionNames.Pages_Users
-                            )
-                        ).AddItem(
-                            new MenuItemDefinition(
-                                PageNames.Employees, 
+                                PageNames.Employees,
                                 L("Employees"),
                                 url: "Employees",
                                 icon: "fa fa-users",
