@@ -85,6 +85,7 @@
                 <ej-drop-down-list ej-for="CompatibleDeviceModelIds" id="CompatibleDeviceModelIds" datasource="items" width="100%" show-checkbox=" true" multi-select-mode="@MultiSelectModeTypes.VisualMode" selected-indices="selectedIndices">
                     <e-drop-down-list-fields id="Id" text="DeviceModelName" group-by="DeviceCategoryName" value="Id" />
                 </ej-drop-down-list>
+                <span asp-validation-for="CompatibleDeviceModelIds" class="text-danger"></span>
             </div>
         </div>
         

@@ -33,6 +33,6 @@ namespace Repairis.SpareParts.Dto
 
         public StockStatusEnum StockStatus { get; set; } = StockStatusEnum.OutOfStock;
 
-        public List<int> CompatibleDeviceModelIds { get; set; } = new List<int>();
+        public List<int?> CompatibleDeviceModelIds { get; set; } = new List<int?>();
     }
 }

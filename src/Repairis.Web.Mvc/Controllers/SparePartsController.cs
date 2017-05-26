@@ -142,11 +142,11 @@ namespace Repairis.Web.Controllers
                 var inputDeviceModelIds = input.CompatibleDeviceModelIds.Distinct();
                 await _compatibilityRepository.DeleteAsync(x => x.SparePartId == sparePart.Id);
                 CurrentUnitOfWork.SaveChanges();
-                foreach (var deviceModelId in inputDeviceModelIds)
+                foreach (var deviceModelId in inputDeviceModelIds.Where(x => x.HasValue))
                 {
                     await _compatibilityRepository.InsertAsync(new SparePartCompatibility
                     {
-                        DeviceModelId = deviceModelId,
+                        DeviceModelId = deviceModelId.Value,
                         SparePartId = sparePart.Id
                     });
                     CurrentUnitOfWork.SaveChanges();

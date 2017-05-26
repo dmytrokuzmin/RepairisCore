@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
+using Abp.Runtime.Validation;
 
 namespace Repairis.SpareParts.Dto
 {
-    public class SparePartInput
+    public class SparePartInput : ICustomValidate
     {
         [Required]
         [StringLength(RepairisConsts.MaxEntityNameLength)]
@@ -35,5 +31,17 @@ namespace Repairis.SpareParts.Dto
         public int StockQuantity { get; set; } = 0;
 
         public StockStatusEnum StockStatus { get; set; } = StockStatusEnum.OutOfStock;
+        public void AddValidationErrors(CustomValidationContext context)
+        {
+            if (StockQuantity > 0 && StockStatus == StockStatusEnum.OutOfStock)
+            {
+                context.Results.Add(new ValidationResult("Spare part can not be out of stock if the stock quantity is > 0"));
+            }
+
+            if (StockQuantity ==0 && StockStatus == StockStatusEnum.InStock)
+            {
+                context.Results.Add(new ValidationResult("Spare part can not be in stock if the stock quantity is 0"));
+            }
+        }
     }
 }
