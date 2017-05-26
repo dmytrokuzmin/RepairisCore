@@ -28,9 +28,7 @@ namespace Repairis.Orders.Dto
         public CustomerBasicEntityDto Customer { get; set; }
 
         //Assigned master
-        public long? AssignedEmployeeId { get; set; }
-
-        public virtual EmployeeBasicEntityDto AssignedEmployee { get; set; }
+        public long AssignedEmployeeId { get; set; }
 
         public OrderStatusEnum OrderStatus { get; set; }
 

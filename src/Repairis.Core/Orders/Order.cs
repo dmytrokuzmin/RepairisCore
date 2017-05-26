@@ -81,15 +81,15 @@ namespace Repairis.Orders
     {
         [Display(Name = "Open")]
         Open = 0,
-        [Display(Name = "Waiting for device")]
+        [Display(Name = "WaitingForDevice")]
         WaitingForDeviceArrival = 1,
-        [Display(Name = "In progress")]
+        [Display(Name = "InProgress")]
         InProgress = 2,
-        [Display(Name = "Waiting for spare parts")]
+        [Display(Name = "WaitingForSpareParts")]
         WaitingForParts = 3,
         [Display(Name = "Ready")]
         Ready = 4,
-        [Display(Name = "On warranty")]
+        [Display(Name = "OnWarranty")]
         OnWarranty = 5,
         [Display(Name = "Archived")]
         Closed = 6

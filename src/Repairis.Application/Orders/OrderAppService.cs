@@ -4,12 +4,14 @@ using System.Linq;
 using System.Threading.Tasks;
 using Abp.AutoMapper;
 using Abp.Domain.Repositories;
+using Abp.Localization;
 using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
 using Repairis.Brands;
 using Repairis.DeviceCategories;
 using Repairis.DeviceModels;
 using Repairis.Devices;
+using Repairis.Helpers;
 using Repairis.Orders.Dto;
 using Repairis.Users;
 
@@ -114,35 +116,41 @@ namespace Repairis.Orders
                 .FirstOrDefaultAsync();
         }
 
+        public List<DropDownListItem> GetLocalizedOrderStatuses()
+        {
+            var enumValues = Enum.GetValues(typeof(OrderStatusEnum)).Cast<OrderStatusEnum>();
+            return enumValues.Select(x => new DropDownListItem { Text = L(x.GetDisplayName()), Value = x.ToString() }).ToList();
+        }
+
         //public async Task NotifyOrderStatusHasChanged(int id)
         //{
 
-            //var order = await _orderRepository.FirstOrDefaultAsync(id);
+        //var order = await _orderRepository.FirstOrDefaultAsync(id);
 
-            //if (!String.IsNullOrEmpty(order.CustomerUser.EmailAddress))
-            //{
-            //    string subject;
-            //    string body;
-            //    if (order.OrderStatus == OrderStatusEnum.Ready)
-            //    {
-            //        subject = $"Your order (ID: {order.Id}) is repaired";
-            //        body = $"Repair price: {order.RepairPrice}";
-            //    }
-            //    else
-            //    {
-            //        subject = $"Your order status (ID: {order.Id}) has changed";
-            //        body = $"New order status: {order.OrderStatus}";
-            //    }
-            //    subject = subject.Replace('\r', ' ').Replace('\n', ' ');
+        //if (!String.IsNullOrEmpty(order.CustomerUser.EmailAddress))
+        //{
+        //    string subject;
+        //    string body;
+        //    if (order.OrderStatus == OrderStatusEnum.Ready)
+        //    {
+        //        subject = $"Your order (ID: {order.Id}) is repaired";
+        //        body = $"Repair price: {order.RepairPrice}";
+        //    }
+        //    else
+        //    {
+        //        subject = $"Your order status (ID: {order.Id}) has changed";
+        //        body = $"New order status: {order.OrderStatus}";
+        //    }
+        //    subject = subject.Replace('\r', ' ').Replace('\n', ' ');
 
-            //    try
-            //    {
-            //        _smtpEmailSender.Send(order.CustomerUser.EmailAddress, body, subject);
-            //    }
-            //    catch (SmtpException)
-            //    {
-            //    }
-            //}
+        //    try
+        //    {
+        //        _smtpEmailSender.Send(order.CustomerUser.EmailAddress, body, subject);
+        //    }
+        //    catch (SmtpException)
+        //    {
+        //    }
+        //}
         //}
     }
 }

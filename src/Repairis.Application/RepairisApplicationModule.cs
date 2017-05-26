@@ -211,7 +211,7 @@ namespace Repairis
                     .ForMember(dest => dest.OrderStatus, opt => opt.MapFrom(src => src.OrderStatus))
                     .ForMember(dest => dest.IsUrgent, opt => opt.MapFrom(src => src.IsUrgent))
                     .ForMember(dest => dest.IsWarrantyComplaint, opt => opt.MapFrom(src => src.IsWarrantyComplaint))
-                    .ForMember(dest => dest.AssignedEmployee, opt => opt.MapFrom(src => src.AssignedEmployee.EmployeeUser))
+                    //.ForMember(dest => dest.AssignedEmployee, opt => opt.MapFrom(src => src.AssignedEmployee.EmployeeUser))
                     .ForMember(dest => dest.Customer, opt => opt.MapFrom(src => src.Customer.CustomerUser))
                     .ForMember(dest => dest.Device, opt => opt.MapFrom(src => src.Device))
                     .ForMember(dest => dest.IssueDescription, opt => opt.MapFrom(src => src.IssueDescription))
@@ -224,7 +224,7 @@ namespace Repairis
                     .ForMember(dest => dest.SparePartsUsed, opt => opt.MapFrom(src => src.SparePartsUsed))
                     .ForMember(dest => dest.RepairPrice, opt => opt.MapFrom(src => src.RepairPrice))
                     .ForMember(dest => dest.WorkDoneDescripton, opt => opt.MapFrom(src => src.WorkDoneDescripton))
-                    .ForMember(dest => dest.AssignedEmployeeId, opt => opt.MapFrom(src => src.AssignedEmployeeId));
+                    .ForMember(dest => dest.AssignedEmployeeId, opt => opt.MapFrom(src => src.AssignedEmployeeId ?? 0));
 
 
                 cfg.CreateMap<Order, OrderCompletionDto>()

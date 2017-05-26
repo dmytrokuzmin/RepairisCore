@@ -28,6 +28,8 @@ using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
+using Repairis.Authorization.Users;
+using Repairis.Users.Dto;
 using Syncfusion.JavaScript.Shared.Serializer;
 
 namespace Repairis.Web.Controllers
@@ -38,17 +40,19 @@ namespace Repairis.Web.Controllers
         private readonly IOrderAppService _orderAppService;
         private readonly IRepository<Order, long> _orderRepository;
         private readonly IRepository<SparePart, int> _sparePartRepository;
+        private readonly IRepository<EmployeeInfo, long> _employeeRepository;
         private readonly IUserAppService _userAppService;
         private readonly ISparePartDomainService _sparePartDomainService;
 
         public OrdersController(IOrderAppService orderAppService, IRepository<Order, long> orderRepository,
-            IUserAppService userAppService, ISparePartDomainService sparePartDomainService, IRepository<SparePart, int> sparePartRepository)
+            IUserAppService userAppService, ISparePartDomainService sparePartDomainService, IRepository<SparePart, int> sparePartRepository, IRepository<EmployeeInfo, long> employeeRepository)
         {
             _orderAppService = orderAppService;
             _orderRepository = orderRepository;
             _userAppService = userAppService;
             _sparePartDomainService = sparePartDomainService;
             _sparePartRepository = sparePartRepository;
+            _employeeRepository = employeeRepository;
         }
 
         // GET: Orders
@@ -163,9 +167,15 @@ namespace Repairis.Web.Controllers
             {
                 return NotFound();
             }
-            var list = _sparePartRepository.GetAllList();
-            ViewBag.datasource2 = list.MapTo<List<SparePartBasicEntityDto>>();
+            var employeeList = await _employeeRepository.GetAll().ProjectTo<EmployeeDropDownListDto>()
+                    .OrderBy(x => x.FullName).ToListAsync();
+            employeeList.Insert(0, new EmployeeDropDownListDto
+            {
+                Id = 0,
+                Name = ""
+            });
 
+            ViewBag.Employees = employeeList;
             return View(orderDto);
         }
 
@@ -191,7 +201,7 @@ namespace Repairis.Web.Controllers
                 order.IssueDescription = input.IssueDescription;
                 order.AdditionalEquipment = input.AdditionalEquipment;
                 order.AdditionalNotes = input.AdditionalNotes;
-                order.AssignedEmployeeId = input.AssignedEmployeeId;
+                order.AssignedEmployeeId = input.AssignedEmployeeId == 0 ? (long?) null : input.AssignedEmployeeId;
                 order.IsRepaired = input.IsRepaired;
                 order.OrderRepairedDate = input.OrderRepairedDate;
                 order.RepairPrice = input.RepairPrice;
@@ -236,6 +246,8 @@ namespace Repairis.Web.Controllers
             }
             //input.OrderDto = await _orderAppService.GetOrderDtoAsync(input.OrderDto.Id);
             //input.Users = await _userAppService.GetUsers();
+            ViewBag.Employees = await _employeeRepository.GetAll().ProjectTo<EmployeeDropDownListDto>()
+                .OrderBy(x => x.FullName).ToListAsync();
             return View(input);
         }
 
@@ -375,6 +387,12 @@ namespace Repairis.Web.Controllers
             }
 
             return new PhysicalFileResult(filePath, "application/pdf");
+        }
+
+        [HttpPost]
+        public ActionResult AssignEmployeeToOrder(long? employeeId, long orderId)
+        {
+            return Ok();
         }
 
 

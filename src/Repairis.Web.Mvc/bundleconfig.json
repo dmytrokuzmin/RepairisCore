@@ -25,6 +25,7 @@
 
       "wwwroot/lib/jsrender/jsrender.min.js",
       "wwwroot/lib/syncfusion-javascript/Scripts/ej/web/ej.web.all.min.js",
+      "wwwroot/js/ej.culture.ru-RU.min.js",
 
       "wwwroot/lib/jquery-ui/jquery-ui.js",
       "wwwroot/lib/bootstrap/dist/js/bootstrap.js",

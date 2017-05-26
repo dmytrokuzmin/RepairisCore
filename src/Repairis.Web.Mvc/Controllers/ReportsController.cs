@@ -262,7 +262,7 @@ namespace Repairis.Web.Controllers
                             {
                                 Date = new DateTime(selectedYear, x.Key, 1),
                                 SalaryValue = Math.Round((x.Sum(i => i.RepairPrice) + x.Sum(i => i.SparePartsTotalCost) -
-                                                          x.Sum(i => i.SparePartsTotalSupplierCost)) * employee.SalaryValue / 100)                              ,
+                                                          x.Sum(i => i.SparePartsTotalSupplierCost)) * employee.SalaryValue / 100)          ,
                             }
                         ).ToList();
                 }

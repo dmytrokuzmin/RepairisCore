@@ -1,5 +1,8 @@
-﻿@model Repairis.Orders.Dto.OrderFullEntityDto
+﻿@using System.Globalization
+@model Repairis.Orders.Dto.OrderFullEntityDto
 @inject Repairis.SpareParts.ISparePartAppService SparePartAppService
+@inject Repairis.Orders.IOrderAppService OrderAppService
+
 @{
     ViewBag.Title = "Edit";
 }
@@ -12,7 +15,7 @@
 
     <div class="form-horizontal">
 
-        <div asp-validation-summary="ModelOnly"></div>
+        <div asp-validation-summary="All"></div>
         <input asp-for="Id" hidden />
         <input asp-for="Customer.Id" hidden />
         <div class="panel panel-default">
@@ -53,15 +56,19 @@
             <div class="panel-body">
                 <div class="form-group">
                     <label asp-for="OrderStatus" class="control-label col-md-2"></label>
-                    <div class="col-md-10">
-                        <select asp-for="OrderStatus" asp-items="Html.GetEnumSelectList<Repairis.Orders.OrderStatusEnum>()" class="form-control" ></select>
+                    <div class="col-md-3">
+                        <ej-drop-down-list id="OrderStatus" ej-for="OrderStatus" datasource="OrderAppService.GetLocalizedOrderStatuses()" width="100%">
+                            <e-drop-down-list-fields text="Text" id="Value" value="Value" />
+                        </ej-drop-down-list>
                         <span asp-validation-for="OrderStatus" class="text-danger"></span>
                     </div>
                 </div> 
                 <div class="form-group">
                     <label asp-for="AssignedEmployeeId" class="control-label col-md-2"></label>
-                    <div class="col-md-10">
-                        <input asp-for="AssignedEmployeeId" class="form-control" />
+                    <div class="col-md-3">
+                        <ej-drop-down-list id="AssignedEmployeeDropDown" ej-for="AssignedEmployeeId" datasource="ViewBag.Employees" width="100%">
+                            <e-drop-down-list-fields text="FullName" value="Id" id="Id" />
+                        </ej-drop-down-list>
                         <span asp-validation-for="AssignedEmployeeId" class="text-danger"></span>
                     </div>
                 </div>
@@ -77,7 +84,7 @@
                 <div class="form-group">
                     <label asp-for="OrderRepairedDate" class="control-label col-md-2"></label>
                     <div class="col-md-10">
-                        <input asp-for="OrderRepairedDate" class="form-control" />
+                        <ej-date-picker id="OrderRepairedDate" ej-for="OrderRepairedDate" watermark-text="@L("NotSet")" locale="@CultureInfo.CurrentUICulture" ></ej-date-picker>
                         <span asp-validation-for="OrderRepairedDate" class="text-danger"></span>
                     </div>
                 </div>
@@ -91,14 +98,14 @@
                 <div class="form-group">
                     <label asp-for="RepairPrice" class="control-label col-md-2"></label>
                     <div class="col-md-10">
-                        <input asp-for="RepairPrice" class="form-control" />
+                        <ej-numeric-text-box id="RepairPrice" decimal-places="2" ej-for="RepairPrice" locale="@CultureInfo.CurrentUICulture.Name"/>
                         <span asp-validation-for="RepairPrice" class="text-danger"></span>
                     </div>
                 </div>
                 <div class="form-group">
                     <label asp-for="DevicePickupDate" class="control-label col-md-2"></label>
                     <div class="col-md-10">
-                        <input asp-for="DevicePickupDate" class="form-control" />
+                        <ej-date-picker id="DevicePickupDate" ej-for="DevicePickupDate" watermark-text="@L("NotSet")" locale="@CultureInfo.CurrentUICulture.Name"></ej-date-picker>      
                         <span asp-validation-for="DevicePickupDate" class="text-danger"></span>
                     </div>
                 </div>
@@ -112,47 +119,18 @@
         <div class="panel-body">
             
 
-            <ej-grid id="SparePartsUsed" action-begin="begin" action-complete="complete">
+            <ej-grid id="SparePartsUsed" action-begin="begin" action-complete="complete" begin-edit="preventEditSparePartName">
                 <e-datamanager url="/Orders/GetOrderSpareParts?orderId=@Model.Id" crud-url="/Orders/SparePartUpdate" adaptor="UrlAdaptor"></e-datamanager>
                 <e-edit-settings allow-adding="true" allow-editing="true" allow-deleting="true"></e-edit-settings>
                 <e-toolbar-settings show-toolbar="true" toolbar-items='@new List<string> {"add","edit","update", "delete", "cancel"}'/>
                 <e-columns>
                     <e-column field="OrderId" type="number" default-value="@Model.Id" is-primary-key="true" visible="false"/>
-                    <e-column field="SparePartId" type="number" header-text="SparePart" foreign-key-field="Id" datasource="@await SparePartAppService.GetCompatibleSpareParts(Model.Device.Id)" foreign-key-value="SparePartName"/>
-                    <e-column field="Quantity" type="number" header-text="Quantity"/>
-                    <e-column field="PricePerItem" type="number" header-text="Price per item"/>
+                    <e-column field="SparePartId" type="number" allow-editing="false" header-text="@L("SparePart")" foreign-key-field="Id" datasource="@await SparePartAppService.GetCompatibleSpareParts(Model.Device.Id)" foreign-key-value="SparePartName"/>                   
+                    <e-column field="Quantity" type="number"  edit-type="Numeric" header-text="@L("Quantity")"/>
+                    <e-column field="PricePerItem" type="number" header-text="@L("Price per item")"/>
+                    
                 </e-columns>
-            </ej-grid>
-
-
-
-            @*@(Html.EJ().Grid<Repairis.SpareParts.SparePartOrderMapping>("SparePartsUsed")
-                  .Datasource(ds => ds.Json(Model.SparePartsUsed).CrudURL("/Orders/SparePartUpdate").Adaptor(AdaptorType.RemoteSaveAdaptor))
-                  .ToolbarSettings(toolbar =>
-                  {
-                      toolbar.ShowToolbar().ToolbarItems(items =>
-                      {
-                          items.AddTool(ToolBarItems.Add);
-                          items.AddTool(ToolBarItems.Edit);
-                          items.AddTool(ToolBarItems.Delete);
-                          items.AddTool(ToolBarItems.Update);
-                          items.AddTool(ToolBarItems.Cancel);
-                      });
-                  })
-                  .EditSettings(edit => { edit.AllowEditing().AllowAdding().AllowDeleting(); })
-                  .ClientSideEvents(eve => { eve.ActionBegin("begin").ActionComplete("complete"); })
-                  .Columns(col =>
-                  {
-                      col.Field("OrderId").DefaultValue(Model.Id).IsPrimaryKey(true).Visible(false).Add();
-                      col.Field("SparePartId").HeaderText("SparePart")
-                          .ForeignKeyField("Id")
-                          .ForeignKeyValue("SparePartName")
-                          .DataSource(ViewBag.datasource2)
-                          .Add()
-                          ;
-                      col.Field("Quantity").HeaderText("Quantity").Add();
-                      col.Field("PricePerItem").HeaderText("PricePerItem").Add();
-                  }))*@
+            </ej-grid>          
         </div>
     </div>
     <div class="form-horizontal">
@@ -280,14 +258,27 @@
 @section Scripts {
     <script type="text/javascript">
         function begin(args) {
-            if (args.requestType == 'delete') {
+            if (args.requestType === 'delete') {
                 args.model.dataSource.dataSource.headers = [];
-                args.model.dataSource.dataSource.headers.push({ "sparepartid": args.data.SparePartId, "orderid": args.data.OrderId });
-             }
-        }
+                args.model.dataSource.dataSource.headers.push({
+                    "sparepartid": args.data.SparePartId,
+                    "orderid": args.data.OrderId
+                });
+            }
+        };
 
         function complete(args) {
-            if (args.requestType == 'delete') args.model.dataSource.dataSource.headers = []; //to avoid headers value to be interfered with other actions, emptied the Headers
-        }
+            if (args.requestType === 'delete'
+            )
+                args.model.dataSource.dataSource.headers =
+                    []; //to avoid headers value to be interfered with other actions, emptied the Headers
+        };
+
+        function preventEditSparePartName(args) {
+            if (args.columnIndex === 2) {
+                args.cancel = true;
+                alert();
+            }
+        };
     </script>
 }

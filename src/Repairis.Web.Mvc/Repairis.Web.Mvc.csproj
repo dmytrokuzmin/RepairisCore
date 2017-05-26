@@ -19,6 +19,7 @@
   <ItemGroup>
     <Content Include="wwwroot\images\app-logo-small.png" />
     <Content Include="wwwroot\invoices\a.txt" />
+    <Content Include="wwwroot\js\ej.culture.ru-RU.min.js" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
