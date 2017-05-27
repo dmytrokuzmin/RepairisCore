@@ -21,7 +21,7 @@ namespace Repairis.SpareParts.Dto
         public string Notes { get; set; }
 
         [DataType(DataType.Currency)]
-        public decimal? SupplierPrice { get; set; }
+        public decimal SupplierPrice { get; set; }
 
         [DataType(DataType.Currency)]
         public decimal? RecommendedPrice { get; set; }

@@ -3,7 +3,7 @@ using Abp.Runtime.Validation;
 
 namespace Repairis.SpareParts.Dto
 {
-    public class SparePartInput : ICustomValidate
+    public class SparePartInput
     {
         [Required]
         [StringLength(RepairisConsts.MaxEntityNameLength)]
@@ -21,7 +21,7 @@ namespace Repairis.SpareParts.Dto
         public string Notes { get; set; }
 
         [DataType(DataType.Currency)]
-        public decimal? SupplierPrice { get; set; }
+        public decimal SupplierPrice { get; set; }
 
         [DataType(DataType.Currency)]
         public decimal? RecommendedPrice { get; set; }
@@ -31,17 +31,5 @@ namespace Repairis.SpareParts.Dto
         public int StockQuantity { get; set; } = 0;
 
         public StockStatusEnum StockStatus { get; set; } = StockStatusEnum.OutOfStock;
-        public void AddValidationErrors(CustomValidationContext context)
-        {
-            if (StockQuantity > 0 && StockStatus == StockStatusEnum.OutOfStock)
-            {
-                context.Results.Add(new ValidationResult("Spare part can not be out of stock if the stock quantity is > 0"));
-            }
-
-            if (StockQuantity ==0 && StockStatus == StockStatusEnum.InStock)
-            {
-                context.Results.Add(new ValidationResult("Spare part can not be in stock if the stock quantity is 0"));
-            }
-        }
     }
 }

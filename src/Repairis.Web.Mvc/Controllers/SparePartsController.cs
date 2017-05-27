@@ -88,6 +88,15 @@ namespace Repairis.Web.Controllers
         [DisableValidation]
         public async Task<ActionResult> Create_Post(SparePartInput input)
         {
+            if (input.StockStatus == StockStatusEnum.OutOfStock && input.StockQuantity > 0)
+            {
+                ModelState.AddModelError(nameof(input.StockQuantity), L("OutOfStockRequiresStockQuantityZero"));
+            }
+            if (input.StockStatus == StockStatusEnum.InStock && input.StockQuantity == 0)
+            {
+                ModelState.AddModelError(nameof(input.StockQuantity), L("InStockRequiresStockQuantityHigherThanZero"));
+            }
+
             if (ModelState.IsValid)
             {
                 await _sparePartAppService.CreateSparePartAsync(input);
@@ -125,6 +134,15 @@ namespace Repairis.Web.Controllers
         [UnitOfWork]
         public async Task<ActionResult> Edit(SparePartFullEntityDto input)
         {
+            if (input.StockStatus == StockStatusEnum.OutOfStock && input.StockQuantity > 0)
+            {
+                ModelState.AddModelError(nameof(input.StockQuantity), L("OutOfStockRequiresStockQuantityZero"));
+            }
+            if (input.StockStatus == StockStatusEnum.InStock && input.StockQuantity == 0)
+            {
+                ModelState.AddModelError(nameof(input.StockQuantity), L("InStockRequiresStockQuantityHigherThanZero"));
+            }
+
             if (ModelState.IsValid)
             {
                 var sparePart = await _sparePartRepository.GetAsync(input.Id);
