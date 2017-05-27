@@ -1,4 +1,5 @@
 ﻿@model Repairis.Orders.Dto.OrderCompletionDto
+@using System.Globalization
 
 @{
     ViewBag.Title = "Complete Order";
@@ -19,72 +20,59 @@
                 <div class="form-group">
                     <label asp-for="DevicePickupDate" class="control-label col-md-2"></label>
                     <div class="col-md-10">
-                        <input asp-for="DevicePickupDate" class="form-control" />
+                        <ej-date-picker id="DevicePickupDate" ej-for="DevicePickupDate" watermark-text="@L("NotSet")" locale="@CultureInfo.CurrentUICulture.Name"></ej-date-picker>
                         <span asp-validation-for="DevicePickupDate" class="text-danger"></span>
                     </div>
                 </div>
                 <div class="form-group">
                     <label asp-for="WarrantyMonths" class="control-label col-md-2"></label>
                     <div class="col-md-10">
-                        <input asp-for="WarrantyMonths" class="form-control" />
+                        <ej-numeric-text-box id="WarrantyMonths" decimal-places="0" ej-for="WarrantyMonths"/>
                         <span asp-validation-for="WarrantyMonths" class="text-danger"></span>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h4>Total order price: @(Model.SparePartsUsed.Sum(x => x.PricePerItem * x.Quantity) + Model.RepairPrice) @L("CurrencyCode")</h4>
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4>Repair information</h4>
+        </div>
+        <div class="panel-body">
+            <div class="form-group">
+                <label asp-for="CreationTime" class="control-label col-md-2"></label>
+                <div class="col-md-10">
+                    <ej-date-picker id="CreationTime" ej-for="CreationTime" locale="@CultureInfo.CurrentUICulture.Name" enabled="false" ></ej-date-picker>               
+                    <span asp-validation-for="CreationTime" class="text-danger"></span>
+                </div>
             </div>
-            <div class="panel-body">
-                <div class="form-group">
-                    <label asp-for="CustomerFullName" class="control-label col-md-2"></label>
-                    <div class="col-md-10">
-                        <input asp-for="CustomerFullName" class="form-control" />
-                        <span asp-validation-for="CustomerFullName" class="text-danger"></span>
-                    </div>
+            <div class="form-group">
+                <label asp-for="CustomerFullName" class="control-label col-md-2"></label>
+                <div class="col-md-10">
+                    <input asp-for="CustomerFullName" class="form-control" disabled/>
+                    <span asp-validation-for="CustomerFullName" class="text-danger"></span>
                 </div>
-                <div class="form-group">
-                    <label asp-for="CreationTime" class="control-label col-md-2"></label>
-                    <div class="col-md-10">
-                        <input asp-for="CreationTime" class="form-control" />
-                        <span asp-validation-for="CreationTime" class="text-danger"></span>
-                    </div>
-                </div>
+            </div>
 
-                <div class="form-group">
-                    <label asp-for="AdditionalEquipment" class="control-label col-md-2"></label>
-                    <div class="col-md-10">
-                        <input asp-for="AdditionalEquipment" class="form-control" />
-                        <span asp-validation-for="AdditionalEquipment" class="text-danger"></span>
-                    </div>
-                </div>
 
-                <div class="form-group">
-                    <label asp-for="RepairPrice" class="control-label col-md-2"></label>
-                    <div class="col-md-10">
-                        <input asp-for="RepairPrice" class="form-control" />
-                        <span asp-validation-for="RepairPrice" class="text-danger"></span>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="control-label col-md-2">@L("SparePartTotalCount")</label>
-                    <div class="col-md-10">
-                        <div class="form-control">@Model.SparePartsUsed.Sum(x => x.Quantity) @L("pcs")</div>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="control-label col-md-2">@L("SparePartTotalPrice")</label>
-                    <div class="col-md-10">
-                        <div class="form-control">@Model.SparePartsUsed.Sum(x => x.PricePerItem * x.Quantity) @L("CurrencyCode")</div>
-                    </div>
+            <div class="form-group">
+                <label asp-for="AdditionalEquipment" class="control-label col-md-2"></label>
+                <div class="col-md-10">
+                    <input asp-for="AdditionalEquipment" class="form-control" disabled/>
+                    <span asp-validation-for="AdditionalEquipment" class="text-danger"></span>
                 </div>
             </div>
         </div>
+
+        <div class="panel-footer text-right">
+            <p>@L("RepairPrice") : @Model.RepairPrice<p>
+            <p>@L("SparePartTotalPrice") : @Model.SparePartCost<p>
+
+            <p>@L("TotalPrice") : @Model.Total</p>
+        </div>
     </div>
     <div class="form-group">
-        <div class="col-md-offset-2 col-md-10">
-            <input type="submit" value="Complete" class="btn btn-default" />
+        <div class="col-md-offset-5">
+            <input type="submit" value="Complete" class="btn btn-default col-md-2" />
         </div>
     </div>
 </form>

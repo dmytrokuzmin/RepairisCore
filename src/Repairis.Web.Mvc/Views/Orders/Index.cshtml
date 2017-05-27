@@ -22,7 +22,7 @@
         <e-column template-id="#gridActionsTemplate" allow-sorting="false" allow-filtering="false" allow-grouping="false" width="50" />      
         <e-column field="Id" template-id="#orderIdTemplate" type="number" header-text="Order ID" is-primary-key="true" text-align="Center" width="75" />
         <e-column field="OrderCreationDate" type="datetime" header-text="Created" width="90" format="{0:dd.MM.yyyy}"/>
-        <e-column field="OrderStatus" header-text="Status" width="75" />
+        <e-column field="OrderStatusString" header-text="Status" allow-text-wrap="true" allow-filtering="false"/>
         <e-column field="AssignedMasterFullName" type="string" header-text="Assigned master" width="150"/>
         <e-column field="DeviceModel" type="string" header-text="Device" width="200"/>
         <e-column field="IssueDescription" type="string" header-text="Issue description" width="200"/>
@@ -36,7 +36,7 @@
     <script id="gridActionsTemplate" type="text/x-jsrender">
         <a href="/Orders/Edit/{{:Id}}"><i class="fa fa-pencil text-success fa" aria-hidden="true"></i></a>
         <a href="/Orders/Delete/{{:Id}}"><i class="fa fa-trash-o text-danger fa" aria-hidden="true"></i></a>
-    </script>
+    </script>  
 
     <script id="orderIdTemplate" type="text/x-jsrender">
         {{:Id}} <a href="/Orders/CreationInvoice/{{:Id}}" target="_blank"><i class="fa fa-file-pdf-o fa" aria-hidden="true"></i></a>

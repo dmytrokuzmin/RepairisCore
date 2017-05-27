@@ -17,6 +17,7 @@ namespace Repairis.Orders.Dto
 
         [StringLength(1024)]
         [DataType(DataType.MultilineText)]
+        [Required]
         public string IssueDescription { get; set; }
 
         public CustomerInput Customer { get; set; }

@@ -41,7 +41,7 @@ namespace Repairis.Orders
         public bool IsAllowedToAssign(Order order)
         {
             return order.OrderStatus == OrderStatusEnum.Open ||
-                   order.OrderStatus == OrderStatusEnum.WaitingForParts ||
+                   order.OrderStatus == OrderStatusEnum.Waiting ||
                    order.OrderStatus == OrderStatusEnum.InProgress;
         }
 

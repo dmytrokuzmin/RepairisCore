@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Abp.Application.Services.Dto;
 using Abp.Authorization;
@@ -10,6 +11,7 @@ using Repairis.Authorization.Users;
 using Repairis.Authorization.Roles;
 using Repairis.Users.Dto;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace Repairis.Users
 {
@@ -94,12 +96,12 @@ namespace Repairis.Users
 
         public async Task<CustomerInfo> GetOrCreateCustomerAsync(CustomerInput input)
         {
-            var user = await _userRepository.FirstOrDefaultAsync(
+            var user = await _userRepository.GetAllIncluding(x => x.CustomerInfo).Where(
                 x => x.Name.ToUpper() == input.Name.ToUpper() &&
                      x.Surname.ToUpper() == input.Surname.ToUpper() &&
                      x.FatherName.ToUpper() == input.FatherName.ToUpper() &&
                      (x.EmailAddress.ToUpper() == input.EmailAddress.ToUpper() ||
-                      x.PhoneNumber == input.PhoneNumber));
+                      x.PhoneNumber == input.PhoneNumber)).FirstOrDefaultAsync();
 
             if (user == null)
             {

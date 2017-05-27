@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 using Repairis.Authorization.Users;
 using Repairis.Devices.Dto;
 using Repairis.SpareParts;
@@ -33,10 +34,18 @@ namespace Repairis.Orders.Dto
         [DataType(DataType.Currency)]
         public decimal RepairPrice { get; set; }
 
+        public decimal SparePartCost
+        {
+            get { return SparePartsUsed.Sum(x => x.PricePerItem * x.Quantity); }
+        }
+
+        public decimal Total
+        {
+            get { return RepairPrice + SparePartCost; }
+        }
+
         public virtual List<SparePartOrderMapping> SparePartsUsed { get; set; } = new List<SparePartOrderMapping>();
 
         public OrderStatusEnum OrderStatus { get; set; }
-
-
     }
 }
