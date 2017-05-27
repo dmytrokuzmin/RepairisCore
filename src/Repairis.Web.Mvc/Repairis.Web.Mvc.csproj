@@ -17,8 +17,15 @@
     <Content Remove="wwwroot/OrderCreationInvoice_17.pdf" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="wwwroot\fonts\LiberationSans-Bold.ttf" />
+    <Content Include="wwwroot\fonts\LiberationSans-BoldItalic.ttf" />
+    <Content Include="wwwroot\fonts\LiberationSans-Italic.ttf" />
+    <Content Include="wwwroot\fonts\LiberationSans-Regular.ttf" />
+    <Content Include="wwwroot\fonts\LiberationSerif-Bold.ttf" />
+    <Content Include="wwwroot\fonts\LiberationSerif-BoldItalic.ttf" />
+    <Content Include="wwwroot\fonts\LiberationSerif-Italic.ttf" />
+    <Content Include="wwwroot\fonts\LiberationSerif-Regular.ttf" />
     <Content Include="wwwroot\images\app-logo-small.png" />
-    <Content Include="wwwroot\invoices\a.txt" />
     <Content Include="wwwroot\js\ej.culture.ru-RU.min.js" />
   </ItemGroup>
   <ItemGroup>

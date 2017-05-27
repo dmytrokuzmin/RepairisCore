@@ -8,7 +8,6 @@ using Abp.AspNetCore.Mvc.Authorization;
 using Abp.AutoMapper;
 using Abp.Domain.Repositories;
 using Abp.Runtime.Validation;
-using Abp.UI;
 using Microsoft.AspNetCore.Mvc;
 using Repairis.Controllers;
 using Repairis.Orders;
@@ -16,13 +15,10 @@ using Repairis.Orders.Dto;
 using Repairis.SpareParts;
 using Repairis.SpareParts.Dto;
 using Repairis.Users;
-using Syncfusion.Drawing;
 using Syncfusion.JavaScript;
 using Syncfusion.JavaScript.DataSources;
 using Syncfusion.Pdf;
-using Syncfusion.Pdf.Graphics;
 using System.Linq.Dynamic.Core;
-using Abp.Domain.Uow;
 using Abp.Web.Models;
 using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
@@ -31,7 +27,7 @@ using Newtonsoft.Json.Serialization;
 using Repairis.Authorization;
 using Repairis.Authorization.Users;
 using Repairis.Users.Dto;
-using Syncfusion.JavaScript.Shared.Serializer;
+using Repairis.Web.Helpers;
 
 namespace Repairis.Web.Controllers
 {
@@ -44,9 +40,10 @@ namespace Repairis.Web.Controllers
         private readonly IRepository<EmployeeInfo, long> _employeeRepository;
         private readonly IUserAppService _userAppService;
         private readonly ISparePartDomainService _sparePartDomainService;
+        private readonly IInvoiceHelper _invoiceHelper;
 
         public OrdersController(IOrderAppService orderAppService, IRepository<Order, long> orderRepository,
-            IUserAppService userAppService, ISparePartDomainService sparePartDomainService, IRepository<SparePart, int> sparePartRepository, IRepository<EmployeeInfo, long> employeeRepository)
+            IUserAppService userAppService, ISparePartDomainService sparePartDomainService, IRepository<SparePart, int> sparePartRepository, IRepository<EmployeeInfo, long> employeeRepository, IInvoiceHelper invoiceHelper)
         {
             _orderAppService = orderAppService;
             _orderRepository = orderRepository;
@@ -54,6 +51,7 @@ namespace Repairis.Web.Controllers
             _sparePartDomainService = sparePartDomainService;
             _sparePartRepository = sparePartRepository;
             _employeeRepository = employeeRepository;
+            _invoiceHelper = invoiceHelper;
         }
 
         // GET: Orders
@@ -124,10 +122,6 @@ namespace Repairis.Web.Controllers
                 ContractResolver = new DefaultContractResolver()
             });
         }
-
-
-
-
 
 
         // GET: Orders/Create
@@ -352,7 +346,7 @@ namespace Repairis.Web.Controllers
             return View(input);
         }
 
-        public async Task<ActionResult> CreationInvoice(long id)
+        public async Task<ActionResult> DeviceReceipt(long id)
         {
             string directory = $"{Directory.GetCurrentDirectory()}\\wwwroot\\invoices\\";
             if (!Directory.Exists(directory))
@@ -360,28 +354,13 @@ namespace Repairis.Web.Controllers
                 Directory.CreateDirectory(directory);
             }
 
-            string filePath = $"{directory}\\OrderCreationInvoice_{ id}.pdf";
+            string filePath = $"{directory}\\DeviceReceipt_{ id}.pdf";
             if (!System.IO.File.Exists(filePath))
             {
-                var order = await _orderRepository.GetAsync(id);
+                var order = await _orderAppService.GetOrderDtoAsync(id);
 
                 // Create a new PdfDocument
-                PdfDocument document = new PdfDocument();
-
-                // Add a page to the document
-                PdfPage page = document.Pages.Add();
-
-                // Create Pdf graphics for the page
-                PdfGraphics graphics = page.Graphics;
-
-                // Create a solid brush
-                PdfBrush brush = new PdfSolidBrush(Color.Black);
-
-                // Set the font
-                PdfFont font = new PdfStandardFont(PdfFontFamily.Helvetica, 20f);
-
-                // Draw the text
-                graphics.DrawString(L("OrderCreationInvoice") + " " + order.Id, font, brush, new PointF(20, 20));
+                PdfDocument document = _invoiceHelper.GenerateDeviceReceipt(order);
 
                 // Save the document
                 document.Save(filePath);
@@ -389,7 +368,6 @@ namespace Repairis.Web.Controllers
 
             return new PhysicalFileResult(filePath, "application/pdf");
         }
-
 
 
         public async Task<ActionResult> FinalInvoice(long id)
@@ -400,28 +378,12 @@ namespace Repairis.Web.Controllers
                 Directory.CreateDirectory(directory);
             }
 
-            string filePath = $"{directory}\\OrderFinalInvoice_{ id}.pdf";                
+            string filePath = $"{directory}\\FinalInvoice_{ id}.pdf";                
             if (!System.IO.File.Exists(filePath))
             {
-                var order = await _orderRepository.GetAsync(id);
+                var order = await _orderAppService.GetOrderDtoAsync(id);
 
-                // Create a new PdfDocument
-                PdfDocument document = new PdfDocument();
-
-                // Add a page to the document
-                PdfPage page = document.Pages.Add();
-
-                // Create Pdf graphics for the page
-                PdfGraphics graphics = page.Graphics;
-
-                // Create a solid brush
-                PdfBrush brush = new PdfSolidBrush(Color.Black);
-
-                // Set the font
-                PdfFont font = new PdfStandardFont(PdfFontFamily.Helvetica, 20f);
-
-                // Draw the text
-                graphics.DrawString(L("OrderFinalInvoice") + " " + order.Id, font, brush, new PointF(20, 20));
+                PdfDocument document = _invoiceHelper.GenerateFinalInvoice(order);
 
                 // Save the document
                 document.Save(filePath);

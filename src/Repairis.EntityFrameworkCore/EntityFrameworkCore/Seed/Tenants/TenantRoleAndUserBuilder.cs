@@ -64,6 +64,18 @@ namespace Repairis.EntityFrameworkCore.Seed.Tenants
 
                 //Assign Admin role to admin user
                 _context.UserRoles.Add(new UserRole(_tenantId, adminUser.Id, adminRole.Id));
+                
+                //Create corresponding employee record
+                var employeeInfo = new EmployeeInfo
+                {
+                    EmployeeUserId = adminUser.Id,
+                    SalaryIsFlat = false,
+                    SalaryValue = 100
+                };
+                _context.Employees.Add(employeeInfo);
+                _context.SaveChanges();
+
+                adminUser.EmployeeInfo = employeeInfo;
                 _context.SaveChanges();
 
                 //User account of admin user

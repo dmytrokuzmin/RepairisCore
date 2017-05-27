@@ -110,7 +110,7 @@ namespace Repairis.Orders
         public async Task<OrderFullEntityDto> GetOrderDtoAsync(long id)
         {
             return await _orderRepository
-                .GetAll()
+                .GetAll().Include(x => x.SparePartsUsed).ThenInclude(x => x.SparePart)
                 .Where(x => x.Id == id)
                 .ProjectTo<OrderFullEntityDto>()
                 .FirstOrDefaultAsync();

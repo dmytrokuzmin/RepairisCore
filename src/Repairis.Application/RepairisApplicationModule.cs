@@ -11,7 +11,6 @@ using Repairis.DeviceModels;
 using Repairis.DeviceModels.Dto;
 using Repairis.Devices;
 using Repairis.Devices.Dto;
-using Repairis.Helpers;
 using Repairis.Orders;
 using Repairis.Orders.Dto;
 using Repairis.SpareParts;
@@ -75,6 +74,7 @@ namespace Repairis
                     .ForMember(dest => dest.IsUrgent, opt => opt.MapFrom(src => src.IsUrgent))
                     .ForMember(dest => dest.IsWarrantyComplaint, opt => opt.MapFrom(src => src.IsWarrantyComplaint))
                     .ForMember(dest => dest.IssueDescription, opt => opt.MapFrom(src => src.IssueDescription))
+                    .ForMember(dest => dest.DeviceSerialNumber, opt => opt.MapFrom(src => src.Device.SerialNumber))
                     .ForMember(dest => dest.DeviceModel, opt => opt.MapFrom(src =>
                         src.Device.DeviceModel.DeviceCategory.DeviceCategoryName + " " +
                         src.Device.DeviceModel.Brand.BrandName + " " +
@@ -208,6 +208,7 @@ namespace Repairis
                 //Order -> OrderFullEntityDto
                 cfg.CreateMap<Order, OrderFullEntityDto>()
                     .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
+                    .ForMember(dest => dest.CreationTime, opt => opt.MapFrom(src => src.CreationTime))
                     .ForMember(dest => dest.OrderStatus, opt => opt.MapFrom(src => src.OrderStatus))
                     .ForMember(dest => dest.IsUrgent, opt => opt.MapFrom(src => src.IsUrgent))
                     .ForMember(dest => dest.IsWarrantyComplaint, opt => opt.MapFrom(src => src.IsWarrantyComplaint))
@@ -218,6 +219,7 @@ namespace Repairis
                     .ForMember(dest => dest.AdditionalEquipment, opt => opt.MapFrom(src => src.AdditionalEquipment))
                     .ForMember(dest => dest.AdditionalNotes, opt => opt.MapFrom(src => src.AdditionalNotes))
                     .ForMember(dest => dest.DevicePickupDate, opt => opt.MapFrom(src => src.DevicePickupDate))
+                    .ForMember(dest => dest.WarrantyExpirationDate, opt => opt.MapFrom(src => src.WarrantyExpirationDate))
                     .ForMember(dest => dest.IsActive, opt => opt.MapFrom(src => src.IsActive))
                     .ForMember(dest => dest.IsRepaired, opt => opt.MapFrom(src => src.IsRepaired))
                     .ForMember(dest => dest.OrderRepairedDate, opt => opt.MapFrom(src => src.OrderRepairedDate))

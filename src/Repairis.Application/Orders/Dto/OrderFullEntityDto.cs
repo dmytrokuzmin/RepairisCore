@@ -11,6 +11,8 @@ namespace Repairis.Orders.Dto
 {
     public class OrderFullEntityDto : EntityDto<long>
     {
+        public string CreationTime { get; set; }
+
         public DeviceBasicEntityDto Device { get; set; }
 
         public string AdditionalEquipment { get; set; }
@@ -52,6 +54,8 @@ namespace Repairis.Orders.Dto
 
         //Date when device is picked up after repair. Used as warranty start time
         public DateTime? DevicePickupDate { get; set; }
+
+        public DateTime? WarrantyExpirationDate { get; set; }
 
         [Timestamp]
         public byte[] RowVersion { get; set; }

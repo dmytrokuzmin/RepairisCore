@@ -27,7 +27,7 @@
         <e-column field="DeviceModel" type="string" header-text="Device" width="200"/>
         <e-column field="IssueDescription" type="string" header-text="Issue description" width="200"/>
         <e-column field="CustomerFullName" type="string" header-text="Customer"/>
-        <e-column field="CustomerPhoneNumber" type="string" header-text="Customer phone"/>
+        <e-column field="DeviceSerialNumber" type="string" header-text="Serial number"/>
         <e-column template-id="#orderInvoicesTemplate" allow-sorting="false" allow-filtering="false" allow-grouping="false" width="70"/>    
     </e-columns>
 </ej-grid>
@@ -39,7 +39,7 @@
     </script>  
 
     <script id="orderIdTemplate" type="text/x-jsrender">
-        {{:Id}} <a href="/Orders/CreationInvoice/{{:Id}}" target="_blank"><i class="fa fa-file-pdf-o fa" aria-hidden="true"></i></a>
+        {{:Id}} <a href="/Orders/DeviceReceipt/{{:Id}}" target="_blank"><i class="fa fa-file-pdf-o fa" aria-hidden="true"></i></a>
     </script>
 
     <script id="orderInvoicesTemplate" type="text/x-jsrender">
