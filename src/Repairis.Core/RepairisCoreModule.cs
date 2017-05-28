@@ -7,6 +7,7 @@ using Abp.Zero.Configuration;
 using Repairis.MultiTenancy;
 using Repairis.Authorization.Roles;
 using Repairis.Authorization.Users;
+using Repairis.Configuration;
 using Repairis.Timing;
 
 namespace Repairis
@@ -30,6 +31,9 @@ namespace Repairis
 
             //Configure roles
             AppRoleConfig.Configure(Configuration.Modules.Zero().RoleManagement);
+
+            IocManager.Register<EmailSettings>();
+            IocManager.Register<SmsSettings>();
         }
 
         public override void Initialize()
