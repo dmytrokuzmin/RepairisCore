@@ -117,9 +117,19 @@ namespace Repairis.Web.Startup
                 )
                 .AddItem(
                     new MenuItemDefinition(
+                            PageNames.Employees,
+                            L("Employees"),
+                            url: "Employees",
+                            icon: "fa fa-users",
+                            requiresAuthentication: true,
+                            requiredPermissionName: PermissionNames.Pages_Employees
+                        ))
+                .AddItem(
+                    new MenuItemDefinition(
                             "Settings",
                             new LocalizableString("Settings", "Repairis"),
-                            icon: "fa fa-cogs"
+                            icon: "fa fa-cogs",
+                            requiredPermissionName: PermissionNames.Pages_Tenants
                         )
 
                         .AddItem(
@@ -130,18 +140,7 @@ namespace Repairis.Web.Startup
                                 icon: "fa fa-globe",
                                 requiredPermissionName: PermissionNames.Pages_Tenants
                             ))
-                         .AddItem(
-                            new MenuItemDefinition(
-                                PageNames.Employees,
-                                L("Employees"),
-                                url: "Employees",
-                                icon: "fa fa-users",
-                                requiresAuthentication: true,
-                                requiredPermissionName: PermissionNames.Pages_Employees
-
-                            )
-                        )
-                );
+                        );
         }
 
         private static ILocalizableString L(string name)
