@@ -34,8 +34,11 @@ namespace Repairis.Authorization.Users
 
     public enum CustomerType
     {
+        [Display(Name ="Default")]
         Default = 0,
+        [Display(Name = "VIP")]
         Vip = 1,
+        [Display(Name = "Black list")]
         BlackListed = 2
     }
 }

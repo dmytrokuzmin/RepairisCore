@@ -12,16 +12,29 @@
 <h3>Edit Order @Model.Id</h3>
 <hr />
 <form asp-controller="Orders" asp-action="Edit" method="post">
-
     <div class="form-horizontal">
         <div class="form-group">
             <div class="col-md-10">
                 <input type="submit" value="Save" class="btn btn-default col-md-2" />
             </div>
         </div>
-        <div asp-validation-summary="All"></div>
+        <div asp-validation-summary="ModelOnly"></div>
         <input asp-for="Id" hidden />
         <input asp-for="Customer.Id" hidden />
+        <input asp-for="Customer.CustomerType" hidden />
+        <input asp-for="Customer.Surname" hidden />
+        <input asp-for="Customer.Name" hidden />
+        <input asp-for="Customer.FatherName" hidden />
+        <input asp-for="Customer.PhoneNumber" hidden />
+        <input asp-for="Customer.SecondaryPhoneNumber" hidden />
+        <input asp-for="Customer.EmailAddress" hidden />
+        <input asp-for="Customer.Address" hidden />
+        <input asp-for="Customer.AdditionalInfo" hidden />
+        <input asp-for="Device.Id" hidden />
+        <input asp-for="Device.DeviceCategoryName" hidden />
+        <input asp-for="Device.DeviceModelName" hidden />
+        <input asp-for="Device.SerialNumber" hidden />
+        <input asp-for="Device.BrandName" hidden />
         <div class="panel panel-default">
             <div class="panel-heading">
                 <h4>Issues and additional notes:</h4>
@@ -61,18 +74,15 @@
                 <div class="form-group">
                     <label asp-for="OrderStatus" class="control-label col-md-2"></label>
                     <div class="col-md-3">
-                        <ej-drop-down-list id="OrderStatus" ej-for="OrderStatus" datasource="OrderAppService.GetLocalizedOrderStatuses()" width="100%">
+                        <ej-drop-down-list id="OrderStatus" ej-for="OrderStatus" datasource="OrderAppService.GetAvailableOrderStatuses(Model.OrderStatus)" width="100%">
                             <e-drop-down-list-fields text="Text" id="Value" value="Value"/>
                         </ej-drop-down-list>
                         <span asp-validation-for="OrderStatus" class="text-danger"></span>
                     </div>
-                    <div class="col-md-3">
-                        <div class="checkbox">
-                            <label>
-                                <input asp-for="IsRepaired"/> @L("IsRepaired")
-                            </label>
-                        </div>
-                    </div>
+                    @if (Model.OrderStatus == Repairis.Orders.OrderStatusEnum.Ready)
+                    {
+                        <a asp-action="Complete" asp-route-id="@Model.Id"><span class="small">@L("GiveToCustomer")</span></a>
+                    }
                 </div>
                 <div class="form-group">
                     <label asp-for="AssignedEmployeeId" class="control-label col-md-2"></label>
@@ -84,17 +94,6 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <div class="col-md-4">
-                        <label asp-for="OrderRepairedDate" class="control-label col-md-6"></label>
-                        <div class="col-md-6">
-                            <ej-date-picker id="OrderRepairedDate" ej-for="OrderRepairedDate" watermark-text="@L("NotSet")" locale="@CultureInfo.CurrentUICulture" width="100%"></ej-date-picker>
-                            <span asp-validation-for="OrderRepairedDate" class="text-danger"></span>
-                        </div>
-                    </div>
-                </div>
-
-
-                    <div class="form-group">
                     <label asp-for="WorkDoneDescripton" class="control-label col-md-2"></label>
                     <div class="col-md-10">
                         <input asp-for="WorkDoneDescripton" class="form-control" />
@@ -106,20 +105,33 @@
                     <div class="col-md-3">
                         <ej-numeric-text-box id="RepairPrice" decimal-places="2" ej-for="RepairPrice" locale="@CultureInfo.CurrentUICulture.Name"/>
                         <span asp-validation-for="RepairPrice" class="text-danger"></span>
-                    </div>
-                    
-                    <div class="col-md-4">
-                        <label asp-for="DevicePickupDate" class="control-label col-md-6"></label>
-                        <div class="col-md-6">
-                            <ej-date-picker id="DevicePickupDate" ej-for="DevicePickupDate" watermark-text="@L("NotSet")" locale="@CultureInfo.CurrentUICulture.Name" width="100%"></ej-date-picker>
-                            <span asp-validation-for="DevicePickupDate" class="text-danger"></span>
-                        </div>
-                    </div>
+                    </div>                  
                 </div>
-
-
             </div>
         </div>
+    @if (Model.OrderStatus == Repairis.Orders.OrderStatusEnum.OnWarranty || Model.OrderStatus == Repairis.Orders.OrderStatusEnum.Closed)
+    {
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4>@L("WarrantyInformation")</h4>
+            </div>
+            <div class="panel-body">
+                <div class="form-group">
+                    <label asp-for="DevicePickupDate" class="control-label col-md-2"></label>
+                    <div class="col-md-2">
+                        <ej-date-time-picker id="DevicePickupDate" ej-for="DevicePickupDate" watermark-text="@L("NotSet")" locale="@CultureInfo.CurrentUICulture.Name" width="100%" enabled="false"></ej-date-time-picker>
+                        <span asp-validation-for="DevicePickupDate" class="text-danger"></span>
+                    </div>
+                    <label asp-for="WarrantyExpirationDate" class="control-label col-md-2"></label>
+                    <div class="col-md-2">
+                        <ej-date-time-picker id="WarrantyExpirationDate" ej-for="WarrantyExpirationDate" watermark-text="@L("NotSet")" locale="@CultureInfo.CurrentUICulture.Name" width="100%" enabled="false"></ej-date-time-picker>
+                        <span asp-validation-for="WarrantyExpirationDate" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+          
     </div>
     <div class="panel panel-default">
         <div class="panel-heading">
@@ -190,63 +202,63 @@
                 <div class="form-group">
                     <label asp-for="Customer.CustomerType" class="control-label col-md-2"></label>
                     <div class="col-md-10">
-                        <select asp-for="Customer.CustomerType" asp-items="Html.GetEnumSelectList<Repairis.Authorization.Users.CustomerType>()" class="form-control"></select>
+                        <select asp-for="Customer.CustomerType" asp-items="Html.GetEnumSelectList<Repairis.Authorization.Users.CustomerType>()" class="form-control" disabled ></select>
                         <span asp-validation-for="Customer.CustomerType" class="text-danger"></span>
                     </div>
                 </div> 
                 <div class="form-group">
                     <label asp-for="Customer.Surname" class="control-label col-md-2"></label>
                     <div class="col-md-10">
-                        <input asp-for="Customer.Surname" class="form-control" />
+                        <input asp-for="Customer.Surname" class="form-control" disabled />
                         <span asp-validation-for="Customer.Surname" class="text-danger"></span>
                     </div>
                 </div>
                 <div class="form-group">
                     <label asp-for="Customer.Name" class="control-label col-md-2"></label>
                     <div class="col-md-10">
-                        <input asp-for="Customer.Name" class="form-control" />
+                        <input asp-for="Customer.Name" class="form-control" disabled />
                         <span asp-validation-for="Customer.Name" class="text-danger"></span>
                     </div>
                 </div>
                 <div class="form-group">
                     <label asp-for="Customer.FatherName" class="control-label col-md-2"></label>
                     <div class="col-md-10">
-                        <input asp-for="Customer.FatherName" class="form-control" />
+                        <input asp-for="Customer.FatherName" class="form-control" disabled />
                         <span asp-validation-for="Customer.FatherName" class="text-danger"></span>
                     </div>
                 </div>
                 <div class="form-group">
                     <label asp-for="Customer.PhoneNumber" class="control-label col-md-2"></label>
                     <div class="col-md-10">
-                        <input asp-for="Customer.PhoneNumber" class="form-control" />
+                        <input asp-for="Customer.PhoneNumber" class="form-control" disabled />
                         <span asp-validation-for="Customer.PhoneNumber" class="text-danger"></span>
                     </div>
                 </div>
                 <div class="form-group">
                     <label asp-for="Customer.SecondaryPhoneNumber" class="control-label col-md-2"></label>
                     <div class="col-md-10">
-                        <input asp-for="Customer.SecondaryPhoneNumber" class="form-control" />
+                        <input asp-for="Customer.SecondaryPhoneNumber" class="form-control" disabled />
                         <span asp-validation-for="Customer.SecondaryPhoneNumber" class="text-danger"></span>
                     </div>
                 </div>
                 <div class="form-group">
                     <label asp-for="Customer.EmailAddress" class="control-label col-md-2"></label>
                     <div class="col-md-10">
-                        <input asp-for="Customer.EmailAddress" class="form-control" />
+                        <input asp-for="Customer.EmailAddress" class="form-control" disabled />
                         <span asp-validation-for="Customer.EmailAddress" class="text-danger"></span>
                     </div>
                 </div>
                 <div class="form-group">
                     <label asp-for="Customer.Address" class="control-label col-md-2"></label>
                     <div class="col-md-10">
-                        <input asp-for="Customer.Address" class="form-control" />
+                        <input asp-for="Customer.Address" class="form-control" disabled />
                         <span asp-validation-for="Customer.Address" class="text-danger"></span>
                     </div>
                 </div>
                 <div class="form-group">
                     <label asp-for="Customer.AdditionalInfo" class="control-label col-md-2"></label>
                     <div class="col-md-10">
-                        <input asp-for="Customer.AdditionalInfo" class="form-control" />
+                        <input asp-for="Customer.AdditionalInfo" class="form-control" disabled />
                         <span asp-validation-for="Customer.AdditionalInfo" class="text-danger"></span>
                     </div>
                 </div> 

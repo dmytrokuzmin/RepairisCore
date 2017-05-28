@@ -1,11 +1,11 @@
 ﻿@{
-    ViewBag.Title = "Employees";
+    ViewBag.Title = L("Employees");
 }
 
-<h3>Employees</h3>
+<h3>@L("Employees")</h3>
 
 <p>
-    <a asp-action="Create" class="btn btn-success"><i class="fa fa-plus"></i> New employee</a>
+    <a asp-action="Create" class="btn btn-success"><i class="fa fa-plus"></i> @L("NewEmployee")</a>
 </p>
 
 
@@ -23,10 +23,8 @@
         <e-column field="Surname" type="string" header-text="@L("Surname")" text-align="Center" width="100" />
         <e-column field="Name" type="string" header-text="@L("Name")" text-align="Center" width="100" />
         <e-column field="FatherName" type="string" header-text="@L("FatherName")" text-align="Center" width="100" />
-        <e-column field="AdditionalInfo" type="string" header-text="@L("AdditionalInfo")" />
-        <e-column field="PhoneNumber" type="string" header-text="@L("MobilePhoneNumber")" width="100" />
-        <e-column field="SecondaryPhoneNumber" type="string" header-text="@L("SecondaryPhoneNumber")" width="100" />
-        <e-column field="EmailAddress" type="string" header-text="@L("Email")" />
+        <e-column field="PhoneNumber" type="string" header-text="@L("MobilePhoneNumber")" width="100" />      
+        <e-column field="EmailAddress" type="string" header-text="@L("EmailAddress")" />
         <e-column field="Address" type="string" header-text="@L("Address")" />
     </e-columns>
 </ej-grid>

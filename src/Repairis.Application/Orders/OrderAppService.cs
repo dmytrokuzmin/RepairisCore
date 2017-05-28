@@ -7,12 +7,11 @@ using Abp.Domain.Repositories;
 using Abp.Localization;
 using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
-using Repairis.Brands;
-using Repairis.DeviceCategories;
-using Repairis.DeviceModels;
 using Repairis.Devices;
+using Repairis.Email;
 using Repairis.Helpers;
 using Repairis.Orders.Dto;
+using Repairis.Sms;
 using Repairis.Users;
 
 namespace Repairis.Orders
@@ -20,25 +19,22 @@ namespace Repairis.Orders
     public class OrderAppService : RepairisAppServiceBase, IOrderAppService
     {
         private readonly IRepository<Order, long> _orderRepository;
-        private readonly IOrderDomainService _orderDomainService;
-        private readonly IBrandAppService _brandAppService;
-        private readonly IDeviceCategoryAppService _deviceCategoryAppService;
         private readonly IDeviceAppService _deviceAppService;
-        private readonly IDeviceModelAppService _deviceModelAppService;
         private readonly IUserAppService _userAppService;
+        private readonly ISmsService _smsService;
+        private readonly IEmailService _emailService;
 
 
-        public OrderAppService(IRepository<Order, long> orderRepository, IOrderDomainService orderDomainService,
-            IBrandAppService brandAppService, IDeviceCategoryAppService deviceCategoryAppService,
-            IDeviceAppService deviceAppService, IUserAppService userAppService, IDeviceModelAppService deviceModelAppService)
+
+        public OrderAppService(IRepository<Order, long> orderRepository,
+            IDeviceAppService deviceAppService, IUserAppService userAppService, ISmsService smsService,
+            IEmailService emailService)
         {
             _orderRepository = orderRepository;
-            _orderDomainService = orderDomainService;
-            _brandAppService = brandAppService;
-            _deviceCategoryAppService = deviceCategoryAppService;
             _deviceAppService = deviceAppService;
             _userAppService = userAppService;
-            _deviceModelAppService = deviceModelAppService;
+            _smsService = smsService;
+            _emailService = emailService;
         }
 
         public async Task CreateOrderAsync(CreateOrderInput input)
@@ -47,7 +43,7 @@ namespace Repairis.Orders
 
             var customer = await _userAppService.GetOrCreateCustomerAsync(input.Customer);
 
-            var orderId = await _orderRepository.InsertAndGetIdAsync(new Order
+            await _orderRepository.InsertAndGetIdAsync(new Order
             {
                 IsUrgent = input.IsUrgent,
                 IsWarrantyComplaint = input.IsWarrantyComplaint,
@@ -56,30 +52,8 @@ namespace Repairis.Orders
                 AdditionalEquipment = input.AdditionalEquipment,
                 IssueDescription = input.IssueDescription,
                 AdditionalNotes = input.AdditionalNotes,
-                //Customer = customer,
                 CustomerId = customer.Id,
             });
-
-
-            //TODO: print pdf (+ print customer's password if customer is new)
-
-
-
-            //var orderId = await _orderDomainService.CreateAndGetIdAsync(order);
-
-            //try
-            //{
-            //    var subject = "Your new repair order " + orderId;
-            //    subject = subject.Replace('\r', ' ').Replace('\n', ' ');
-            //    var body = "Your repair order: ID:" + orderId + " Status:" + order.OrderStatus;
-            //    _smtpEmailSender.Send(client.Email, body, subject);
-            //}
-            //catch (SmtpException)
-            //{
-            //}
-
-            //Logger.Info("Created a new order: " + orderId + " " + input.DeviceModel.BrandName + " " + input.DeviceModel.DeviceModelName);
-
         }
 
         public IQueryable<OrderBasicEntityDto> GetOrdersQueryableDto()
@@ -90,20 +64,20 @@ namespace Repairis.Orders
         public async Task<OrderBasicListDto> GetAllOrdersAsync()
         {
             var orders = await _orderRepository.GetAllListAsync();
-            return new OrderBasicListDto { Orders = orders.MapTo<List<OrderBasicEntityDto>>() };
+            return new OrderBasicListDto {Orders = orders.MapTo<List<OrderBasicEntityDto>>()};
         }
 
         public async Task<OrderBasicListDto> GetAllActiveOrdersAsync()
         {
             var orders = await _orderRepository.GetAllListAsync(x => x.IsActive);
             var mappedOrders = orders.OrderByDescending(x => x.Id).MapTo<List<OrderBasicEntityDto>>();
-            return new OrderBasicListDto { Orders = mappedOrders };
+            return new OrderBasicListDto {Orders = mappedOrders};
         }
 
         public async Task<OrderBasicListDto> GetAllPassiveOrdersAsync()
         {
             var orders = await _orderRepository.GetAllListAsync(x => !x.IsActive);
-            return new OrderBasicListDto { Orders = orders.MapTo<List<OrderBasicEntityDto>>() };
+            return new OrderBasicListDto {Orders = orders.MapTo<List<OrderBasicEntityDto>>()};
         }
 
 
@@ -116,41 +90,66 @@ namespace Repairis.Orders
                 .FirstOrDefaultAsync();
         }
 
-        public List<DropDownListItem> GetLocalizedOrderStatuses()
+        public List<DropDownListItem> GetAvailableOrderStatuses(OrderStatusEnum currentStatus)
         {
-            var enumValues = Enum.GetValues(typeof(OrderStatusEnum)).Cast<OrderStatusEnum>();
-            return enumValues.Select(x => new DropDownListItem { Text = L(x.GetDisplayName()), Value = x.ToString() }).ToList();
+            var orderStatuses = new List<OrderStatusEnum>();
+            if (currentStatus == OrderStatusEnum.Open || currentStatus == OrderStatusEnum.Waiting)
+            {
+                orderStatuses.Add(OrderStatusEnum.Open);
+                orderStatuses.Add(OrderStatusEnum.Waiting);
+                orderStatuses.Add(OrderStatusEnum.InProgress);
+            }
+
+            if (currentStatus == OrderStatusEnum.InProgress || currentStatus == OrderStatusEnum.Ready)
+            {
+                orderStatuses.Add(OrderStatusEnum.Open);
+                orderStatuses.Add(OrderStatusEnum.Waiting);
+                orderStatuses.Add(OrderStatusEnum.InProgress);
+                orderStatuses.Add(OrderStatusEnum.Ready);
+            }
+
+            return orderStatuses.Select(x => new DropDownListItem {Text = x.GetDisplayName(), Value = x.ToString()})
+                .ToList();
         }
 
-        //public async Task NotifyOrderStatusHasChanged(int id)
-        //{
+        public async Task NotifyOrderIsReady(long orderId)
+        {
+            var order = await GetOrderDtoAsync(orderId);
 
-        //var order = await _orderRepository.FirstOrDefaultAsync(id);
+            string customerEmail = order.Customer.EmailAddress;
+            if (!string.IsNullOrEmpty(customerEmail))
+            {
+                string subject = L("YourOrderIsRepaired{0}", order.Id);
+                string message = L("RepairPriceIs{0}", order.RepairPrice);
+                await _emailService.SendEmailAsync(customerEmail, subject, message);
+            }
 
-        //if (!String.IsNullOrEmpty(order.CustomerUser.EmailAddress))
-        //{
-        //    string subject;
-        //    string body;
-        //    if (order.OrderStatus == OrderStatusEnum.Ready)
-        //    {
-        //        subject = $"Your order (ID: {order.Id}) is repaired";
-        //        body = $"Repair price: {order.RepairPrice}";
-        //    }
-        //    else
-        //    {
-        //        subject = $"Your order status (ID: {order.Id}) has changed";
-        //        body = $"New order status: {order.OrderStatus}";
-        //    }
-        //    subject = subject.Replace('\r', ' ').Replace('\n', ' ');
+            string customerPhoneNumber = order.Customer.PhoneNumber;
+            if (!string.IsNullOrEmpty(customerPhoneNumber))
+            {
+                string message = $"{L("YourOrderIsRepaired{0}", order.Id)} {L("RepairPriceIs{0}", order.RepairPrice)}";
+                await _smsService.SendSmsAsync(customerEmail, message);
+            }
+        }
 
-        //    try
-        //    {
-        //        _smtpEmailSender.Send(order.CustomerUser.EmailAddress, body, subject);
-        //    }
-        //    catch (SmtpException)
-        //    {
-        //    }
-        //}
-        //}
+        public async Task NotifyOrderIsReturnedToInProgress(long orderId)
+        {
+            var order = await GetOrderDtoAsync(orderId);
+
+            string customerEmail = order.Customer.EmailAddress;
+            if (!string.IsNullOrEmpty(customerEmail))
+            {
+                string subject = L("YourOrderIsReturnedToInProgress{0}", order.Id);
+                string message = $"{L("YourOrderIsReturnedToInProgress{0}", order.Id)}.\n{L("PleaseWaitForFutherEmail")}";
+                await _emailService.SendEmailAsync(customerEmail, subject, message);
+            }
+
+            string customerPhoneNumber = order.Customer.PhoneNumber;
+            if (!string.IsNullOrEmpty(customerPhoneNumber))
+            {
+                string message = $"{L("YourOrderIsReturnedToInProgress{0}", order.Id)}.\n{L("PleaseWaitForFutherSms")}";
+                await _smsService.SendSmsAsync(customerEmail, message);
+            }
+        }
     }
 }

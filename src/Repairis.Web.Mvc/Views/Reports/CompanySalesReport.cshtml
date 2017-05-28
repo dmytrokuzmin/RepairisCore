@@ -1,5 +1,5 @@
 ﻿@{
-    ViewBag.Title = "Company report";
+    ViewBag.Title = L("CompanySalesReport");
 }
 
 <div class="row"> 
@@ -16,7 +16,7 @@
 <div class="row">
     <div class="col-md-12">
         <ej-chart id="chart" is-responsive="true">
-            <e-primary-y-axis label-format="UAH {value}"/>            
+            <e-primary-y-axis label-format="@L("UAH") {value}"/>            
             <e-chart-series>
                 <e-series name="@L("TotalRevenue")" x-name="MonthName" y-name="TotalRevenue" type="Column">
                     <e-chart-tooltip visible="true"/>

@@ -7,17 +7,20 @@ using Abp.AutoMapper;
 using Abp.Domain.Repositories;
 using Abp.Domain.Uow;
 using Abp.UI;
+using Microsoft.AspNetCore.Hosting;
 using Repairis.Authorization;
 using Repairis.Authorization.Users;
 using Repairis.Authorization.Roles;
 using Repairis.Users.Dto;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Repairis.Configuration;
 using Repairis.Email;
+using Repairis.Sms;
 
 namespace Repairis.Users
 {
-    /* THIS IS JUST A SAMPLE. */
     [AbpAuthorize(PermissionNames.Pages_Users)]
     public class UserAppService : RepairisAppServiceBase, IUserAppService
     {
@@ -25,14 +28,16 @@ namespace Repairis.Users
         private readonly IRepository<CustomerInfo, long> _customerInfoRepository;
         private readonly IRepository<EmployeeInfo, long> _employeeInfoRepository;
         private readonly IEmailService _emailService;
+        private readonly ISmsService _smsService;
         private readonly IPermissionManager _permissionManager;
         private readonly IPasswordHasher<User> _passwordHasher;
         private readonly UserRegistrationManager _userRegistrationManager;
+        private readonly CompanySettings _companySettings;
 
         public UserAppService(
             IRepository<User, long> userRepository, 
             IPermissionManager permissionManager,
-            IPasswordHasher<User> passwordHasher, UserRegistrationManager userRegistrationManager, IRepository<CustomerInfo, long> customerInfoRepository, IRepository<EmployeeInfo, long> employeeInfoRepository, IEmailService emailService)
+            IPasswordHasher<User> passwordHasher, UserRegistrationManager userRegistrationManager, IRepository<CustomerInfo, long> customerInfoRepository, IRepository<EmployeeInfo, long> employeeInfoRepository, IEmailService emailService, ISmsService smsService, CompanySettings companySettings)
         {
             _userRepository = userRepository;
             _permissionManager = permissionManager;
@@ -41,6 +46,8 @@ namespace Repairis.Users
             _customerInfoRepository = customerInfoRepository;
             _employeeInfoRepository = employeeInfoRepository;
             _emailService = emailService;
+            _smsService = smsService;
+            _companySettings = companySettings;
         }
 
         public async Task ProhibitPermission(ProhibitPermissionInput input)
@@ -160,9 +167,15 @@ namespace Repairis.Users
         {
             string password = User.CreateRandomPassword();
 
+            string login = input.EmailAddress;
+            if (string.IsNullOrEmpty(login))
+            {
+                login = input.PhoneNumber;
+            }
+
             var user = await _userRegistrationManager.RegisterUserAsync(StaticRoleNames.Tenants.Customer, input.Name, input.Surname,
                 input.FatherName, input.PhoneNumber, input.SecondaryPhoneNumber, input.Address, input.EmailAddress,
-                input.PhoneNumber, password, false);
+                login, password, false);
 
             var customerInfo = await _customerInfoRepository.InsertAsync(new CustomerInfo
             {
@@ -174,7 +187,22 @@ namespace Repairis.Users
             user.CustomerInfoId = customerInfo.Id;
             await _userRepository.UpdateAsync(user);
 
-            //send password via email or sms
+            string companyName = _companySettings.CompanyName;
+            if (input.EmailAddress != null)
+            {
+                string subject = $"{companyName} {L("NewUserWasCreated")}";
+                string message = $"{L("WelcomeTo")} {companyName}!\n" +
+                                 $"{L("YourLogin")}: {login}\n" +
+                                 $"{L("YourPassword")}: {password}";
+                await _emailService.SendEmailAsync(input.EmailAddress, subject, message);
+
+            }
+
+            if (input.PhoneNumber != null)
+            {
+                string message = $"{companyName} {L("YourLogin")}: {login}  {L("YourPassword")}: {password}";
+                await _smsService.SendSmsAsync(input.PhoneNumber, message);
+            }
 
             return customerInfo;
         }
@@ -220,6 +248,11 @@ namespace Repairis.Users
 
         public async Task<EmployeeInfo> CreateEmployeeAsync(EmployeeInput input)
         {
+            string login = input.EmailAddress;
+            if (string.IsNullOrEmpty(login))
+            {
+                login = input.PhoneNumber;
+            }
             var user = await _userRegistrationManager.RegisterUserAsync(StaticRoleNames.Tenants.Employee, input.Name, input.Surname,
                 input.FatherName, input.PhoneNumber, input.SecondaryPhoneNumber, input.Address, input.EmailAddress,
                 input.PhoneNumber, input.Password, false);
@@ -234,7 +267,22 @@ namespace Repairis.Users
             user.EmployeeInfoId = employeeInfo.Id;
             await _userRepository.UpdateAsync(user);
 
-            //send password via email or sms           
+            string companyName = _companySettings.CompanyName;
+            if (input.EmailAddress != null)
+            {
+                string subject = $"{companyName} {L("NewUserWasCreated")}";
+                string message = $"{L("WelcomeTo")} {companyName}!\n" +
+                                 $"{L("YourLogin")}: {login}\n" +
+                                 $"{L("YourPassword")}: {input.Password}";
+                await _emailService.SendEmailAsync(input.EmailAddress, subject, message);
+
+            }
+
+            if (input.PhoneNumber != null)
+            {
+                string message = $"{companyName} {L("YourLogin")}: {login}  {L("YourPassword")}: {input.Password}";
+                await _smsService.SendSmsAsync(input.PhoneNumber, message);
+            }
 
             return employeeInfo;
         }

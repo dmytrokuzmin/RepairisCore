@@ -34,6 +34,7 @@ namespace Repairis
 
             IocManager.Register<EmailSettings>();
             IocManager.Register<SmsSettings>();
+            IocManager.Register<CompanySettings>();
         }
 
         public override void Initialize()

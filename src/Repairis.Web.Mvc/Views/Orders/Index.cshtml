@@ -22,7 +22,7 @@
         <e-column template-id="#gridActionsTemplate" allow-sorting="false" allow-filtering="false" allow-grouping="false" width="50" />      
         <e-column field="Id" template-id="#orderIdTemplate" type="number" header-text="Order ID" is-primary-key="true" text-align="Center" width="75" />
         <e-column field="OrderCreationDate" type="datetime" header-text="Created" width="90" format="{0:dd.MM.yyyy}"/>
-        <e-column field="OrderStatusString" header-text="Status" allow-text-wrap="true" allow-filtering="false"/>
+        <e-column field="OrderStatusString" template-id="#orderStatusTemplate" header-text="Status" text-align="Center" allow-text-wrap="true" allow-filtering="false"/>
         <e-column field="AssignedMasterFullName" type="string" header-text="Assigned master" width="150"/>
         <e-column field="DeviceModel" type="string" header-text="Device" width="200"/>
         <e-column field="IssueDescription" type="string" header-text="Issue description" width="200"/>
@@ -39,14 +39,23 @@
     </script>  
 
     <script id="orderIdTemplate" type="text/x-jsrender">
-        {{:Id}} <a href="/Orders/DeviceReceipt/{{:Id}}" target="_blank"><i class="fa fa-file-pdf-o fa" aria-hidden="true"></i></a>
+        {{:Id}} <a href="/Orders/DeviceReceipt/{{:Id}}" target="_blank"><i class="fa fa-file-pdf-o fa" aria-hidden="true"></i></a>    
+    </script>
+    
+    <script id="orderStatusTemplate" type="text/x-jsrender">
+        {{if IsUrgent == true}}
+            <i class="fa fa-clock-o text-warning fa" aria-hidden="true" title="@L("IsUrgent")"></i>
+        {{/if}}
+        {{if IsWarrantyComplaint == true}}
+            <i class="fa fa-bug text-danger fa" aria-hidden="true" title="@L("IsWarrantyComplaint")"></i>
+        {{/if}}
+        {{:OrderStatusString}}
+    
     </script>
 
     <script id="orderInvoicesTemplate" type="text/x-jsrender">
     {{if OrderStatus == '4'}}
-        <a href="/Orders/Complete/{{:Id}}">
-            <span class="fa-stack text-success"><i class="fa fa-square fa-stack-2x"></i><i class="fa fa-arrow-circle-o-right fa-stack-1x fa-inverse"></i></span>
-        </a>
+        <a href="/Orders/Complete/{{:Id}}"><span class="small">@L("GiveToCustomer")</span></a>
     {{/if}}
     {{if OrderStatus == '5' || OrderStatus == '6' }}
         <a href="/Orders/FinalInvoice/{{:Id}}" target="_blank"><i class="fa fa-file-pdf-o fa" aria-hidden="true"></i></a>

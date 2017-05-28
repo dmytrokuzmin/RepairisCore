@@ -45,8 +45,6 @@ namespace Repairis.Orders
 
         public OrderStatusEnum OrderStatus { get; set; } = OrderStatusEnum.Open;
 
-        public bool IsRepaired { get; set; } = false;
-
         public DateTime? OrderRepairedDate { get; set; }
 
         [DataType(DataType.MultilineText)]

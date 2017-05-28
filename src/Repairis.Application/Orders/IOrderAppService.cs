@@ -22,9 +22,9 @@ namespace Repairis.Orders
         Task<OrderBasicListDto> GetAllActiveOrdersAsync();
         Task<OrderBasicListDto> GetAllPassiveOrdersAsync();
 
-        List<DropDownListItem> GetLocalizedOrderStatuses();
+        List<DropDownListItem> GetAvailableOrderStatuses(OrderStatusEnum currentStatus);
 
-
-        //Task NotifyOrderStatusHasChanged(int id);
+        Task NotifyOrderIsReady(long orderId);
+        Task NotifyOrderIsReturnedToInProgress(long orderId);
     }
 }

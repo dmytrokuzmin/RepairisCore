@@ -43,6 +43,14 @@ namespace Repairis.Web.Startup
                 Configuration.Get<SmsSettings>().RequestUri = _appConfiguration["SmsSettings:RequestUri"];
                 Configuration.Get<SmsSettings>().From = _appConfiguration["SmsSettings:From"];
             }
+
+            // Company
+            Configuration.Get<CompanySettings>().CompanyName = _appConfiguration["Company:Name"];
+            Configuration.Get<CompanySettings>().CompanyStreet = _appConfiguration["Company:Street"];
+            Configuration.Get<CompanySettings>().CompanyCity = _appConfiguration["Company:City"];
+            Configuration.Get<CompanySettings>().CompanyState = _appConfiguration["Company:State"];
+            Configuration.Get<CompanySettings>().CompanyContactNumber = _appConfiguration["Company:ContactNumber"];
+            Configuration.Get<CompanySettings>().CompanyEmail = _appConfiguration["Company:Email"];
         }
 
         public override void Initialize()

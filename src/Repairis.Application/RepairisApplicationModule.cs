@@ -124,6 +124,7 @@ namespace Repairis
                 //User -> CustomerBasicEntityDto
                 cfg.CreateMap<User, CustomerBasicEntityDto>()
                     .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
+                    .ForMember(dest => dest.CustomerType, opt => opt.MapFrom(src => src.CustomerInfo.CustomerType))
                     .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Name))
                     .ForMember(dest => dest.Surname, opt => opt.MapFrom(src => src.Surname))
                     .ForMember(dest => dest.FatherName, opt => opt.MapFrom(src => src.FatherName))
@@ -131,12 +132,12 @@ namespace Repairis
                     .ForMember(dest => dest.PhoneNumber, opt => opt.MapFrom(src => src.PhoneNumber))
                     .ForMember(dest => dest.SecondaryPhoneNumber, opt => opt.MapFrom(src => src.SecondaryPhoneNumber))
                     .ForMember(dest => dest.EmailAddress, opt => opt.MapFrom(src => src.EmailAddress))
-                    .ForMember(dest => dest.AdditionalInfo, opt => opt.MapFrom(src => src.CustomerInfo.AdditionalInfo))
-                    .ForMember(dest => dest.CustomerType, opt => opt.MapFrom(src => src.CustomerInfo.CustomerType));
+                    .ForMember(dest => dest.AdditionalInfo, opt => opt.MapFrom(src => src.CustomerInfo.AdditionalInfo));
 
 
                 cfg.CreateMap<CustomerInfo, CustomerBasicEntityDto>()
                     .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
+                    .ForMember(dest => dest.CustomerType, opt => opt.MapFrom(src => src.CustomerType))
                     .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.CustomerUser.Name))
                     .ForMember(dest => dest.Surname, opt => opt.MapFrom(src => src.CustomerUser.Surname))
                     .ForMember(dest => dest.FatherName, opt => opt.MapFrom(src => src.CustomerUser.FatherName))
@@ -144,8 +145,7 @@ namespace Repairis
                     .ForMember(dest => dest.PhoneNumber, opt => opt.MapFrom(src => src.CustomerUser.PhoneNumber))
                     .ForMember(dest => dest.SecondaryPhoneNumber, opt => opt.MapFrom(src => src.CustomerUser.SecondaryPhoneNumber))
                     .ForMember(dest => dest.EmailAddress, opt => opt.MapFrom(src => src.CustomerUser.EmailAddress))
-                    .ForMember(dest => dest.AdditionalInfo, opt => opt.MapFrom(src => src.AdditionalInfo))
-                    .ForMember(dest => dest.CustomerType, opt => opt.MapFrom(src => src.CustomerType));
+                    .ForMember(dest => dest.AdditionalInfo, opt => opt.MapFrom(src => src.AdditionalInfo));
 
 
                 cfg.CreateMap<EmployeeInfo, EmployeeBasicEntityDto>()
@@ -221,7 +221,6 @@ namespace Repairis
                     .ForMember(dest => dest.DevicePickupDate, opt => opt.MapFrom(src => src.DevicePickupDate))
                     .ForMember(dest => dest.WarrantyExpirationDate, opt => opt.MapFrom(src => src.WarrantyExpirationDate))
                     .ForMember(dest => dest.IsActive, opt => opt.MapFrom(src => src.IsActive))
-                    .ForMember(dest => dest.IsRepaired, opt => opt.MapFrom(src => src.IsRepaired))
                     .ForMember(dest => dest.OrderRepairedDate, opt => opt.MapFrom(src => src.OrderRepairedDate))
                     .ForMember(dest => dest.SparePartsUsed, opt => opt.MapFrom(src => src.SparePartsUsed))
                     .ForMember(dest => dest.RepairPrice, opt => opt.MapFrom(src => src.RepairPrice))

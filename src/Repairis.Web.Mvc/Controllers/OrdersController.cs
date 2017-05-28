@@ -181,66 +181,68 @@ namespace Repairis.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Edit(OrderFullEntityDto input)
         {
-            if (ModelState.IsValid)
+            bool orderStatusChanged = false;
+            var order = _orderRepository.Get(input.Id);
+            var previousOrderStatus = order.OrderStatus;
+            if (input.OrderStatus != previousOrderStatus)
             {
-                var order = _orderRepository.Get(input.Id);
+                orderStatusChanged = true;
+            }
 
-                if (order.OrderStatus != input.OrderStatus)
+            if (input.OrderStatus != OrderStatusEnum.Open && input.OrderStatus != OrderStatusEnum.Waiting)
+            {
+                if (input.AssignedEmployeeId == 0)
                 {
-                    order.OrderStatus = input.OrderStatus;
-                    //await _orderAppService.NotifyOrderStatusHasChanged(order.Id);
+                    ModelState.AddModelError(nameof(input.AssignedEmployeeId), L("PleaseSetAssignedEmployee"));
                 }
 
+                if (input.OrderStatus != OrderStatusEnum.InProgress)
+                {
+                    if (input.RepairPrice == null)
+                    {
+                        ModelState.AddModelError(nameof(input.RepairPrice), L("PleaseSetRepairPrice"));
+                    }
+                    if (string.IsNullOrEmpty(input.WorkDoneDescripton))
+                    {
+                        ModelState.AddModelError(nameof(input.WorkDoneDescripton), L("PleaseFillWorkDoneDescription"));
+                    }
+                }
+            }
+
+
+            if (ModelState.IsValid)
+            {             
+                order.OrderStatus = input.OrderStatus;
                 order.IsUrgent = input.IsUrgent;
                 order.IsWarrantyComplaint = input.IsWarrantyComplaint;
                 order.IssueDescription = input.IssueDescription;
                 order.AdditionalEquipment = input.AdditionalEquipment;
                 order.AdditionalNotes = input.AdditionalNotes;
                 order.AssignedEmployeeId = input.AssignedEmployeeId == 0 ? (long?) null : input.AssignedEmployeeId;
-                order.IsRepaired = input.IsRepaired;
-                order.OrderRepairedDate = input.OrderRepairedDate;
                 order.RepairPrice = input.RepairPrice;
                 order.WorkDoneDescripton = input.WorkDoneDescripton;
                 order.DevicePickupDate = input.DevicePickupDate;
 
-                //var updatedSparePartsUsed = input.SparePartsUsed
-                //                   .Where(x => x.OrderId == order.Id)
-                //                   .GroupBy(x => new { x.OrderId, x.SparePartId })
-                //                   .Select(g => new SparePartOrderMapping
-                //                   {
-                //                       OrderId = g.Key.OrderId,
-                //                       SparePartId = g.Key.SparePartId,
-                //                       Quantity = g.Sum(x => x.Quantity),
-                //                       PricePerItem = (g.Sum(x => x.Quantity * x.PricePerItem) / g.Sum(x => x.Quantity))
-                //                   }).ToList();
 
-                ////handle removed spareparts
-                //foreach (var mapping in order.SparePartsUsed)
-                //{
-                //    var match = updatedSparePartsUsed.FirstOrDefault(x => x.OrderId == mapping.OrderId);
-
-                //    if (match == null)
-                //    {
-                //        await _sparePartDomainService.RemovePartsFromOrder(mapping.SparePartId, mapping.OrderId, null);
-                //    }
-                //    else if (match.Quantity < mapping.Quantity)
-                //    {
-                //        await _sparePartDomainService.RemovePartsFromOrder(mapping.SparePartId, mapping.OrderId, null);
-                //    }
-                //}
-
-                //foreach (var mapping in updatedSparePartsUsed)
-                //{
-                //    await
-                //        _sparePartDomainService.AddOrUpdateMapping(mapping.SparePartId, mapping.OrderId,
-                //            mapping.Quantity, mapping.PricePerItem);
-                //}
+                if (orderStatusChanged)
+                {
+                    if (input.OrderStatus == OrderStatusEnum.Ready)
+                    {
+                        order.OrderRepairedDate = DateTime.Now;
+                        await _orderAppService.NotifyOrderIsReady(order.Id);
+                    }
+                    else if (previousOrderStatus == OrderStatusEnum.Ready)
+                    {
+                        await _orderAppService.NotifyOrderIsReturnedToInProgress(order.Id);
+                    }
+                }
 
                 await _orderRepository.InsertOrUpdateAsync(order);
+
+
                 return RedirectToAction("Index");
             }
-            //input.OrderDto = await _orderAppService.GetOrderDtoAsync(input.OrderDto.Id);
-            //input.Users = await _userAppService.GetUsers();
+
             ViewBag.Employees = await _employeeRepository.GetAll().ProjectTo<EmployeeDropDownListDto>()
                 .OrderBy(x => x.FullName).ToListAsync();
             return View(input);

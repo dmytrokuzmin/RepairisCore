@@ -26,14 +26,12 @@ namespace Repairis.Web.Controllers
     public class CustomersController : RepairisControllerBase
     {
         private readonly IUserAppService _userAppService;
-        private readonly IRepository<User, long> _userRepository;
         private readonly IRepository<CustomerInfo, long> _customerInfoRepository;
 
 
-        public CustomersController(IUserAppService userAppService, IRepository<User, long> userRepository, IRepository<CustomerInfo, long> customerInfoRepository)
+        public CustomersController(IUserAppService userAppService, IRepository<CustomerInfo, long> customerInfoRepository)
         {
             _userAppService = userAppService;
-            _userRepository = userRepository;
             _customerInfoRepository = customerInfoRepository;
         }
 
