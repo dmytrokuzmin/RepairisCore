@@ -5,6 +5,7 @@ using Abp.Application.Services.Dto;
 using Abp.Authorization;
 using Abp.AutoMapper;
 using Abp.Domain.Repositories;
+using Abp.Domain.Uow;
 using Abp.UI;
 using Repairis.Authorization;
 using Repairis.Authorization.Users;
@@ -12,6 +13,7 @@ using Repairis.Authorization.Roles;
 using Repairis.Users.Dto;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Repairis.Email;
 
 namespace Repairis.Users
 {
@@ -22,6 +24,7 @@ namespace Repairis.Users
         private readonly IRepository<User, long> _userRepository;
         private readonly IRepository<CustomerInfo, long> _customerInfoRepository;
         private readonly IRepository<EmployeeInfo, long> _employeeInfoRepository;
+        private readonly IEmailService _emailService;
         private readonly IPermissionManager _permissionManager;
         private readonly IPasswordHasher<User> _passwordHasher;
         private readonly UserRegistrationManager _userRegistrationManager;
@@ -29,7 +32,7 @@ namespace Repairis.Users
         public UserAppService(
             IRepository<User, long> userRepository, 
             IPermissionManager permissionManager,
-            IPasswordHasher<User> passwordHasher, UserRegistrationManager userRegistrationManager, IRepository<CustomerInfo, long> customerInfoRepository, IRepository<EmployeeInfo, long> employeeInfoRepository)
+            IPasswordHasher<User> passwordHasher, UserRegistrationManager userRegistrationManager, IRepository<CustomerInfo, long> customerInfoRepository, IRepository<EmployeeInfo, long> employeeInfoRepository, IEmailService emailService)
         {
             _userRepository = userRepository;
             _permissionManager = permissionManager;
@@ -37,6 +40,7 @@ namespace Repairis.Users
             _userRegistrationManager = userRegistrationManager;
             _customerInfoRepository = customerInfoRepository;
             _employeeInfoRepository = employeeInfoRepository;
+            _emailService = emailService;
         }
 
         public async Task ProhibitPermission(ProhibitPermissionInput input)
@@ -136,23 +140,19 @@ namespace Repairis.Users
             return customer.MapTo<CustomerFullEntityDto>();
         }
 
-
+        [UnitOfWork]
         public async Task DeleteCustomerAsync(long id)
         {
-            var customer = await _userRepository.FirstOrDefaultAsync(id);
-            if (customer?.CustomerInfo == null)
+            var customer = await _customerInfoRepository.GetAllIncluding(x => x.CustomerUser).FirstOrDefaultAsync(x => x.Id == id);
+            if (customer == null)
             {
                 throw new UserFriendlyException(L("CustomerNotFound"));
             }
 
-            if (customer.IsActive)
-            {
-                customer.IsActive = false;
-            }
-            else
-            {
-                await _userRepository.DeleteAsync(customer.Id);
-            }
+            customer.CustomerUser.CustomerInfoId = null;
+            await CurrentUnitOfWork.SaveChangesAsync();
+            await _userRepository.DeleteAsync(customer.CustomerUserId);
+            await _customerInfoRepository.DeleteAsync(customer.Id);
         }
 
 
@@ -191,7 +191,7 @@ namespace Repairis.Users
 
 
         public async Task<EmployeeFullEntityDto> GetEmployeeDtoAsync(long id)
-        {
+        {          
             var employee = await _userRepository.GetAsync(id);
 
             if (employee?.EmployeeInfo == null)
@@ -205,26 +205,21 @@ namespace Repairis.Users
 
         public async Task DeleteEmployeeAsync(long id)
         {
-            var employee = await _userRepository.FirstOrDefaultAsync(id);
-            if (employee?.EmployeeInfo == null)
+            var employee = await _employeeInfoRepository.GetAllIncluding(x => x.EmployeeUser).FirstOrDefaultAsync(x => x.Id == id);
+            if (employee == null)
             {
                 throw new UserFriendlyException(L("EmployeeNotFound"));
             }
 
-            if (employee.IsActive)
-            {
-                employee.IsActive = false;
-            }
-            else
-            {
-                await _userRepository.DeleteAsync(employee.Id);
-            }
+            employee.EmployeeUser.EmployeeInfoId = null;
+            await CurrentUnitOfWork.SaveChangesAsync();
+            await _userRepository.DeleteAsync(employee.EmployeeUserId);
+            await _employeeInfoRepository.DeleteAsync(employee.Id);
         }
 
 
         public async Task<EmployeeInfo> CreateEmployeeAsync(EmployeeInput input)
         {
-
             var user = await _userRegistrationManager.RegisterUserAsync(StaticRoleNames.Tenants.Employee, input.Name, input.Surname,
                 input.FatherName, input.PhoneNumber, input.SecondaryPhoneNumber, input.Address, input.EmailAddress,
                 input.PhoneNumber, input.Password, false);
@@ -239,7 +234,7 @@ namespace Repairis.Users
             user.EmployeeInfoId = employeeInfo.Id;
             await _userRepository.UpdateAsync(user);
 
-            //send password via email or sms
+            //send password via email or sms           
 
             return employeeInfo;
         }
