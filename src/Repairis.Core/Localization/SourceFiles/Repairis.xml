@@ -60,6 +60,11 @@
     <text name="CurrentTenant">Current tenant</text>
     <text name="NotSelected">Not selected</text>
     <text name="Change">Change</text>
-    <text name="ChangeTenant">Change tenant</text>
+    <text name="Orders">Orders</text>
+    <text name="Customers">Customers</text>
+    <text name="Devices">Devices</text>
+    <text name="Reports">Reports</text>
+    <text name="Employees">Employees</text>
+    <text name="GiveToCustomer">Give to customer</text>
   </texts>
 </localizationDictionary>
