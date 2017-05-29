@@ -14,9 +14,10 @@ using Repairis.SpareParts;
 namespace Repairis.Migrations
 {
     [DbContext(typeof(RepairisDbContext))]
-    partial class RepairisDbContextModelSnapshot : ModelSnapshot
+    [Migration("20170529202154_Remove Issues from the DbContext")]
+    partial class RemoveIssuesfromtheDbContext
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.1.1")

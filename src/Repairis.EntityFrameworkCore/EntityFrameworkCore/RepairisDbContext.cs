@@ -28,8 +28,8 @@ namespace Repairis.EntityFrameworkCore
         public DbSet<SparePart> SpareParts { get; set; }
         public DbSet<SparePartOrderMapping> SparePartOrderMappings { get; set; }
         public DbSet<SparePartCompatibility> SparePartCompatibility { get; set; }
-        public DbSet<Issue> Issues { get; set; }
-        public DbSet<IssueOrderMapping> IssueOrderMappings { get; set; }
+        //public DbSet<Issue> Issues { get; set; }
+        //public DbSet<IssueOrderMapping> IssueOrderMappings { get; set; }
 
         public RepairisDbContext(DbContextOptions<RepairisDbContext> options)
             : base(options)
@@ -73,16 +73,16 @@ namespace Repairis.EntityFrameworkCore
                 .HasForeignKey(c => c.SparePartId);
 
             // Issue and Order M:N binding
-            modelBuilder.Entity<IssueOrderMapping>()
-                .HasKey(m => new { m.OrderId, m.IssueId,  });
-            modelBuilder.Entity<IssueOrderMapping>()
-                .HasOne(m => m.Order)
-                .WithMany(o => o.Issues)
-                .HasForeignKey(m => m.OrderId);
-            modelBuilder.Entity<IssueOrderMapping>()
-                .HasOne(m => m.Issue)
-                .WithMany(i => i.OrdersWithIssue)
-                .HasForeignKey(m => m.IssueId);
+            //modelBuilder.Entity<IssueOrderMapping>()
+            //    .HasKey(m => new { m.OrderId, m.IssueId,  });
+            //modelBuilder.Entity<IssueOrderMapping>()
+            //    .HasOne(m => m.Order)
+            //    .WithMany(o => o.Issues)
+            //    .HasForeignKey(m => m.OrderId);
+            //modelBuilder.Entity<IssueOrderMapping>()
+            //    .HasOne(m => m.Issue)
+            //    .WithMany(i => i.OrdersWithIssue)
+            //    .HasForeignKey(m => m.IssueId);
 
             // Indexes
             modelBuilder.Entity<Brand>()

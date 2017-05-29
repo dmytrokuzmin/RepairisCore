@@ -59,7 +59,7 @@ namespace Repairis.Orders
             get { return RepairPrice.GetValueOrDefault(0m) + SparePartsUsed.Sum(x => x.Quantity * x.PricePerItem); }
         }
 
-        public virtual List<IssueOrderMapping> Issues { get; set; } = new List<IssueOrderMapping>();
+        //public virtual List<IssueOrderMapping> Issues { get; set; } = new List<IssueOrderMapping>();
 
         //Spare parts used to repair the device
         public virtual List<SparePartOrderMapping> SparePartsUsed { get; set; } = new List<SparePartOrderMapping>();
