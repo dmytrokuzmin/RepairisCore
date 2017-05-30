@@ -45,7 +45,7 @@
     <text name="TenantSelection_Detail" value="Please select one of the following tenants." />
     <text name="Logout" value="Logout" />
 
-    <text name="RegisterFormUserNameInvalidMessage">Please dont enter an email address for username.</text>
+    <text name="RegisterFormUserNameInvalidMessage">Please don't enter an email address for username.</text>
 
     <text name="DatabaseConnectionString" value="Database connection string" />
     <text name="Users" value="Users" />
@@ -60,11 +60,55 @@
     <text name="CurrentTenant">Current tenant</text>
     <text name="NotSelected">Not selected</text>
     <text name="Change">Change</text>
+
+  
+    <!--Repairis custom resource strings-->
     <text name="Orders">Orders</text>
     <text name="Customers">Customers</text>
     <text name="Devices">Devices</text>
     <text name="Reports">Reports</text>
     <text name="Employees">Employees</text>
     <text name="GiveToCustomer">Give to customer</text>
+    <text name="SpareParts">Spare parts</text>
+    <text name="BrandNotFound" value="The brand was not found" />
+    <text name="DeviceCategoryNotFound" value="The device category was not found" />
+    <text name="DeviceModelNotFound" value="The device model was not found" />
+    <text name="ClientNotFound" value="The client was not found" />
+    <text name="OrderNotFound" value="The order was not found" />
+
+    <text name="BrandAlreadyExists" value="The brand already exists in database" />
+    <text name="DeviceCategoryAlreadyExists" value="The device category already exists in database" />
+    <text name="DeviceModelAlreadyExists" value="The device model already exists in database" />
+    <text name="ClientAlreadyExists" value="The client already exists in database" />
+    <text name="OrderAlreadyExists" value="The order already exists in database" />
+
+    <text name="CannotDeleteBrandBecauseIsBeingUsed" value="Cannot delete brand because it is being used in system" />
+    <text name="CannotDeleteDeviceCategoryBecauseIsBeingUsed" value="Cannot delete device category because it is being used in system" />
+    <text name="CannotDeleteDeviceModelBecauseIsBeingUsed" value="Cannot delete device model because it is being used in system" />
+
+    <text name="Brand" value="Brand" />
+    <text name="Brands" value="Brands" />
+    <text name="DeviceCategory" value="Device category" />
+    <text name="DeviceCategories" value="Device categories" />
+    <text name="DeviceModel" value="Device model" />
+    <text name="DeviceModels" value="Device models" />
+    <text name="Client" value="Client" />
+    <text name="Clients" value="Clients" />
+    <text name="Device" value="Device" />  
+    <text name="Settings" value="Settings" />
+
+    <text name="Employee">Employee</text>
+    <text name="Employes">Employees</text>
+    <text name="NewCustomer">New customer</text>
+    <text name="FatherName">Father name</text>
+    <text name="CustomerType">Customer type</text>
+    <text name="MobilePhoneNumber">Mobile phone number</text>
+    <text name="AdditionalInfo">Additional info</text>
+    <text name="BackToList">Back to list</text>
+    <text name="NewBrand">New brand</text>
+    <text name="NewDeviceCategory">New device category</text>
+    <text name="NewDeviceModel">New device model</text>
+    <text name="NewEmployee">New employee</text>
+    <text name="NewOrder">New order</text>
   </texts>
 </localizationDictionary>

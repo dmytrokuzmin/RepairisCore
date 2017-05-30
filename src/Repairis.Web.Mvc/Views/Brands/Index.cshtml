@@ -1,10 +1,10 @@
 ﻿@model List<Repairis.Brands.Dto.BrandBasicEntityDto>
 @{
-    ViewBag.Title = "Brands";
+    ViewBag.Title = L("Brands");
 }
-<h2>Brands</h2>
+<h2>@L("Brands")</h2>
 <p>
-    <a asp-action="Create" class="btn btn-success"><i class="fa fa-plus"></i> New brand</a>
+    <a asp-action="Create" class="btn btn-success"><i class="fa fa-plus"></i> @L("NewBrand")</a>
 </p>
 <table class="table table-striped">
     <thead>

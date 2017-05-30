@@ -1,65 +1,115 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <localizationDictionary culture="ru">
   <texts>
-    <text name="HomePage" value="Home page" />
-    <text name="About" value="About" />
-    <text name="WellcomeMessage" value="Welcome to Repairis!" />
+    <text name="HomePage" value="Главная" />
+    <text name="About" value="FAQ" />
+    <text name="WellcomeMessage" value="Добро пожаловать в Repairis!" />
 
-    <text name="FormIsNotValidMessage" value="Form is not valid. Please check and fix errors." />
-    <text name="TenantNameCanNotBeEmpty" value="Tenant name can not be empty" />
+    <text name="FormIsNotValidMessage" value="Форма содержит ошибки. Пожалуйста, исправьте их." />
+    <text name="TenantNameCanNotBeEmpty" value="Название кластера не может быть пустым" />
 
-    <text name="InvalidUserNameOrPassword" value="Invalid user name or password" />
-    <text name="ThereIsNoTenantDefinedWithName{0}" value="There is no tenant defined with name {0}" />
-    <text name="TenantIsNotActive" value="Tenant {0} is not active." />
-    <text name="UserIsNotActiveAndCanNotLogin" value="User {0} is not active and can not log in." />
-    <text name="UserEmailIsNotConfirmedAndCanNotLogin">Your email address is not confirmed. You can not login</text>
-    <text name="UserLockedOutMessage">The user account has been locked out. Please try again later.</text>
-    <text name="PleaseEnterLoginInformation" value="Please enter login information" />
-    <text name="TenancyName" value="Tenancy name" />
-    <text name="UserNameOrEmail" value="User name or email" />
-    <text name="Password" value="Password" />
-    <text name="RememberMe" value="Remember me" />
-    <text name="LogIn" value="Log in" />
+    <text name="InvalidUserNameOrPassword" value="Неправильный логин или пароль" />
+    <text name="ThereIsNoTenantDefinedWithName{0}" value="Нет существует кластера с именем {0}" />
+    <text name="TenantIsNotActive" value="Кластер {0} не активен." />
+    <text name="UserIsNotActiveAndCanNotLogin" value="Пользователь {0} не активен." />
+    <text name="PleaseEnterLoginInformation" value="Введите данные для входа" />
+    <text name="TenancyName" value="Название кластера" />
+    <text name="UserNameOrEmail" value="Логин или E-mail" />
+    <text name="Password" value="Пароль" />
+    <text name="RememberMe" value="Запомнить меня" />
+    <text name="LogIn" value="Войти" />
 
-    <text name="LoginFailed" value="Login failed!" />
+    <text name="LoginFailed" value="Войти не удалось!" />
 
-    <text name="NameSurname" value="Name surname" />
-    <text name="UserName" value="User name" />
-    <text name="Name" value="Name" />
-    <text name="Surname" value="Surname" />
-    <text name="EmailAddress" value="Email address" />
+    <text name="NameSurname" value="Имя Фамилия" />
+    <text name="UserName" value="Логин" />
+    <text name="Name" value="Имя" />
+    <text name="Surname" value="Фамилия" />
+    <text name="EmailAddress" value="Email" />
 
-    <text name="Tenants" value="Tenants" />
-    <text name="SavedSuccessfully" value="Saved successfully" />
-    <text name="CreateNewTenant" value="Create new tenant" />
-    <text name="AdminEmailAddress" value="Admin email address" />
-    <text name="Save" value="Save" />
-    <text name="Cancel" value="Cancel" />
-    <text name="TenantName_Regex_Description" value="Tenant name must be at least 2 chars, starts with a letter and continue with letter, number, dash or underscore." />
-    <text name="DefaultPasswordIs" value="Default password is {0}" />
-    <text name="CanBeEmptyToLoginAsHost" value="Can be empty to login as host." />
-    <text name="Register" value="Register" />
-    <text name="OrLoginWith" value="Or login with" />
-    <text name="WaitingForActivationMessage" value="Your account is waiting to be activated by system admin." />
-    <text name="TenantSelection" value="Tenant Selection" />
-    <text name="TenantSelection_Detail" value="Please select one of the following tenants." />
-    <text name="Logout" value="Logout" />
+    <text name="Tenants" value="Кластеры" />
+    <text name="SavedSuccessfully" value="Успешно сохранено" />
+    <text name="CreateNewTenant" value="Создать новый кластер" />
+    <text name="AdminEmailAddress" value="Email администратора" />
+    <text name="Save" value="Сохранить" />
+    <text name="Cancel" value="Отмена" />
+    <text name="TenantName_Regex_Description" value="Название кластера должно быть длиной минимум 2 знака и начинаться буквой. Разрешенные символы: '-' '_' '0-9'" />
+    <text name="DefaultPasswordIs" value="Стандартный пароль: {0}" />
+    <text name="CanBeEmptyToLoginAsHost" value="Может быть пустым для входа в глобальные настройки." />
+    <text name="Register" value="Зарегистрироваться" />
+    <text name="OrLoginWith" value="Или войти с помощью" />
+    <text name="WaitingForActivationMessage" value="Ваш аккаунт ожидает активации администратором." />
+    <text name="TenantSelection" value="Выбор кластера" />
+    <text name="TenantSelection_Detail" value="Выберите один из следующих кластеров." />
+    <text name="Logout" value="Выйти" />
 
-    <text name="RegisterFormUserNameInvalidMessage">Please dont enter an email address for username.</text>
+    <text name="RegisterFormUserNameInvalidMessage" value="Пожалуйста не используйте E-mail в качестве логина."></text>
 
     <text name="DatabaseConnectionString" value="Database connection string" />
-    <text name="Users" value="Users" />
-    <text name="IsActive" value="Is active" />
-    <text name="FullName" value="Full name" />
-    <text name="CreateNewUser" value="Create new user" />
-    <text name="Yes" value="Yes" />
-    <text name="No" value="No" />
-    <text name="Optional" value="Optional" />
+    <text name="Users" value="Пользователи" />
+    <text name="IsActive" value="Активен" />
+    <text name="FullName" value="Имя Фамилия" />
+    <text name="CreateNewUser" value="Создать нового пользователя" />
+    <text name="Yes" value="Да" />
+    <text name="No" value="Нет" />
+    <text name="Optional" value="Необязательно" />
+
     <text name="LeaveEmptyToSwitchToHost">Leave empty to switch to the host</text>
 
     <text name="CurrentTenant">Current tenant</text>
     <text name="NotSelected">Not selected</text>
-    <text name="Change">Change</text>
+    <text name="Change">Сменить</text>
     <text name="ChangeTenant">Change tenant</text>
+
+    <!--Repairis custom resource strings-->
+    <text name="Orders">Заказы</text>
+    <text name="Customers">Клиенты</text>
+    <text name="Devices">Устройства</text>
+    <text name="Reports">Отчеты</text>
+    <text name="Employees">Работники</text>
+    <text name="GiveToCustomer">Выдать клиенту</text>
+    <text name="SpareParts">Запчасти</text>
+    
+    <text name="BrandNotFound" value="Бренд не найден" />
+    <text name="DeviceCategoryNotFound" value="Тип устройства не найден" />
+    <text name="DeviceModelNotFound" value="Модель не найдена" />
+    <text name="ClientNotFound" value="Клиент не найден" />
+    <text name="OrderNotFound" value="Заказ не найден" />
+
+    <text name="BrandAlreadyExists" value="Бренд уже существует" />
+    <text name="DeviceCategoryAlreadyExists" value="Тип устройства уже существует" />
+    <text name="DeviceModelAlreadyExists" value="Модель уже существует" />
+    <text name="ClientAlreadyExists" value="Клиент уже существует" />
+    <text name="OrderAlreadyExists" value="Заказ уже существует" />
+
+    <text name="CannotDeleteBrandBecauseIsBeingUsed" value="Нельзя удалить производителя, поскольку он используется в системе" />
+    <text name="CannotDeleteDeviceCategoryBecauseIsBeingUsed" value="Нельзя удалить тип устройства, поскольку он используется в системе" />
+    <text name="CannotDeleteDeviceModelBecauseIsBeingUsed" value="Нельзя удалить модель, поскольку она используется в системе" />
+
+    <text name="Brand" value="Бренд" />
+    <text name="Brands" value="Бренды" />
+    <text name="DeviceCategory" value="Тип устройства" />
+    <text name="DeviceCategories" value="Типы устройств" />
+    <text name="DeviceModel" value="Модель" />
+    <text name="DeviceModels" value="Модели" />
+    <text name="Client" value="Клиент" />
+    <text name="Clients" value="Клиенты" />
+    <text name="Device" value="Устройство" />
+    <text name="Order" value="Заказ" />
+    <text name="Settings" value="Настройки" />
+
+    <text name="Employee">Работник</text>
+    <text name="Employes">Работники</text>
+    <text name="FatherName">Отчество</text>
+    <text name="CustomerType">Тип клиента</text>
+    <text name="MobilePhoneNumber">Моб.тел.</text>
+    <text name="AdditionalInfo">Дополнительная информация</text>
+    <text name="BackToList">Вернуться</text>
+    <text name="NewCustomer">Новый клиент</text>
+    <text name="NewBrand">Новый бренд</text>
+    <text name="NewDeviceCategory">Новый тип устройства</text>
+    <text name="NewDeviceModel">Новая модель</text>
+    <text name="NewEmployee">Новый работник</text>
+    <text name="NewOrder">Новый заказ</text>
   </texts>
 </localizationDictionary>
