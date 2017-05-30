@@ -93,19 +93,35 @@ namespace Repairis.Orders
         public List<DropDownListItem> GetAvailableOrderStatuses(OrderStatusEnum currentStatus)
         {
             var orderStatuses = new List<OrderStatusEnum>();
-            if (currentStatus == OrderStatusEnum.Open || currentStatus == OrderStatusEnum.Waiting)
+            switch (currentStatus)
             {
-                orderStatuses.Add(OrderStatusEnum.Open);
-                orderStatuses.Add(OrderStatusEnum.Waiting);
-                orderStatuses.Add(OrderStatusEnum.InProgress);
-            }
-
-            if (currentStatus == OrderStatusEnum.InProgress || currentStatus == OrderStatusEnum.Ready)
-            {
-                orderStatuses.Add(OrderStatusEnum.Open);
-                orderStatuses.Add(OrderStatusEnum.Waiting);
-                orderStatuses.Add(OrderStatusEnum.InProgress);
-                orderStatuses.Add(OrderStatusEnum.Ready);
+                case OrderStatusEnum.Open:
+                case OrderStatusEnum.Waiting:
+                    orderStatuses.Add(OrderStatusEnum.Open);
+                    orderStatuses.Add(OrderStatusEnum.Waiting);
+                    orderStatuses.Add(OrderStatusEnum.InProgress);
+                    break;
+                case OrderStatusEnum.InProgress:
+                    orderStatuses.Add(OrderStatusEnum.Open);
+                    orderStatuses.Add(OrderStatusEnum.Waiting);
+                    orderStatuses.Add(OrderStatusEnum.InProgress);
+                    orderStatuses.Add(OrderStatusEnum.Ready);
+                    break;
+                case OrderStatusEnum.Ready:
+                    orderStatuses.Add(OrderStatusEnum.Open);
+                    orderStatuses.Add(OrderStatusEnum.Waiting);
+                    orderStatuses.Add(OrderStatusEnum.InProgress);
+                    orderStatuses.Add(OrderStatusEnum.Ready);
+                    break;
+                case OrderStatusEnum.OnWarranty:
+                case OrderStatusEnum.Closed:
+                    orderStatuses.Add(OrderStatusEnum.Open);
+                    orderStatuses.Add(OrderStatusEnum.Waiting);
+                    orderStatuses.Add(OrderStatusEnum.InProgress);
+                    orderStatuses.Add(OrderStatusEnum.Ready);
+                    orderStatuses.Add(OrderStatusEnum.OnWarranty);
+                    orderStatuses.Add(OrderStatusEnum.Closed);
+                    break;
             }
 
             return orderStatuses.Select(x => new DropDownListItem {Text = x.GetDisplayName(), Value = x.ToString()})

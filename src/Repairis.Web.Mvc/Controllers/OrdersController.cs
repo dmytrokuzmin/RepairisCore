@@ -319,7 +319,7 @@ namespace Repairis.Web.Controllers
             {
                 return NotFound();
             }
-
+            orderCompletion.DevicePickupDate = DateTime.Now;
             return View(orderCompletion);
         }
 
