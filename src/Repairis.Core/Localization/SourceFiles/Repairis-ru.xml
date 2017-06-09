@@ -12,6 +12,8 @@
     <text name="ThereIsNoTenantDefinedWithName{0}" value="Нет существует кластера с именем {0}" />
     <text name="TenantIsNotActive" value="Кластер {0} не активен." />
     <text name="UserIsNotActiveAndCanNotLogin" value="Пользователь {0} не активен." />
+    <text name="UserEmailIsNotConfirmedAndCanNotLogin">Вы не можете войти, пока не подтвердите ваш Email.</text>
+    <text name="UserLockedOutMessage">Пользователь временно заблокирован. Попробуйте позже.</text>
     <text name="PleaseEnterLoginInformation" value="Введите данные для входа" />
     <text name="TenancyName" value="Название кластера" />
     <text name="UserNameOrEmail" value="Логин или E-mail" />
@@ -26,6 +28,7 @@
     <text name="Name" value="Имя" />
     <text name="Surname" value="Фамилия" />
     <text name="EmailAddress" value="Email" />
+    <text name="Email" value="Email" />
 
     <text name="Tenants" value="Кластеры" />
     <text name="SavedSuccessfully" value="Успешно сохранено" />
@@ -37,6 +40,7 @@
     <text name="DefaultPasswordIs" value="Стандартный пароль: {0}" />
     <text name="CanBeEmptyToLoginAsHost" value="Может быть пустым для входа в глобальные настройки." />
     <text name="Register" value="Зарегистрироваться" />
+    <text name="LoginWith" value="Войти с помощью" />
     <text name="OrLoginWith" value="Или войти с помощью" />
     <text name="WaitingForActivationMessage" value="Ваш аккаунт ожидает активации администратором." />
     <text name="TenantSelection" value="Выбор кластера" />
@@ -54,16 +58,19 @@
     <text name="No" value="Нет" />
     <text name="Optional" value="Необязательно" />
 
-    <text name="LeaveEmptyToSwitchToHost">Leave empty to switch to the host</text>
+    <text name="LeaveEmptyToSwitchToHost">Оставьте пустым, чтобы войти в корневой кластер</text>
 
-    <text name="CurrentTenant">Current tenant</text>
-    <text name="NotSelected">Not selected</text>
+    <text name="CurrentTenant">Текущий кластер</text>
+    <text name="NotSelected">Не выбрано</text>
     <text name="Change">Сменить</text>
-    <text name="ChangeTenant">Change tenant</text>
+    <text name="ChangeTenant">Сменить кластер</text>
+    <text name="CouldNotValidateExternalUser">Не удалось подтвердить внешнего пользователя</text>
+    <text name="CouldNotCompleteLoginOperation">Не удалось завершить операцию входа</text>
 
     <!--Repairis custom resource strings-->
     <text name="Orders">Заказы</text>
     <text name="Customers">Клиенты</text>
+    <text name="Customer">Клиент</text>
     <text name="Devices">Устройства</text>
     <text name="Reports">Отчеты</text>
     <text name="Employees">Работники</text>
@@ -74,7 +81,9 @@
     <text name="DeviceCategoryNotFound" value="Тип устройства не найден" />
     <text name="DeviceModelNotFound" value="Модель не найдена" />
     <text name="ClientNotFound" value="Клиент не найден" />
+    <text name="CustomerNotFound" value="Клиент не найден" />
     <text name="OrderNotFound" value="Заказ не найден" />
+    <text name="EmployeeNotFound" value="" />
 
     <text name="BrandAlreadyExists" value="Бренд уже существует" />
     <text name="DeviceCategoryAlreadyExists" value="Тип устройства уже существует" />
@@ -101,8 +110,12 @@
     <text name="Employee">Работник</text>
     <text name="Employes">Работники</text>
     <text name="FatherName">Отчество</text>
+    <text name="Address">Адрес</text>
     <text name="CustomerType">Тип клиента</text>
     <text name="MobilePhoneNumber">Моб.тел.</text>
+    <text name="PrimaryPhoneNumber">Контактный телефон</text>
+    <text name="SecondaryPhoneNumber">Контактный телефон (второстепенный)</text>
+
     <text name="AdditionalInfo">Дополнительная информация</text>
     <text name="BackToList">Вернуться</text>
     <text name="NewCustomer">Новый клиент</text>
@@ -111,5 +124,99 @@
     <text name="NewDeviceModel">Новая модель</text>
     <text name="NewEmployee">Новый работник</text>
     <text name="NewOrder">Новый заказ</text>
+
+    <text name="Pages">Страницы</text>
+    <text name="Dashboard">Панель управления</text>
+    <text name="CustomerPages">Клиентские страницы</text>
+    <text name="YourOrderIsRepaired{0}">Ваш заказ №{0} отремонтирован</text>
+    <text name="RepairPriceIs{0}">Стоимость ремонта {0} грн.</text>
+    <text name="YourOrderIsReturnedToInProgress{0}">Ваш заказ №{0} был возвращен в доработку. </text>
+    <text name="PleaseWaitForFutherEmail">Пожалуйста, подожите. Мы отправим вам Email, когда заказ будет готов.</text>
+    <text name="PleaseWaitForFutherSms">Пожалуйста, подожите. Мы отправим вам смс, когда заказ будет готов.</text>
+    <text name="NewUserWasCreated">Был создан новый пользователь.</text>
+    <text name="WelcomeTo">Приветствуем вас в</text>
+    <text name="YourLogin">Ваш логин:</text>
+    <text name="YourPassword">Ваш пароль:</text>
+    
+    <text name="SalaryValueMustBeNonNegativeNumber">Величина зарплаты не может быть отрицательным числом</text>
+    <text name="SalaryValueMustBeBetween0And100">Введите число от 0 до 100</text>
+
+    <text name="PleaseSetAssignedEmployee">Пожалуйста, назначьте мастера</text>
+    <text name="PleaseSetRepairPrice">Пожалуйста, введите цену ремонта</text>
+    <text name="PleaseSetRepPleaseFillWorkDoneDescriptionairPrice">Пожалуйста, заполните описание проделанной работы</text>
+    <text name="OutOfStockRequiresStockQuantityZero">Статус "Не в наличии" означает, что на складе 0 шт.</text>
+    <text name="InStockRequiresStockQuantityHigherThanZero">Пожалуйста, введите количество вещей в наличии.</text>
+    <text name="Phone">Телефон</text>
+    <text name="DeviceReceipt">Квитанция о приеме устройства в ремонт</text>
+    <text name="IssueDescription">Описание проблемы</text>
+    <text name="DeviceName">Наименование устройства</text>
+    <text name="SerialNumber">Серийный номер</text>
+    <text name="AdditionalEquipment">Дополнительное оборудование</text>
+    <text name="CustomerSignature">Подпись клиента</text>
+    <text name="EmployeeSignature">Подпись работника</text>
+    <text name="FinalInvoice">Квитанция о выдаче устройства</text>
+    <text name="RepairInformation">Информация о ремонте</text>
+    <text name="WorkDoneDescription">Проделанная работа</text>
+    <text name="RepairPrice">Цена ремонта</text>
+    <text name="SparePartName">Наименование запчасти</text>
+    <text name="SparePartCode">Код запчасти</text>
+    <text name="SupplierPrice">Закупочная стоимость</text>
+    <text name="RecommendedPrice">Рекомендуемая цена</text>
+    <text name="StockStatus">Наличие</text>
+    <text name="StockQuantity">Количество в наличии</text>
+    <text name="Quantity">Количество</text>
+    <text name="PricePerItem">Цена (за 1 шт.)</text>
+    <text name="Subtotal">Сумма</text>
+    <text name="SparePartsTotal">Стоимость запчастей</text>
+    <text name="GrandTotal">Итого к оплате</text>
+    <text name="WarrantyInformation">Информация о гарантии</text>
+    <text name="WarrantyExpirationDate">Гарантия до</text>
+    <text name="Warranty">Гарантия</text>
+    
+    
+    <text name="CompanySalesReport">Отчет компании по продажам</text>
+    <text name="CompanyOrdersReport">Отчет компании по заказам</text>
+    <text name="EmployeeSalaryReport">Отчет по зарплате</text>
+    <text name="SalaryReport">Отчет по зарплате</text>
+    <text name="Salary">Зарплата</text>
+    <text name="SelectedYear">Выбранный год</text>
+    <text name="SelectedEmployee">Выбранный работник</text>
+
+    <text name="CreateNewBrand">Создать новый бренд</text>
+    <text name="CreateNewCustomer">Создать нового клиента</text>
+    <text name="CreateNewDeviceCategory">Создать новый тип устройства</text>
+    <text name="CreateNewDeviceModel">Создать новую модель устройства</text>
+    <text name="CreateNewEmployee">Создать нового работника</text>
+    <text name="CreateNewOrder">Создать новый заказ</text>
+    <text name="Enabled">Активен</text>
+    <text name="BrandName">Наименование бренда</text>
+    <text name="DeviceCategoryName">Наименование категории</text>
+    <text name="DeviceModelName">Наименование модели</text>
+    
+    <text name="SalaryIsFlat">Фиксированная ставка</text>
+    <text name="CompleteOrder{0}">Выдать заказ №{0} клиенту</text>
+    <text name="NotSet">Не задано</text>
+    <text name="SparePart">Запчасть</text>
+    <text name="UAH">грн.</text>
+    <text name="Urgent">Срочный заказ</text>
+    <text name="IsUrgent">Срочный заказ</text>
+    <text name="WarrantyComplaint">По гарантии</text>
+    <text name="IsWarrantyComplaint">По гарантии</text>
+
+
+    <text name="NewOrders">Новые заказы</text>
+    <text name="CompletedOrders">Выполненные заказы</text>
+    <text name="TotalRevenue">Прибыль</text>
+    <text name="RepairWorkPrice">Стоимость работ по ремонту</text>
+    <text name="SparePartSales">Продажа запчастей</text>
+    <text name="SparePartCost">Закупочная стоимость запчастей</text>
+    <text name="Notes">Заметки</text>
+
+
+
+
+
+
+
   </texts>
 </localizationDictionary>

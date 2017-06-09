@@ -91,12 +91,13 @@ namespace Repairis.Web.Helpers
             element = new PdfTextElement(
                 $"{customer.Surname} {customer.Name} {customer.FatherName}\n" +
                 $"{L("Address")}: {customer.Address}\n" +
-                $"{L("PrimaryPhoneNumber")}: {customer.PhoneNumber} {L("SecondaryPhoneNumber")}: {customer.SecondaryPhoneNumber}\n" +
+                $"{L("PrimaryPhoneNumber")}: {customer.PhoneNumber}\n" +
+                $"{L("SecondaryPhoneNumber")}: {customer.SecondaryPhoneNumber}" +
                 $"{L("Email")}: {customer.EmailAddress}", regularFont12)
             {
                 Brush = new PdfSolidBrush(new PdfColor(89, 89, 93))
             };
-            result = element.Draw(page, new RectangleF(10, result.Bounds.Bottom + 5, g.ClientSize.Width / 2, 100));
+            result = element.Draw(page, new RectangleF(10, result.Bounds.Bottom + 5, g.ClientSize.Width, 100));
 
             element = new PdfTextElement(L("Device"), regularFont10)
             {
@@ -114,10 +115,10 @@ namespace Repairis.Web.Helpers
             {
                 Brush = new PdfSolidBrush(new PdfColor(89, 89, 93))
             };
-            result = element.Draw(page, new RectangleF(10, result.Bounds.Bottom + 5, g.ClientSize.Width / 2, 100));
+            result = element.Draw(page, new RectangleF(10, result.Bounds.Bottom + 5, g.ClientSize.Width, 100));
 
             element = new PdfTextElement(
-                $"{L("CustomerSignature")}: ______________________" , regularFont10)
+                $"{L("CustomerSignature")}: ______________________", regularFont10)
             {
                 Brush = new PdfSolidBrush(new PdfColor(89, 89, 93))
             };
@@ -202,12 +203,13 @@ namespace Repairis.Web.Helpers
             element = new PdfTextElement(
                 $"{customer.Surname} {customer.Name} {customer.FatherName}\n" +
                 $"{L("Address")}: {customer.Address}\n" +
-                $"{L("PrimaryPhoneNumber")}: {customer.PhoneNumber} {L("SecondaryPhoneNumber")}: {customer.SecondaryPhoneNumber}\n" +
+                $"{L("PrimaryPhoneNumber")}: {customer.PhoneNumber}\n" +
+                $"{L("SecondaryPhoneNumber")}: {customer.SecondaryPhoneNumber}\n" +
                 $"{L("Email")}: {customer.EmailAddress}", regularFont12)
             {
                 Brush = new PdfSolidBrush(new PdfColor(89, 89, 93))
             };
-            result = element.Draw(page, new RectangleF(10, result.Bounds.Bottom + 5, g.ClientSize.Width / 2, 100));
+            result = element.Draw(page, new RectangleF(10, result.Bounds.Bottom + 5, g.ClientSize.Width, 100));
 
             element = new PdfTextElement(L("Device"), regularFont10)
             {
@@ -225,7 +227,7 @@ namespace Repairis.Web.Helpers
             {
                 Brush = new PdfSolidBrush(new PdfColor(89, 89, 93))
             };
-            result = element.Draw(page, new RectangleF(10, result.Bounds.Bottom + 5, g.ClientSize.Width / 2, 100));
+            result = element.Draw(page, new RectangleF(10, result.Bounds.Bottom + 5, g.ClientSize.Width, 100));
 
             element = new PdfTextElement(L("RepairInformation"), regularFont10)
             {
@@ -239,7 +241,7 @@ namespace Repairis.Web.Helpers
             {
                 Brush = new PdfSolidBrush(new PdfColor(89, 89, 93))
             };
-            result = element.Draw(page, new RectangleF(10, result.Bounds.Bottom + 5, g.ClientSize.Width / 2, 100));
+            result = element.Draw(page, new RectangleF(10, result.Bounds.Bottom + 5, g.ClientSize.Width, 100));
 
             if (order.SparePartsUsed.Any())
             {
@@ -365,7 +367,7 @@ namespace Repairis.Web.Helpers
             {
                 Brush = new PdfSolidBrush(new PdfColor(89, 89, 93))
             };
-            result = element.Draw(page, new RectangleF(10, result.Bounds.Bottom + 5, g.ClientSize.Width / 2, 100));
+            result = element.Draw(page, new RectangleF(10, result.Bounds.Bottom + 5, g.ClientSize.Width, 100));
 
 
 

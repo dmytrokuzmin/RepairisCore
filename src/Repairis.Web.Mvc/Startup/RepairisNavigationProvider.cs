@@ -108,7 +108,7 @@ namespace Repairis.Web.Startup
                         .AddItem(
                             new MenuItemDefinition(
                                 PageNames.EmployeesSalaryReport,
-                                L("EmployeesSalaryReport"),
+                                L("EmployeeSalaryReport"),
                                 url: "Reports/EmployeesSalaryReport",
                                 requiresAuthentication: true,
                                 requiredPermissionName: PermissionNames.Pages_Reports

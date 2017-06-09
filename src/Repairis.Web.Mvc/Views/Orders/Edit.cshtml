@@ -146,7 +146,7 @@
                     <e-column field="OrderId" type="number" default-value="@Model.Id" is-primary-key="true" visible="false"/>
                     <e-column field="SparePartId" type="number" allow-editing="false" header-text="@L("SparePart")" foreign-key-field="Id" datasource="@await SparePartAppService.GetCompatibleSpareParts(Model.Device.Id)" foreign-key-value="SparePartName"/>                   
                     <e-column field="Quantity" type="number" edit-type="Numeric" header-text="@L("Quantity")" validation-rules="@(new Dictionary<string,object> { {"required",true}, {"min",1}, {"max", int.MaxValue} })"/>
-                    <e-column field="PricePerItem" type="number" header-text="@L("Price per item")" validation-rules="@(new Dictionary<string,object> { {"required",true}, {"min",0}, {"max", decimal.MaxValue} })" />                  
+                    <e-column field="PricePerItem" type="number" header-text="@L("PricePerItem")" validation-rules="@(new Dictionary<string,object> { {"required",true}, {"min",0}, {"max", decimal.MaxValue} })" />                  
                 </e-columns>
             </ej-grid>          
         </div>
