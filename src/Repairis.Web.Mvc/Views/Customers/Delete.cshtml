@@ -1,16 +1,17 @@
 ﻿@model Repairis.Users.Dto.CustomerBasicEntityDto
 
 @{
-    ViewBag.Title = "Delete";
+    ViewBag.Title = L("DeleteCustomer");
 }
 <div>
     <a asp-action="Index">@L("BackToList")</a>
 </div>
 
 <h3>@Model.Surname @Model.Name @Model.FatherName</h3>
-<p>Are you sure you want to delete this customer?</p>
- 
+<p>@L("DeleteCustomerConfirmation")</p>
+
+
 <form asp-action="Delete" method="post">
-    <input type="submit" value="Delete" class="btn btn-default" />
+    <input type="submit" value="@L("Delete")" class="btn btn-default" />
 </form>
 

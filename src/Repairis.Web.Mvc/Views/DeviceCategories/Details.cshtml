@@ -1,8 +1,12 @@
 ﻿@model Repairis.DeviceCategories.Dto.DeviceCategoryFullEntityDto
+@{
+    ViewBag.Title = L("EditDeviceCategory");
+}
+
 <div>
     <a asp-action="Index">@L("BackToList")</a>
 </div>
-<h3>Edit device category @Model.DeviceCategoryName</h3>
+<h3>@L("EditDeviceCategory")</h3>
 <hr/>
 <form asp-action="Details" method="post">
     <div class="form-horizontal">
@@ -22,7 +26,7 @@
         </div>
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Save" class="btn btn-default" />
+                <input type="submit" value="@L("Save")" class="btn btn-default" />
             </div>
         </div>
     </div>

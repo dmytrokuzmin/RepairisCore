@@ -107,21 +107,16 @@
 
     <text name="Employee">Employee</text>
     <text name="Employes">Employees</text>
-    <text name="NewCustomer">New customer</text>
     <text name="FatherName">Father name</text>
     <text name="Address">Address</text>
     <text name="CustomerType">Customer type</text>
     <text name="MobilePhoneNumber">Mobile phone number</text>
     <text name="PrimaryPhoneNumber">Contact number</text>
-    <text name="SecondatyPhoneNumber">Contact number (secondary)</text>
+    <text name="SecondatyPhoneNumber">Contact number 2</text>
     <text name="AdditionalInfo">Additional info</text>
     <text name="BackToList">Back to list</text>
-    <text name="NewBrand">New brand</text>
-    <text name="NewDeviceCategory">New device category</text>
-    <text name="NewDeviceModel">New device model</text>
-    <text name="NewEmployee">New employee</text>
-    <text name="NewOrder">New order</text>
-    
+
+   
     <text name="Pages">Pages</text>
     <text name="Dashboard">Dashboard</text>
     <text name="CustomerPages">Customer pages</text>
@@ -163,7 +158,7 @@
     <text name="StockStatus">Stock status</text>
     <text name="StockQuantity">Stock quantity</text>
     <text name="Quantity">Quantity</text>
-    <text name="PricePerItem">Price (per 1 item)</text>
+    <text name="PricePerItem">Price per 1 item</text>
     <text name="Subtotal">Subtotal</text>
     <text name="SparePartsTotal">Spare parts total</text>
     <text name="GrandTotal">Total order price</text>
@@ -179,16 +174,14 @@
     <text name="SelectedYear">Selected year</text>
     <text name="SelectedEmployee">Selected employee</text>
 
-    <text name="CreateNewBrand">Create new brand</text>
-    <text name="CreateNewCustomer">Create new customer</text>
-    <text name="CreateNewDeviceCategory">Create new device category</text>
-    <text name="CreateNewDeviceModel">Create new device model</text>
-    <text name="CreateNewEmployee">Create new employee</text>
-    <text name="CreateNewOrder">Create new order</text>
+
     <text name="Enabled">Enabled</text>
     <text name="BrandName">Brand name</text>
     <text name="DeviceCategoryName">Device category name</text>
     <text name="DeviceModelName">Device model name</text>
+    <text name="BrandNameHeader">Brand</text>
+    <text name="DeviceCategoryNameHeader">Category</text>
+    <text name="DeviceModelNameHeader">Model</text>
 
     <text name="SalaryIsFlat">Fixed salary</text>
     <text name="CompleteOrder{0}">Complete order #{0}</text>
@@ -207,11 +200,62 @@
     <text name="SparePartSales">Spare part sales</text>
     <text name="SparePartCost">Spare part supplier cost</text>
     <text name="Notes">Notes</text>
+
+    <text name="OrderID">Order ID</text>
+    <text name="ID">ID</text>
+    <text name="Created">Created</text>
+    <text name="Status">Status</text>
+    <text name="AssignedMaster">Assigned master</text>
+    <text name="AdditionalEquipmentAndIssue">Additional equipment and issue description</text>
+    <text name="AdditionalOrderInfo">Additional order information</text>
+    <text name="IssuesAndNotes">Issues and additional notes</text>
+    <text name="DeviceAndAdditionalEquipment">Device and additional equipment</text>
+    <text name="SparePartsUsed">Spare parts used in order</text>
+    <text name="Order{0}">Order #{0}</text>
+    <text name="Complete">Complete</text>
+    <text name="Edit">Edit</text>
+    <text name="Delete">Delete</text>
+    <text name="Create">Create</text>
     
+    <text name="DeleteOrderConfirmation">Are you sure you want to delete this order?</text>
+    <text name="DeleteCustomerConfirmation">Are you sure you want to delete this customer?</text>
+    <text name="DeleteBrandConfirmation">Are you sure you want to delete this brand?</text>
+    <text name="DeleteDeviceCategoryConfirmation">Are you sure you want to delete this device category?</text>
+    <text name="DeleteDeviceModelConfirmation">Are you sure you want to delete this device model?</text>
+    <text name="DeleteEmployeeConfirmation">Are you sure you want to delete this employee?</text>
+    <text name="DeleteSparePartConfirmation">Are you sure you want to delete this spare part?</text>
 
+    <text name="NewCustomer">New customer</text>
+    <text name="NewBrand">New brand</text>
+    <text name="NewDeviceCategory">New device category</text>
+    <text name="NewDeviceModel">New device model</text>
+    <text name="NewEmployee">New employee</text>
+    <text name="NewOrder">New order</text>
+    <text name="NewSparePart">New spare part</text>
 
+    <text name="CreateNewCustomer">Create new customer</text>
+    <text name="CreateNewBrand">Create new brand</text>
+    <text name="CreateNewDeviceCategory">Create new device category</text>
+    <text name="CreateNewDeviceModel">Create new device model</text>
+    <text name="CreateNewEmployee">Create new employee</text>
+    <text name="CreateNewOrder">Create new order</text>
+    <text name="CreateNewSparePart">Create new spare part</text>
+    
+    <text name="EditCustomer">Edit customer</text>
+    <text name="EditBrand">Edit brand</text>
+    <text name="EditDeviceCategory">Edit device category</text>
+    <text name="EditDeviceModel">Edit device model</text>
+    <text name="EditEmployee">Edit employee</text>
+    <text name="EditSparePart">Edit spare part</text>
 
-
+    <text name="DeleteCustomer">Delete customer</text>
+    <text name="DeleteBrand">Delete brand</text>
+    <text name="DeleteDeviceCategory">Delete device category</text>
+    <text name="DeleteDeviceModel">Delete device model</text>
+    <text name="DeleteEmployee">Delete employee</text>
+    <text name="DeleteSparePart">Delete spare part</text>
+    
+    <text name="FilterByCompatibility">Filter by compatibility</text>
 
   </texts>
 </localizationDictionary>

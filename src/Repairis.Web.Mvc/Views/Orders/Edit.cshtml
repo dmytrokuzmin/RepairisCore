@@ -4,18 +4,17 @@
 @inject Repairis.Orders.IOrderAppService OrderAppService
 
 @{
-    ViewBag.Title = "Edit";
+    ViewBag.Title = L("Edit") + " " + L("Order{0}", Model.Id);
 }
 <div>
     <a asp-action="Index">@L("BackToList")</a>
 </div>
-<h3>Edit Order @Model.Id</h3>
-<hr />
+<h3>@L("Edit") @L("Order{0}", Model.Id)</h3>
 <form asp-controller="Orders" asp-action="Edit" method="post">
     <div class="form-horizontal">
         <div class="form-group">
             <div class="col-md-10">
-                <input type="submit" value="Save" class="btn btn-default col-md-2" />
+                <input type="submit" value="@L("Save")" class="btn btn-default col-md-2" />
             </div>
         </div>
         <div asp-validation-summary="ModelOnly"></div>
@@ -37,7 +36,7 @@
         <input asp-for="Device.BrandName" hidden />
         <div class="panel panel-default">
             <div class="panel-heading">
-                <h4>Issues and additional notes:</h4>
+                <h4>@L("IssuesAndNotes")</h4>
             </div>
             <div class="panel-body">
                 <div class="form-group">
@@ -68,7 +67,7 @@
         </div>
         <div class="panel panel-default">
             <div class="panel-heading">
-                <h4>Repair information:</h4>
+                <h4>@L("RepairInformation")</h4>
             </div>
             <div class="panel-body">
                 <div class="form-group">
@@ -135,7 +134,7 @@
     </div>
     <div class="panel panel-default">
         <div class="panel-heading">
-            <h4>Spare parts used:</h4>
+            <h4>@L("SparePartsUsed")</h4>
         </div>
         <div class="panel-body">          
             <ej-grid id="SparePartsUsed" action-begin="begin" action-complete="complete" begin-edit="preventEditSparePartName">
@@ -154,7 +153,7 @@
     <div class="form-horizontal">
         <div class="panel panel-default">
             <div class="panel-heading">
-                <h4>Device and additional equipment:</h4>
+                <h4>@L("DeviceAndAdditionalEquipment")</h4>
             </div>
             <div class="panel-body">
                 <div class="form-group">
@@ -196,7 +195,7 @@
         </div>
         <div class="panel panel-default">
             <div class="panel-heading">
-                <h4>Client:</h4>
+                <h4>@L("Customer")</h4>
             </div>
             <div class="panel-body">
                 <div class="form-group">
@@ -267,7 +266,7 @@
     </div>
 
 <div class="form-group">
-        <input type="submit" value="Save" class="btn btn-default col-md-offset-5 col-md-2" />
+        <input type="submit" value="@L("Save")" class="btn btn-default col-md-offset-5 col-md-2" />
 </div>
 </form>
 

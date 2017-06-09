@@ -5,12 +5,12 @@
 
 @{
     ViewBag.CurrentPageName = PageNames.Orders;
-    ViewBag.Title = L("CompleteOrder{0}", Model.Id);
+    ViewBag.Title = L("Complete") + " " + L("Order{0}", Model.Id);
 }
 <div>
     <a asp-action="Index">@L("BackToList")</a>
 </div>
-<h3>@L("CompleteOrder{0}", Model.Id)</h3>
+<h3>@L("Complete") @L("Order{0}", Model.Id)</h3>
 <hr/>
 <form asp-action="Complete" method="post">
     <div class="form-horizontal">
@@ -36,7 +36,7 @@
         </div>
     <div class="panel panel-default">
         <div class="panel-heading">
-            <h4>Repair information</h4>
+            <h4>@L("RepairInformation")</h4>
         </div>
         <div class="panel-body">
             <div class="form-group">
@@ -98,7 +98,7 @@
     </div>
     <div class="form-group">
         <div class="col-md-offset-5">
-            <input type="submit" value="Complete" class="btn btn-default col-md-2" />
+            <input type="submit" value="@L("Complete")" class="btn btn-default col-md-2" />
         </div>
     </div>
  </div>

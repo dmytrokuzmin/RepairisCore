@@ -1,19 +1,19 @@
 ﻿@model List<Repairis.DeviceModels.Dto.DeviceModelBasicEntityDto>
 
 @{
-    ViewBag.Title = "Device models";
+    ViewBag.Title = L("DeviceModels");
 }
-<h2>Device models</h2>
+<h2>@L("DeviceModels")</h2>
 <p>
-    <a asp-action="Create" class="btn btn-success"><i class="fa fa-plus"></i> New device model</a>
+    <a asp-action="Create" class="btn btn-success"><i class="fa fa-plus"></i> @L("NewDeviceModel")</a>
 </p>
 <table class="table table-striped">
     <thead>
     <tr>
         <th></th>
-        <th>@L("DeviceCategoryName")</th>
-        <th>@L("BrandName")</th>
-        <th>@L("DeviceModelName")</th>
+        <th>@L("DeviceCategoryNameHeader")</th>
+        <th>@L("BrandNameHeader")</th>
+        <th>@L("DeviceModelNameHeader")</th>
         <th>@L("Enabled")</th>
     </tr>
     </thead>

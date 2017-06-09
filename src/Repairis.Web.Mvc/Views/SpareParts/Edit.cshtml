@@ -2,7 +2,7 @@
 @inject Repairis.Web.Helpers.IFormHelper FormHelper
 
 @{
-    ViewBag.Title = "Edit SparePart";
+    ViewBag.Title = L("EditSparePart");
     var items = await FormHelper.GetDeviceModels();
     var selectedIndices = new List<int>();
     for (int i = 0; i < items.Count; i++)
@@ -16,7 +16,7 @@
 <div>
     <a asp-action="Index">@L("BackToList")</a>
 </div>
-<h3>Edit SparePart</h3>
+<h3>L("EditSparePart")</h3>
 <hr />
 <form asp-action="Edit" method="post">
     <div class="form-horizontal">
@@ -91,7 +91,7 @@
         
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Save" class="btn btn-default" />
+                <input type="submit" value="@L("Save")" class="btn btn-default" />
             </div>
         </div>
     </div>

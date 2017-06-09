@@ -1,10 +1,12 @@
 ﻿@model Repairis.DeviceModels.Dto.DeviceModelBasicEntityDto
 @inject Repairis.Web.Helpers.IFormHelper FormHelper
-
+@{
+    ViewBag.Title = L("CreateNewDeviceModel");
+}
 <div>
     <a asp-action="Index">@L("BackToList")</a>
 </div>
-<h3>Create new device model</h3>
+<h3>@L("CreateNewDeviceModel")</h3>
 <hr />
 <form asp-controller="DeviceModels" asp-action="Create" method="post">
     <div class="form-horizontal">
@@ -32,7 +34,7 @@
         </div> 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Create" class="btn btn-default" />
+                <input type="submit" value="@L("Create")" class="btn btn-default" />
             </div>
         </div>
     </div>

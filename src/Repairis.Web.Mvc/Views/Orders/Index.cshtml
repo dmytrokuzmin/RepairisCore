@@ -1,11 +1,11 @@
 ﻿@{
-    ViewBag.Title = "Orders";
+    ViewBag.Title = L("Orders");
 }
 
-<h2>Orders</h2>
+<h2>@L("Orders")</h2>
 
 <p>
-    <a asp-action="Create" class="btn btn-success"><i class="fa fa-plus"></i> New order</a>
+    <a asp-action="Create" class="btn btn-success"><i class="fa fa-plus"></i> @L("NewOrder")</a>
 </p>
 
 
@@ -20,14 +20,14 @@
     <e-filter-settings filter-type="Excel" />
     <e-columns>
         <e-column template-id="#gridActionsTemplate" allow-sorting="false" allow-filtering="false" allow-grouping="false" width="50" />      
-        <e-column field="Id" template-id="#orderIdTemplate" type="number" header-text="Order ID" is-primary-key="true" text-align="Center" width="80" />
-        <e-column field="OrderCreationDate" type="datetime" header-text="Created" width="90" format="{0:dd.MM.yyyy}"/>
-        <e-column field="OrderStatusString" template-id="#orderStatusTemplate" header-text="Status" text-align="Center" allow-text-wrap="true" allow-filtering="false"/>
-        <e-column field="AssignedMasterFullName" type="string" header-text="Assigned master" width="150"/>
-        <e-column field="DeviceModel" type="string" header-text="Device" width="200"/>
-        <e-column field="IssueDescription" type="string" header-text="Issue description" width="200"/>
-        <e-column field="CustomerFullName" type="string" header-text="Customer"/>
-        <e-column field="DeviceSerialNumber" type="string" header-text="Serial number"/>
+        <e-column field="Id" template-id="#orderIdTemplate" type="number" header-text="@L("ID")" is-primary-key="true" text-align="Center" width="90" />
+        <e-column field="OrderCreationDate" type="datetime" header-text="@L("Created")" allow-text-wrap="true" width="90" format="{0:dd.MM.yyyy}"/>
+        <e-column field="OrderStatusString" template-id="#orderStatusTemplate" header-text="@L("Status")" text-align="Center" allow-text-wrap="true" allow-filtering="false"/>
+        <e-column field="AssignedMasterFullName" type="string" header-text="@L("AssignedMaster")" allow-text-wrap="true" width="140"/>
+        <e-column field="DeviceModel" type="string" header-text="@L("Device")" allow-text-wrap="true" width="180"/>
+        <e-column field="IssueDescription" type="string" header-text="@L("IssueDescription")" allow-text-wrap="true" width="180"/>
+        <e-column field="DeviceSerialNumber" type="string" header-text="@L("SerialNumber")" width="110" allow-text-wrap="true"/>
+        <e-column field="CustomerFullName" type="string" header-text="@L("Customer")" allow-text-wrap="true"/>
         <e-column template-id="#orderInvoicesTemplate" allow-sorting="false" allow-filtering="false" allow-grouping="false" width="70"/>    
     </e-columns>
 </ej-grid>

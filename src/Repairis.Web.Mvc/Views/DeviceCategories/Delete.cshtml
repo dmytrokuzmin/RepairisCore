@@ -1,15 +1,15 @@
 ﻿@model Repairis.DeviceCategories.Dto.DeviceCategoryFullEntityDto
 
 @{
-    ViewBag.Title = "Delete";
+    ViewBag.Title = L("DeleteDeviceCategory");
 }
 <div>
     <a asp-action="Index">@L("BackToList")</a>
 </div>
 
 <h3>@Model.DeviceCategoryName</h3>
-<p>Are you sure you want to delete this device category?</p>
+<p>@L("DeleteDeviceCategoryConfirmation")</p>
 
 <form asp-action="Delete" method="post">
-    <input type="submit" value="Delete" class="btn btn-default" />
+    <input type="submit" value="@L("Delete")" class="btn btn-default" />
 </form>

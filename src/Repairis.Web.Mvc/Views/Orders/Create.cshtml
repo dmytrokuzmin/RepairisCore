@@ -1,18 +1,18 @@
 ﻿@model Repairis.Orders.Dto.CreateOrderInput
 @{
-    ViewBag.Title = "Create";
+    ViewBag.Title = L("CreateNewOrder");
 }
 <div>
     <a asp-action="Index">@L("BackToList")</a>
 </div>
-<h3>Create new order</h3>
+<h3>@L("CreateNewOrder")</h3>
 <hr />
 <form asp-controller="Orders" asp-action="Create" method="post">
     <div class="form-horizontal">
         <div asp-validation-summary="ModelOnly"></div>
         <div class="panel panel-default">
             <div class="panel-heading">
-                <h4>Device Model:</h4>
+                <h4>@L("DeviceModel")</h4>
             </div>
             <div class="panel-body">
                 <div class="form-group">
@@ -47,7 +47,7 @@
         </div>
         <div class="panel panel-default">
             <div class="panel-heading">
-                <h4>Additional Equipment and issues:</h4>
+                <h4>@L("AdditionalEquipmentAndIssue")</h4>
             </div>
             <div class="panel-body">
                 <div class="form-group">
@@ -68,7 +68,7 @@
         </div>
         <div class="panel panel-default">
             <div class="panel-heading">
-                <h4>Client:</h4>
+                <h4>@L("Customer")</h4>
             </div>
             <div class="panel-body">
                 <div class="form-group">
@@ -138,7 +138,7 @@
         </div>
         <div class="panel panel-default">
             <div class="panel-heading">
-                <h4>Additional Order Info:</h4>
+                <h4>@L("AdditionalOrderInfo")</h4>
             </div>
             <div class="panel-body">
                 <div class="form-group">
@@ -162,7 +162,7 @@
         </div>
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Create" class="btn btn-default" />
+                <input type="submit" value="@L("Create")" class="btn btn-default" />
             </div>
         </div>
     </div>

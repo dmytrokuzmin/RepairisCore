@@ -78,7 +78,7 @@
     <text name="SpareParts">Запчасти</text>
     
     <text name="BrandNotFound" value="Бренд не найден" />
-    <text name="DeviceCategoryNotFound" value="Тип устройства не найден" />
+    <text name="DeviceCategoryNotFound" value="Тип устройств не найден" />
     <text name="DeviceModelNotFound" value="Модель не найдена" />
     <text name="ClientNotFound" value="Клиент не найден" />
     <text name="CustomerNotFound" value="Клиент не найден" />
@@ -86,18 +86,18 @@
     <text name="EmployeeNotFound" value="" />
 
     <text name="BrandAlreadyExists" value="Бренд уже существует" />
-    <text name="DeviceCategoryAlreadyExists" value="Тип устройства уже существует" />
+    <text name="DeviceCategoryAlreadyExists" value="Тип устройств уже существует" />
     <text name="DeviceModelAlreadyExists" value="Модель уже существует" />
     <text name="ClientAlreadyExists" value="Клиент уже существует" />
     <text name="OrderAlreadyExists" value="Заказ уже существует" />
 
     <text name="CannotDeleteBrandBecauseIsBeingUsed" value="Нельзя удалить производителя, поскольку он используется в системе" />
-    <text name="CannotDeleteDeviceCategoryBecauseIsBeingUsed" value="Нельзя удалить тип устройства, поскольку он используется в системе" />
+    <text name="CannotDeleteDeviceCategoryBecauseIsBeingUsed" value="Нельзя удалить тип устройств, поскольку он используется в системе" />
     <text name="CannotDeleteDeviceModelBecauseIsBeingUsed" value="Нельзя удалить модель, поскольку она используется в системе" />
 
     <text name="Brand" value="Бренд" />
     <text name="Brands" value="Бренды" />
-    <text name="DeviceCategory" value="Тип устройства" />
+    <text name="DeviceCategory" value="Тип устройств" />
     <text name="DeviceCategories" value="Типы устройств" />
     <text name="DeviceModel" value="Модель" />
     <text name="DeviceModels" value="Модели" />
@@ -112,18 +112,12 @@
     <text name="FatherName">Отчество</text>
     <text name="Address">Адрес</text>
     <text name="CustomerType">Тип клиента</text>
-    <text name="MobilePhoneNumber">Моб.тел.</text>
-    <text name="PrimaryPhoneNumber">Контактный телефон</text>
-    <text name="SecondaryPhoneNumber">Контактный телефон (второстепенный)</text>
+    <text name="MobilePhoneNumber">Моб. тел.</text>
+    <text name="PrimaryPhoneNumber">Контактный тел.</text>
+    <text name="SecondaryPhoneNumber">Контактный тел. 2</text>
 
     <text name="AdditionalInfo">Дополнительная информация</text>
     <text name="BackToList">Вернуться</text>
-    <text name="NewCustomer">Новый клиент</text>
-    <text name="NewBrand">Новый бренд</text>
-    <text name="NewDeviceCategory">Новый тип устройства</text>
-    <text name="NewDeviceModel">Новая модель</text>
-    <text name="NewEmployee">Новый работник</text>
-    <text name="NewOrder">Новый заказ</text>
 
     <text name="Pages">Страницы</text>
     <text name="Dashboard">Панель управления</text>
@@ -165,7 +159,7 @@
     <text name="StockStatus">Наличие</text>
     <text name="StockQuantity">Количество в наличии</text>
     <text name="Quantity">Количество</text>
-    <text name="PricePerItem">Цена (за 1 шт.)</text>
+    <text name="PricePerItem">Цена за 1 шт.</text>
     <text name="Subtotal">Сумма</text>
     <text name="SparePartsTotal">Стоимость запчастей</text>
     <text name="GrandTotal">Итого к оплате</text>
@@ -182,16 +176,14 @@
     <text name="SelectedYear">Выбранный год</text>
     <text name="SelectedEmployee">Выбранный работник</text>
 
-    <text name="CreateNewBrand">Создать новый бренд</text>
-    <text name="CreateNewCustomer">Создать нового клиента</text>
-    <text name="CreateNewDeviceCategory">Создать новый тип устройства</text>
-    <text name="CreateNewDeviceModel">Создать новую модель устройства</text>
-    <text name="CreateNewEmployee">Создать нового работника</text>
     <text name="CreateNewOrder">Создать новый заказ</text>
     <text name="Enabled">Активен</text>
     <text name="BrandName">Наименование бренда</text>
-    <text name="DeviceCategoryName">Наименование категории</text>
+    <text name="DeviceCategoryName">Наименование типа</text>
     <text name="DeviceModelName">Наименование модели</text>
+    <text name="BrandNameHeader">Бренд</text>
+    <text name="DeviceCategoryNameHeader">Тип</text>
+    <text name="DeviceModelNameHeader">Модель</text>
     
     <text name="SalaryIsFlat">Фиксированная ставка</text>
     <text name="CompleteOrder{0}">Выдать заказ №{0} клиенту</text>
@@ -212,11 +204,61 @@
     <text name="SparePartCost">Закупочная стоимость запчастей</text>
     <text name="Notes">Заметки</text>
 
+    <text name="OrderID">№ заказа</text>
+    <text name="ID">№ </text>
+    <text name="Created">Создан</text>
+    <text name="Status">Статус</text>
+    <text name="AssignedMaster">Назначенный мастер</text>
+    <text name="AdditionalEquipmentAndIssue">Дополнительное оборудование и описание проблемы</text>
+    <text name="AdditionalOrderInfo">Дополнительная информация по заказу</text>.
+    <text name="IssuesAndNotes">Проблемы и дополнительные заметки</text>
+    <text name="DeviceAndAdditionalEquipment">Устройство и комплектация</text>
+    <text name="SparePartsUsed">Запчасти, используемые в заказе</text>
+    <text name="Order{0}">Заказ №{0}</text>
+    <text name="Complete">Завершить</text>
+    <text name="Edit">Редактировать</text>
+    <text name="Delete">Удалить</text>
+    <text name="Create">Создать</text>
+      
+    <text name="DeleteOrderConfirmation">Вы точно хотите удалить этот заказ?</text>
+    <text name="DeleteCustomerConfirmation">Вы точно хотите удалить этого клиента?</text>
+    <text name="DeleteBrandConfirmation">Вы точно хотите удалить этот бренд?</text>
+    <text name="DeleteDeviceCategoryConfirmation">Вы точно хотите удалить этот тип устройств?</text>
+    <text name="DeleteDeviceModelConfirmation">Вы точно хотите удалить эту модель устройств?</text>
+    <text name="DeleteEmployeeConfirmation">Вы точно хотите удалить этого работника?</text>
+    <text name="DeleteSparePartConfirmation">Вы точно хотите удалить эту запчасть?</text>
 
 
+    <text name="NewCustomer">Новый клиент</text>
+    <text name="NewBrand">Новый бренд</text>
+    <text name="NewDeviceCategory">Новый тип устройств</text>
+    <text name="NewDeviceModel">Новая модель</text>
+    <text name="NewEmployee">Новый работник</text>
+    <text name="NewOrder">Новый заказ</text>
+    <text name="NewSparePart">Новая запчасть</text>
 
+    <text name="CreateNewCustomer">Создать нового клиента</text>
+    <text name="CreateNewBrand">Создать новый бренд</text>
+    <text name="CreateNewDeviceCategory">Создать новый тип устройств</text>
+    <text name="CreateNewDeviceModel">Создать новую модель устройств</text>
+    <text name="CreateNewEmployee">Создать нового работника</text>
+    <text name="CreateNewSparePart">Создать новую запчасть</text>
+      
+    <text name="EditCustomer">Редактировать клиента</text>
+    <text name="EditBrand">Редакировать бренд</text>
+    <text name="EditDeviceCategory">Редактировать тип устройств</text>
+    <text name="EditDeviceModel">Редактировать модель устройств</text>
+    <text name="EditEmployee">Редактировать работника</text>
+    <text name="EditSparePart">Редактировать запчасть</text>
+ 
+    <text name="DeleteCustomer">Удалить клиента</text>
+    <text name="DeleteBrand">Удалить бренд</text>
+    <text name="DeleteDeviceCategory">Удалить тип устройств</text>
+    <text name="DeleteDeviceModel">Удалить модель устройств</text>
+    <text name="DeleteEmployee">Удалить работника</text>
+    <text name="DeleteSparePart">Удалить запчасть</text>
 
-
+    <text name="FilterByCompatibility">Фильтровать по совместимости</text>
 
   </texts>
 </localizationDictionary>
