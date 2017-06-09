@@ -22,7 +22,7 @@
         <e-column template="#gridActionsTemplate" allow-sorting="false" allow-filtering="false" allow-grouping="false" width="50" />      
         <e-column field="Id" template-id="#orderIdTemplate" type="number" header-text="@L("ID")" is-primary-key="true" text-align="Center" width="90" />
         <e-column field="OrderCreationDate" type="datetime" header-text="@L("Created")" allow-text-wrap="true" width="90" format="{0:dd.MM.yyyy}"/>
-        <e-column field="OrderStatusString" template-id="#orderStatusTemplate" header-text="@L("Status")" text-align="Center" allow-text-wrap="true" allow-filtering="false"/>
+        <e-column field="OrderStatusString" template-id="#orderStatusTemplate" header-text="@L("Status")" text-align="Center" allow-text-wrap="true" />
         <e-column field="AssignedMasterFullName" type="string" header-text="@L("AssignedMaster")" allow-text-wrap="true" width="140"/>
         <e-column field="DeviceModel" type="string" header-text="@L("Device")" allow-text-wrap="true" width="180"/>
         <e-column field="IssueDescription" type="string" header-text="@L("IssueDescription")" allow-text-wrap="true" width="180"/>
