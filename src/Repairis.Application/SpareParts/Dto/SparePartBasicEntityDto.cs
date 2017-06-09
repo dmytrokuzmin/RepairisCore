@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using Abp.Application.Services.Dto;
+using Repairis.Helpers;
 
 namespace Repairis.SpareParts.Dto
 {
@@ -31,5 +32,7 @@ namespace Repairis.SpareParts.Dto
         public int StockQuantity { get; set; } = 0;
 
         public StockStatusEnum StockStatus { get; set; } = StockStatusEnum.OutOfStock;
+
+        public string StockStatusString => StockStatus.GetDisplayName();
     }
 }

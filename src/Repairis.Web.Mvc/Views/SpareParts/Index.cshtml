@@ -31,13 +31,13 @@
     <e-filter-settings filter-type="Excel" />
     <e-columns>
         <e-column template-id="#gridActionsTemplate" allow-sorting="false" allow-filtering="false" allow-grouping="false" width="50" />
-        <e-column field="BrandName" type="string" header-text="@L("BrandName")" width="90" />
+        <e-column field="BrandName" type="string" header-text="@L("Brand")" width="90" />
         <e-column field="SparePartName" type="string" header-text="@L("SparePartName")" />
         <e-column field="SparePartCode" type="string" header-text="@L("SparePartCode")" />
-        <e-column field="SupplierPrice" type="number" header-text="@L("SupplierPrice")" />
-        <e-column field="RecommendedPrice" type="string" header-text="@L("RecommendedPrice")" />
-        <e-column field="StockStatus" type="number" header-text="@L("StockStatus")" />
-        <e-column field="StockQuantity" type="number" header-text="@L("StockQuantity")" />
+        <e-column field="SupplierPrice" type="number" header-text="@L("SupplierPrice")" width="90" />
+        <e-column field="RecommendedPrice" type="string" header-text="@L("RecommendedPrice")" width="90" />
+        <e-column field="StockStatusString" type="string" header-text="@L("StockStatus")" allow-filtering="false" />
+        <e-column field="StockQuantity" type="number" header-text="@L("StockQuantity")" width="90" />
         <e-column field="Notes" type="string" header-text="@L("Notes")" />
     </e-columns>
 </ej-grid>
