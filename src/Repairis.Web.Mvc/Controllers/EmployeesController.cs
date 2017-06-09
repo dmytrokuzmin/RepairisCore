@@ -119,6 +119,16 @@ namespace Repairis.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Edit(EmployeeBasicEntityDto input)
         {
+            if (input.SalaryValue < 0)
+            {
+                ModelState.AddModelError(nameof(input.SalaryValue), L("SalaryValueMustBeNonNegativeNumber"));
+            }
+
+            if (!input.SalaryIsFlat && input.SalaryValue > 100)
+            {
+                ModelState.AddModelError(nameof(input.SalaryValue), L("SalaryValueMustBeBetween0And100"));
+            }
+
             if (ModelState.IsValid)
             {
                 var employee = await _employeeInfoRepository.GetAllIncluding(x => x.EmployeeUser).FirstOrDefaultAsync(x => x.Id == input.Id);

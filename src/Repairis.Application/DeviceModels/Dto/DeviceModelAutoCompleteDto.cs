@@ -1,5 +1,6 @@
 ﻿using System;
 using Abp.Application.Services.Dto;
+using Abp.Localization;
 
 namespace Repairis.DeviceModels.Dto
 {

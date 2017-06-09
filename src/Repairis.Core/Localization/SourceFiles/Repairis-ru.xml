@@ -114,7 +114,7 @@
     <text name="CustomerType">Тип клиента</text>
     <text name="MobilePhoneNumber">Моб. тел.</text>
     <text name="PrimaryPhoneNumber">Контактный тел.</text>
-    <text name="SecondaryPhoneNumber">Контактный тел. 2</text>
+    <text name="SecondaryPhoneNumber">Второй тел.</text>
 
     <text name="AdditionalInfo">Дополнительная информация</text>
     <text name="BackToList">Вернуться</text>
@@ -202,7 +202,6 @@
     <text name="RepairWorkPrice">Стоимость работ по ремонту</text>
     <text name="SparePartSales">Продажа запчастей</text>
     <text name="SparePartCost">Закупочная стоимость запчастей</text>
-    <text name="Notes">Заметки</text>
 
     <text name="OrderID">№ заказа</text>
     <text name="ID">№ </text>
@@ -259,6 +258,23 @@
     <text name="DeleteSparePart">Удалить запчасть</text>
 
     <text name="FilterByCompatibility">Фильтровать по совместимости</text>
+
+    <text name="Field.Input.Name">Название</text>
+    <text name="Field.Input.BrandName">Бренд</text>
+    <text name="Field.Input.DeviceCategoryName">Тип</text>
+    <text name="Field.Input.DeviceModelName">Модель</text>
+
+    <text name="AdditionalNotes">Дополнительные заметки</text>
+    <text name="Notes">Заметки</text>
+    <text name="DevicePickupDate">Дата выдачи клиенту</text>
+    <text name="WarrantyMonths">Гарантия (мес.)</text>
+    <text name="CreationTime">Принят</text>
+    <text name="SparePartTotalPrice">Цена запчастей</text>
+    <text name="TotalPrice">Итого к оплате</text>
+    <text name="Code">Артикул</text>
+    <text name="CompatibleDevices">Совместимые устройства</text>
+    <text name="PhoneNumber">Моб. тел.</text>
+    <text name="SalaryValue">Величина зарплаты</text>
 
   </texts>
 </localizationDictionary>

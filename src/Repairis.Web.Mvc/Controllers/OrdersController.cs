@@ -27,6 +27,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using Repairis.Authorization;
 using Repairis.Authorization.Users;
+using Repairis.Net.MimeTypes;
 using Repairis.Users.Dto;
 using Repairis.Web.Helpers;
 
@@ -370,7 +371,7 @@ namespace Repairis.Web.Controllers
                 document.Save(filePath);
             }
 
-            return new PhysicalFileResult(filePath, "application/pdf");
+            return new PhysicalFileResult(filePath, MimeTypeNames.ApplicationPdf);
         }
 
 
@@ -393,7 +394,7 @@ namespace Repairis.Web.Controllers
                 document.Save(filePath);
             }
 
-            return new PhysicalFileResult(filePath, "application/pdf");
+            return new PhysicalFileResult(filePath, MimeTypeNames.ApplicationPdf);
         }
     }
 }

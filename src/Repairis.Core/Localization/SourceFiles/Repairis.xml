@@ -112,7 +112,7 @@
     <text name="CustomerType">Customer type</text>
     <text name="MobilePhoneNumber">Mobile phone number</text>
     <text name="PrimaryPhoneNumber">Contact number</text>
-    <text name="SecondatyPhoneNumber">Contact number 2</text>
+    <text name="SecondaryPhoneNumber">Secondary phone number</text>
     <text name="AdditionalInfo">Additional info</text>
     <text name="BackToList">Back to list</text>
 
@@ -199,7 +199,6 @@
     <text name="RepairWorkPrice">Repair work price</text>
     <text name="SparePartSales">Spare part sales</text>
     <text name="SparePartCost">Spare part supplier cost</text>
-    <text name="Notes">Notes</text>
 
     <text name="OrderID">Order ID</text>
     <text name="ID">ID</text>
@@ -256,6 +255,23 @@
     <text name="DeleteSparePart">Delete spare part</text>
     
     <text name="FilterByCompatibility">Filter by compatibility</text>
+    
+    <text name="Field.Input.Name">Name</text>
+    <text name="Field.Input.BrandName">Brand</text>
+    <text name="Field.Input.DeviceCategoryName">Category</text>
+    <text name="Field.Input.DeviceModelName">Model</text>
+
+    <text name="AdditionalNotes">Additional тotes</text>
+    <text name="Notes">Notes</text>
+    <text name="DevicePickupDate">Device pickup date</text>
+    <text name="WarrantyMonths">Warranty (months)</text>
+    <text name="CreationTime">Created</text>
+    <text name="SparePartTotalPrice">Spare parts price</text>
+    <text name="TotalPrice">Total price to pay</text>
+    <text name="Code">Code</text>
+    <text name="CompatibleDevices">Compatible devices</text>
+    <text name="PhoneNumber">Mobile phone number</text>
+    <text name="SalaryValue">Salary value</text>
 
   </texts>
 </localizationDictionary>
