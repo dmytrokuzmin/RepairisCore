@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -332,6 +333,7 @@ namespace Repairis.Web.Controllers
             if (ModelState.IsValid)
             {
                 var order = _orderRepository.Get(input.Id);
+                order.DevicePickupDate = input.DevicePickupDate;
                 if (input.WarrantyMonths > 0)
                 {
                     order.OrderStatus = OrderStatusEnum.OnWarranty;
@@ -355,8 +357,8 @@ namespace Repairis.Web.Controllers
             {
                 Directory.CreateDirectory(directory);
             }
-
-            string filePath = $"{directory}\\DeviceReceipt_{ id}.pdf";
+            string currentCultureCode = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName;
+            string filePath = $"{directory}\\DeviceReceipt_{id}_{currentCultureCode}.pdf";
             if (!System.IO.File.Exists(filePath))
             {
                 var order = await _orderAppService.GetOrderDtoAsync(id);
@@ -379,8 +381,8 @@ namespace Repairis.Web.Controllers
             {
                 Directory.CreateDirectory(directory);
             }
-
-            string filePath = $"{directory}\\FinalInvoice_{ id}.pdf";                
+            string currentCultureCode = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName;
+            string filePath = $"{directory}\\FinalInvoice_{id}_{currentCultureCode}.pdf";                
             if (!System.IO.File.Exists(filePath))
             {
                 var order = await _orderAppService.GetOrderDtoAsync(id);
