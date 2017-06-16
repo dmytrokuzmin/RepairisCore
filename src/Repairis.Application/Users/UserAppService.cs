@@ -108,11 +108,10 @@ namespace Repairis.Users
         public async Task<CustomerInfo> GetOrCreateCustomerAsync(CustomerInput input)
         {
             var user = await _userRepository.GetAllIncluding(x => x.CustomerInfo).Where(
-                x => x.Name.ToUpper() == input.Name.ToUpper() &&
-                     x.Surname.ToUpper() == input.Surname.ToUpper() &&
-                     x.FatherName.ToUpper() == input.FatherName.ToUpper() &&
-                     (x.EmailAddress.ToUpper() == input.EmailAddress.ToUpper() ||
-                      x.PhoneNumber == input.PhoneNumber)).FirstOrDefaultAsync();
+                x => x.Name.ToUpper() == input.Name.ToUpper() 
+                && x.Surname.ToUpper() == input.Surname.ToUpper() 
+                && (x.EmailAddress.ToUpper() == input.EmailAddress.ToUpper() 
+                ||x.PhoneNumber == input.PhoneNumber)).FirstOrDefaultAsync();
 
             if (user == null)
             {
