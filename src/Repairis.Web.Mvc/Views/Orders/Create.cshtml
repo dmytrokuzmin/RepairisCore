@@ -1,4 +1,5 @@
 ﻿@model Repairis.Orders.Dto.CreateOrderInput
+@inject Repairis.Web.Helpers.IFormHelper FormHelper
 @{
     ViewBag.Title = L("CreateNewOrder");
 }
@@ -18,21 +19,28 @@
                 <div class="form-group">
                     <label asp-for="Device.DeviceCategoryName" class="control-label col-md-2"></label>
                     <div class="col-md-10">
-                        <input asp-for="Device.DeviceCategoryName" class="form-control" />
+                        <ej-autocomplete id="DeviceCategoryName" ej-for="Device.DeviceCategoryName" datasource="await FormHelper.GetDeviceCategories()" show-popup-button="true" filter-type="@FilterOperatorType.Contains" highlight-search="true" width="100%" allow-add-new="true" change="updateDeviceCategory" select="updateDeviceCategory">
+                            <e-autocomplete-fields text="Text" key="Text" />
+                        </ej-autocomplete>              
                         <span asp-validation-for="Device.DeviceCategoryName" class="text-danger"></span>
                     </div>
                 </div>
                 <div class="form-group">
                     <label asp-for="Device.BrandName" class="control-label col-md-2"></label>
                     <div class="col-md-10">
-                        <input asp-for="Device.BrandName" class="form-control" />
+                        <ej-autocomplete id="BrandName" ej-for="Device.BrandName" datasource="await FormHelper.GetBrands()" show-popup-button="true" filter-type="@FilterOperatorType.Contains" highlight-search="true" width="100%" allow-add-new="true" change="updateBrand" select="updateBrand">
+                            <e-autocomplete-fields text="Text" key="Text" />
+                        </ej-autocomplete>
                         <span asp-validation-for="Device.BrandName" class="text-danger"></span>
                     </div>
                 </div>
                 <div class="form-group">
                     <label asp-for="Device.DeviceModelName" class="control-label col-md-2"></label>
                     <div class="col-md-10">
-                        <input asp-for="Device.DeviceModelName" class="form-control" />
+                        <ej-autocomplete id="DeviceModelName" ej-for="Device.DeviceModelName" show-popup-button="true" filter-type="@FilterOperatorType.Contains" highlight-search="true" width="100%" allow-add-new="true">
+                            <e-autocomplete-fields text="DeviceModelName" key="DeviceModelName"/>
+                            <e-datamanager url="/api/DeviceModels/" adaptor="UrlAdaptor" offline="false" />
+                        </ej-autocomplete>
                         <span asp-validation-for="Device.DeviceModelName" class="text-danger"></span>
                     </div>
                 </div>              
@@ -167,4 +175,27 @@
         </div>
     </div>
 </form>
+
+
+<script type="text/javascript">
+    function updateDeviceCategory(args) {               
+        var dmObj = $("#DeviceModelName").ejAutocomplete("instance");
+        var headers = dmObj.model.dataSource.dataSource.headers;
+        if (!headers) {
+            dmObj.model.dataSource.dataSource.headers = [];
+        }
+        delete headers["deviceCategoryName"];
+        headers.push({ "deviceCategoryName": args.value});
+    }
+
+    function updateBrand(args) {
+        var dmObj = $("#DeviceModelName").ejAutocomplete("instance");
+        var headers = dmObj.model.dataSource.dataSource.headers;
+        if (!headers) {
+            dmObj.model.dataSource.dataSource.headers = [];
+        }
+        delete headers["brandName"];
+        headers.push({ "brandName": args.value });
+    }
+</script>
 

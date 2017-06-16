@@ -1,7 +1,15 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Linq.Dynamic.Core;
+using System.Threading.Tasks;
 using Abp.AspNetCore.Mvc.Authorization;
+using Abp.Domain.Repositories;
 using Abp.UI;
+using Abp.Web.Models;
+using AutoMapper.QueryableExtensions;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 using Repairis.Authorization;
 using Repairis.Controllers;
 using Repairis.DeviceModels;
@@ -13,9 +21,11 @@ namespace Repairis.Web.Controllers
     public class DeviceModelsController : RepairisControllerBase
     {
         private readonly IDeviceModelAppService _deviceModelAppService;
-        public DeviceModelsController(IDeviceModelAppService deviceModelAppService)
+        private readonly IRepository<DeviceModel> _deviceModelRepository;
+        public DeviceModelsController(IDeviceModelAppService deviceModelAppService, IRepository<DeviceModel> deviceModelRepository)
         {
             _deviceModelAppService = deviceModelAppService;
+            _deviceModelRepository = deviceModelRepository;
         }
 
 
@@ -90,6 +100,31 @@ namespace Repairis.Web.Controllers
         {
             await _deviceModelAppService.DeleteAsync(id);
             return RedirectToAction("Index");
+        }
+
+
+        [Route("/api/DeviceModels/")]
+        [DontWrapResult]
+        public ActionResult DeviceModelsDataSource()
+        {
+            IQueryable<DeviceModelBasicEntityDto> deviceModelsQueryable = _deviceModelRepository.GetAll().ProjectTo<DeviceModelBasicEntityDto>();
+            var brandName = Request.Headers["brandName"];
+            var deviceCategoryName = Request.Headers["deviceCategoryName"];
+            bool allHeadersFilled = false;
+
+            if (!string.IsNullOrEmpty(brandName) && !string.IsNullOrEmpty(brandName[0])
+                && !string.IsNullOrEmpty(deviceCategoryName) && !string.IsNullOrEmpty(deviceCategoryName[0]))
+            {
+                deviceModelsQueryable = deviceModelsQueryable.Where(x => x.BrandName.ToUpper() == brandName[0].ToUpper()
+                && x.DeviceCategoryName.ToUpper() == deviceCategoryName[0].ToUpper());
+                allHeadersFilled = true;
+            }
+
+
+            return Json(allHeadersFilled ? deviceModelsQueryable.ToDynamicList() : new List<dynamic>(), new JsonSerializerSettings
+            {
+                ContractResolver = new DefaultContractResolver()
+            });
         }
     }
 }
