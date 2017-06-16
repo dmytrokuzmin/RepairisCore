@@ -261,7 +261,7 @@
     <text name="Field.Input.DeviceCategoryName">Category</text>
     <text name="Field.Input.DeviceModelName">Model</text>
 
-    <text name="AdditionalNotes">Additional тotes</text>
+    <text name="AdditionalNotes">Additional notes</text>
     <text name="Notes">Notes</text>
     <text name="DevicePickupDate">Device pickup date</text>
     <text name="WarrantyMonths">Warranty (months)</text>
