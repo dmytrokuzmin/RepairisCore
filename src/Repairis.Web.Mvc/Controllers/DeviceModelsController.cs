@@ -38,7 +38,7 @@ namespace Repairis.Web.Controllers
 
 
         // GET: DeviceModels/Details/5
-        public async Task<ActionResult> Details(int? id)
+        public async Task<ActionResult> Edit(int? id)
         {
             if (id == null)
             {
@@ -46,6 +46,35 @@ namespace Repairis.Web.Controllers
             }
             var deviceModel = await _deviceModelAppService.GetDeviceModelAsync((int)id);
             return View(deviceModel);
+        }
+
+        // POST: DeviceCategories/Edit
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> Edit(DeviceModelBasicEntityDto input)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    var deviceModel = await _deviceModelRepository.GetAsync(input.Id);
+                    if (deviceModel == null)
+                    {
+                        return NotFound();
+                    }
+
+                    deviceModel.DeviceModelName = input.DeviceModelName;
+                    deviceModel.IsActive = input.IsActive;
+
+                    return RedirectToAction("Index");
+                }
+                catch (UserFriendlyException ex)
+                {
+                    ModelState.AddModelError(nameof(input.DeviceModelName), ex.Message);
+                }
+            }
+
+            return View(input);
         }
 
 
@@ -107,7 +136,7 @@ namespace Repairis.Web.Controllers
         [DontWrapResult]
         public ActionResult DeviceModelsDataSource()
         {
-            IQueryable<DeviceModelBasicEntityDto> deviceModelsQueryable = _deviceModelRepository.GetAll().ProjectTo<DeviceModelBasicEntityDto>();
+            IQueryable<DeviceModelBasicEntityDto> deviceModelsQueryable = _deviceModelRepository.GetAll().Where(x => x.IsActive).ProjectTo<DeviceModelBasicEntityDto>();
             var brandName = Request.Headers["brandName"];
             var deviceCategoryName = Request.Headers["deviceCategoryName"];
             bool allHeadersFilled = false;

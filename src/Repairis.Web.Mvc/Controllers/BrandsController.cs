@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using Abp.AspNetCore.Mvc.Authorization;
+using Abp.Domain.Repositories;
 using Abp.UI;
 using Microsoft.AspNetCore.Mvc;
 using Repairis.Authorization;
@@ -13,10 +14,12 @@ namespace Repairis.Web.Controllers
     public class BrandsController : RepairisControllerBase
     {
         private readonly IBrandAppService _brandAppService;
+        private readonly IRepository<Brand> _brandRepository;
 
-        public BrandsController(IBrandAppService brandAppService)
+        public BrandsController(IBrandAppService brandAppService, IRepository<Brand> brandRepository)
         {
             _brandAppService = brandAppService;
+            _brandRepository = brandRepository;
         }
 
         // GET: Brands
@@ -27,7 +30,7 @@ namespace Repairis.Web.Controllers
         }
 
         // GET: Brands/Details/5
-        public async Task<ActionResult> Details(int? id)
+        public async Task<ActionResult> Edit(int? id)
         {
             if (id == null)
             {
@@ -35,6 +38,35 @@ namespace Repairis.Web.Controllers
             }
             var brand = await _brandAppService.GetBrandAsync(id.Value);
             return View(brand);
+        }
+
+        // POST: DeviceCategories/Edit
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> Edit(BrandFullEntityDto input)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    var brand = await _brandRepository.GetAsync(input.Id);
+                    if (brand == null)
+                    {
+                        return NotFound();
+                    }
+
+                    brand.BrandName = input.BrandName;
+                    brand.IsActive = input.IsActive;
+
+                    return RedirectToAction("Index");
+                }
+                catch (UserFriendlyException ex)
+                {
+                    ModelState.AddModelError(nameof(input.BrandName), ex.Message);
+                }
+            }
+
+            return View(input);
         }
 
         // GET: Brands/Create

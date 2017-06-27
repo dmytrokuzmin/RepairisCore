@@ -30,15 +30,15 @@ namespace Repairis.Web.Helpers
             _ordersReporitory = ordersReporitory;
         }
 
-        public async Task<List<SelectListItem>> GetBrands()
+        public async Task<List<SelectListItem>> GetBrands(bool includeDisaled = false)
         {
-            return (await _brandAppService.GetAllBrandsAsync())
+            return (await _brandAppService.GetAllBrandsAsync()).Where(x => includeDisaled || x.IsActive)
                 .Select(x => new SelectListItem { Text = x.BrandName, Value = x.BrandName }).ToList();
         }
 
-        public async Task<List<SelectListItem>> GetDeviceCategories()
+        public async Task<List<SelectListItem>> GetDeviceCategories(bool includeDisaled = false)
         {
-            return (await _deviceCategoryAppService.GetAllDeviceCategoriesAsync())
+            return (await _deviceCategoryAppService.GetAllDeviceCategoriesAsync()).Where(x => includeDisaled || x.IsActive)
                 .Select(x => new SelectListItem { Text = x.DeviceCategoryName, Value = x.DeviceCategoryName }).ToList();
         }
 

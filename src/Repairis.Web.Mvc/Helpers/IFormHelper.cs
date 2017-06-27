@@ -8,9 +8,9 @@ namespace Repairis.Web.Helpers
 {
     public interface IFormHelper : ISingletonDependency
     {
-        Task<List<SelectListItem>> GetBrands();
+        Task<List<SelectListItem>> GetBrands(bool includeDisaled = false);
 
-        Task<List<SelectListItem>> GetDeviceCategories();
+        Task<List<SelectListItem>> GetDeviceCategories(bool includeDisaled = false);
 
         Task<List<DeviceModelAutocompleteDto>> GetDeviceModels();
     }

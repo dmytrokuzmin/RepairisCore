@@ -14,7 +14,7 @@ ViewBag.Title = L("CreateNewSparePart");
         <div class="form-group">
             <label asp-for="BrandName" class="control-label col-md-2"></label>
             <div class="col-md-10">
-                <select asp-for="BrandName" asp-items="await FormHelper.GetBrands()" class="form-control"></select>
+                <select asp-for="BrandName" asp-items="await FormHelper.GetBrands(true)" class="form-control"></select>
                 <span asp-validation-for="BrandName" class="text-danger"></span>
             </div>
         </div>

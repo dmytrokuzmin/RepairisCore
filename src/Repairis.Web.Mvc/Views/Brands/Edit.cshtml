@@ -1,22 +1,21 @@
-﻿@model Repairis.DeviceCategories.Dto.DeviceCategoryFullEntityDto
+﻿@model Repairis.Brands.Dto.BrandFullEntityDto
 @{
-    ViewBag.Title = L("EditDeviceCategory");
+    ViewBag.Title = L("EditBrand");
 }
-
 <div>
     <a asp-action="Index">@L("BackToList")</a>
 </div>
-<h3>@L("EditDeviceCategory")</h3>
-<hr/>
-<form asp-action="Details" method="post">
+<h3>@L("EditBrand")</h3>
+<hr />
+<form asp-action="Edit" method="post">
     <div class="form-horizontal">
         <div asp-validation-summary="ModelOnly"></div>
         <input asp-for="Id" hidden />
         <div class="form-group">
-            <label asp-for="DeviceCategoryName" class="control-label col-md-2"></label>
+            <label asp-for="BrandName" class="control-label col-md-2"></label>
             <div class="col-md-10">
-                <input asp-for="DeviceCategoryName" class="form-control" />
-                <span asp-validation-for="DeviceCategoryName" class="text-danger"></span>
+                <input asp-for="BrandName" class="form-control" />
+                <span asp-validation-for="BrandName" class="text-danger"></span>
                 <div class="checkbox">
                     <label>
                         <input asp-for="IsActive" checked /> @L("Enabled")
@@ -31,4 +30,3 @@
         </div>
     </div>
 </form>
-
