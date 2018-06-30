@@ -17,11 +17,6 @@
     <Content Remove="wwwroot/OrderCreationInvoice_17.pdf" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="wwwroot\fonts\LiberationSerif-Regular.ttf" />
-    <Content Include="wwwroot\images\app-logo-small.png" />
-    <Content Include="wwwroot\js\ej.culture.ru-RU.min.js" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="App.config" />
     <None Update="log4net.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
